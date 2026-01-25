@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binomial Expansion Mastery Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: #f5f7fa;
+            min-height: 100vh;
+            padding: 20px;
+            font-size: 18px;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 35px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #5d6d7e;
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+        }
+        
+        .name-input-section {
+            background: #e8f4fc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            text-align: center;
+            border-left: 5px solid #3498db;
+        }
+        
+        .name-input {
+            font-size: 1.1rem;
+            padding: 12px 20px;
+            width: 300px;
+            border: 2px solid #3498db;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+        
+        .question {
+            background: #f8f9fa;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #3498db;
+            border-radius: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .question-number {
+            background: #3498db;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+        
+        .question-text {
+            margin: 15px 0;
+            line-height: 1.8;
+            font-size: 1.2rem;
+        }
+        
+        .math-display {
+            font-family: 'Cambria Math', 'Times New Roman', serif;
+            font-size: 1.3rem;
+        }
+        
+        .answer-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            max-width: 700px;
+            margin: 15px 0;
+        }
+        
+        .answer-input {
+            flex: 1;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-family: monospace;
+            min-width: 300px;
+        }
+        
+        .preview-box {
+            flex: 1;
+            min-height: 52px;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            background: #f9f9f9;
+            font-size: 1.3rem;
+            font-family: 'Cambria Math', 'Times New Roman', serif;
+            color: #333;
+            display: flex;
+            align-items: center;
+            min-width: 300px;
+            overflow-x: auto;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .preview-box:hover {
+            background: #f0f0f0;
+            border-color: #3498db;
+        }
+        
+        .preview-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        button {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            margin: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: #27ae60;
+            transform: translateY(-2px);
+        }
+        
+        .btn-reset {
+            background: #e74c3c;
+        }
+        
+        .btn-reset:hover {
+            background: #c0392b;
+        }
+        
+        .feedback {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+            font-size: 1.1rem;
+        }
+        
+        .correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .result {
+            margin: 25px 0;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+        
+        .score {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 15px 0;
+            color: #2c3e50;
+        }
+        
+        .certificate {
+            display: none;
+            background: white;
+            border: 15px solid #f1c40f;
+            padding: 50px;
+            margin: 40px auto;
+            max-width: 700px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        
+        .certificate h2 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 2.2rem;
+        }
+        
+        .student-name {
+            font-size: 2.5rem;
+            color: #3498db;
+            margin: 25px 0;
+            padding: 20px;
+            border-bottom: 4px solid #f1c40f;
+            display: inline-block;
+        }
+        
+        .instructions {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 6px solid #3498db;
+            font-size: 1.1rem;
+        }
+        
+        .center {
+            text-align: center;
+        }
+        
+        .click-hint {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .superscript {
+            font-size: 0.85em;  /* Fixed: increased from 0.7em to 0.85em */
+            vertical-align: super;
+            line-height: 0;
+        }
+        
+        /* Stacked fraction styling */
+        .stacked-fraction {
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            margin: 0 2px;
+        }
+        
+        .fraction-numerator {
+            display: block;
+            border-bottom: 1px solid #333;
+            padding: 0 3px;
+            line-height: 1.2;
+        }
+        
+        .fraction-denominator {
+            display: block;
+            padding: 0 3px;
+            line-height: 1.2;
+        }
+        
+        /* For fractions with x */
+        .fraction-with-x {
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Binomial Expansion Mastery Quiz</h1>
+        <p class="subtitle">AS Edexcel Mathematics - Score 100% for Certificate</p>
+        
+        <div class="name-input-section" id="nameSection">
+            <strong>🎓 Enter Your Name:</strong><br>
+            <input type="text" id="studentNameInput" class="name-input" placeholder="Enter your full name">
+            <br><br>
+            <button onclick="startQuiz()">Start Quiz</button>
+        </div>
+        
+        <div class="instructions" id="quizInstructions" style="display: none;">
+            <strong>🎯 Instructions:</strong>
+            <ul>
+                <li>Answer all 10 questions</li>
+                <li>Enter fractions as <strong>a/b</strong> (e.g., 3/4 for ¾)</li>
+                <li>For multiple values, separate with comma (e.g., 2, 3)</li>
+                <li>Use ^ for powers (e.g., x^2 for x²)</li>
+                <li><strong>Click the preview box</strong> to copy formatted answer back</li>
+                <li>Spaces don't matter - they're ignored</li>
+                <li><strong>Note:</strong> You cannot change answers after checking!</li>
+                <li>100% score required for certificate</li>
+            </ul>
+        </div>
+        
+        <div id="quizContainer" style="display: none;">
+            <!-- Questions will appear here -->
+        </div>
+        
+        <div class="center" id="buttonSection" style="display: none;">
+            <button onclick="checkAllAnswers()" id="checkButton">Check All Answers</button>
+            <button class="btn-reset" onclick="resetQuiz()">New Quiz</button>
+        </div>
+        
+        <div id="resultArea"></div>
+        
+        <div class="certificate" id="certificate">
+            <h2>🎓 Certificate of Mastery</h2>
+            <p>This certifies that</p>
+            <div class="student-name" id="certificateName">[Your Name]</div>
+            <p>has successfully mastered Binomial Expansion</p>
+            <p>with a perfect score of 10/10</p>
+            <p><strong>Date:</strong> <span id="certificateDate"></span></p>
+            <br>
+            <button onclick="printCertificate()">Print Certificate</button>
+            <button class="btn-reset" onclick="hideCertificate()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // ========== SIMPLE UTILITY FUNCTIONS ==========
+        function nCr(n, r) {
+            if (r < 0 || r > n) return 0;
+            if (r === 0 || r === n) return 1;
+            r = Math.min(r, n - r);
+            let result = 1;
+            for (let i = 1; i <= r; i++) {
+                result = result * (n - i + 1) / i;
+            }
+            return Math.round(result);
+        }
+        
+        function gcd(a, b) {
+            a = Math.abs(a);
+            b = Math.abs(b);
+            while (b) {
+                [a, b] = [b, a % b];
+            }
+            return a;
+        }
+        
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        
+        // ========== FIXED SUPERSCRIPT CONVERSION FUNCTIONS ==========
+        function convertToSuperscript(text) {
+            if (!text) return '';
+            
+            // FIX: Handle text that starts with ^ (like ^2)
+            if (text.startsWith('^')) {
+                // Add a space at the beginning to prevent leading superscript
+                text = ' ' + text;
+            }
+            
+            let result = text;
+            
+            // Replace patterns like x^2, y^3, etc. but NOT standalone ^ at start
+            // Match ^ followed by digits, but not if it's at the very start
+            result = result.replace(/([a-zA-Z0-9\)])\^(\d+)/g, function(match, before, num) {
+                const superscriptDigits = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
+                const superscript = num.split('').map(d => superscriptDigits[d] || d).join('');
+                return before + '<span class="superscript">' + superscript + '</span>';
+            });
+            
+            // Remove the leading space we added if present
+            if (result.startsWith(' ')) {
+                result = result.substring(1);
+            }
+            
+            return result;
+        }
+        
+        function convertFromSuperscript(html) {
+            if (!html) return '';
+            
+            // Convert HTML back to text with ^ notation
+            let text = html;
+            
+            // Replace superscript spans with ^ notation
+            text = text.replace(/<span class="superscript">([⁰¹²³⁴⁵⁶⁷⁸⁹]+)<\/span>/g, function(match, sup) {
+                const normalDigits = {'⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};
+                const num = sup.split('').map(d => normalDigits[d] || d).join('');
+                return '^' + num;
+            });
+            
+            // Remove any remaining HTML tags
+            text = text.replace(/<[^>]*>/g, '');
+            
+            return text;
+        }
+        
+        // ========== STACKED FRACTION HELPER ==========
+        function createStackedFraction(numerator, denominator) {
+            return `<span class="stacked-fraction">
+                <span class="fraction-numerator">${numerator}</span>
+                <span class="fraction-denominator">${denominator}</span>
+            </span>`;
+        }
+        
+        function createFractionTimesX(numerator, denominator) {
+            return `<span class="fraction-with-x">
+                ${createStackedFraction(numerator, denominator)}
+                <span style="margin-left: 3px;">x</span>
+            </span>`;
+        }
+        
+        // ========== SETUP PREVIEW WITH WORKING COPY-BACK ==========
+        function setupSuperscriptPreview(inputId) {
+            const input = document.getElementById(inputId);
+            const previewId = inputId + '-preview';
+            const preview = document.getElementById(previewId);
+            
+            if (!preview) return;
+            
+            // Update preview on input
+            function updatePreview() {
+                preview.innerHTML = convertToSuperscript(input.value);
+            }
+            
+            input.addEventListener('input', updatePreview);
+            input.addEventListener('keyup', updatePreview);
+            
+            // Click preview to copy formatted text back to input
+            preview.addEventListener('click', function() {
+                // Get the HTML content of the preview
+                const htmlContent = this.innerHTML;
+                
+                // Convert back to ^ notation
+                const textContent = convertFromSuperscript(htmlContent);
+                
+                // Update the input
+                input.value = textContent;
+                input.focus();
+                
+                // Show visual feedback
+                this.style.background = '#e8f4fc';
+                this.style.borderColor = '#3498db';
+                setTimeout(() => {
+                    this.style.background = '#f9f9f9';
+                    this.style.borderColor = '#e0e0e0';
+                }, 300);
+                
+                // Trigger input event to update preview immediately
+                input.dispatchEvent(new Event('input'));
+            });
+            
+            // Initial update
+            updatePreview();
+        }
+        
+        // ========== QUIZ STATE ==========
+        let currentQuiz = [];
+        let studentName = "";
+        let answersChecked = false;
+        
+        // ========== QUESTION GENERATORS ==========
+        // (Keeping the same as before - they work well)
+        
+        function generateQ1() {
+            const a = getRandomInt(1, 6);
+            let b;
+            do {
+                b = getRandomInt(-6, 6);
+            } while (Math.abs(b) <= 1 || b === 0 || Math.abs(b) === a);
+            
+            const n = getRandomInt(3, 5);
+            
+            let answer = "";
+            for (let r = 0; r <= n; r++) {
+                const coeff = nCr(n, r) * Math.pow(a, n - r) * Math.pow(b, r);
+                if (coeff !== 0) {
+                    if (answer && coeff > 0) answer += "+";
+                    if (coeff < 0) answer += "-";
+                    const absCoeff = Math.abs(coeff);
+                    if (absCoeff !== 1 || (n - r === 0 && r === 0)) answer += absCoeff;
+                    if (n - r > 0) {
+                        answer += "x";
+                        if (n - r > 1) answer += "^" + (n - r);
+                    }
+                    if (r > 0) {
+                        answer += "y";
+                        if (r > 1) answer += "^" + r;
+                    }
+                }
+            }
+            
+            const bDisplay = b < 0 ? `- ${Math.abs(b)}` : `+ ${b}`;
+            const aDisplay = a === 1 ? "" : a;
+            
+            return {
+                question: `Expand (${aDisplay}x ${bDisplay}y)<sup>${n}</sup>`,
+                answer: answer.replace(/\b1([a-zA-Z])/g, '$1').replace(/\b-1([a-zA-Z])/g, '-$1'),
+                hint: "Format: 8x^3+36x^2y+54xy^2+27y^3"
+            };
+        }
+        
+        function generateQ2() {
+            const a = getRandomInt(1, 6);
+            const b = [2, 3, 4, 5][getRandomInt(0, 3)];
+            const n = getRandomInt(3, 6);
+            const k = getRandomInt(2, n - 1);
+            
+            const numerator = nCr(n, k) * Math.pow(a, n - k);
+            const denominator = Math.pow(b, k);
+            const g = gcd(numerator, denominator);
+            
+            const answer = `${numerator/g}/${denominator/g}`;
+            
+            // FIX: Use stacked fraction for display
+            const displayFraction = b === 1 ? "1" : createFractionTimesX("1", b);
+            
+            return {
+                question: `Find the coefficient of x<sup>${k}</sup> in the expansion of (${a} + ${displayFraction})<sup>${n}</sup>`,
+                answer: answer,
+                hint: "Answer as fraction a/b (e.g., 3/4)"
+            };
+        }
+        
+        function generateQ3() {
+            let a = getRandomInt(2, 5);
+            let b = getRandomInt(2, 5);
+            while (a === b) b = getRandomInt(2, 5);
+            const n = getRandomInt(3, 5);
+            
+            let terms = [];
+            for (let r = 0; r <= n; r++) {
+                terms[r] = nCr(n, r) * Math.pow(b, r);
+            }
+            
+            let result = [];
+            for (let i = 0; i <= n + 1; i++) result[i] = 0;
+            
+            for (let r = 0; r <= n; r++) {
+                result[r] += terms[r];
+                if (r + 1 <= n + 1) {
+                    result[r + 1] += terms[r] * a;
+                }
+            }
+            
+            let answer = "";
+            for (let i = 0; i < result.length; i++) {
+                if (result[i] !== 0) {
+                    if (answer && result[i] > 0) answer += "+";
+                    if (result[i] < 0) answer += "-";
+                    const absCoeff = Math.abs(result[i]);
+                    if (absCoeff !== 1 || i === 0) answer += absCoeff;
+                    if (i > 0) {
+                        answer += "x";
+                        if (i > 1) answer += `^${i}`;
+                    }
+                }
+            }
+            
+            const aDisplay = a === 1 ? "" : a;
+            const bDisplay = b === 1 ? "" : b;
+            
+            return {
+                question: `Expand (1 + ${aDisplay}x)(1 + ${bDisplay}x)<sup>${n}</sup>`,
+                answer: answer.replace(/\b1([a-zA-Z])/g, '$1').replace(/\b-1([a-zA-Z])/g, '-$1'),
+                hint: "Format: 1+5x+10x^2+10x^3+5x^4+x^5"
+            };
+        }
+        
+        function generateQ4() {
+            const b = getRandomInt(1, 6);
+            let a = getRandomInt(1, 6);
+            while (a === b) a = getRandomInt(1, 6);
+            
+            const n = getRandomInt(3, 5);
+            const k = getRandomInt(2, n - 1);
+            
+            const coefficient = nCr(n, k) * Math.pow(b, n - k) * Math.pow(a, k);
+            
+            let expression;
+            if (b === 1 && k === n) {
+                expression = `(ax)<sup>${n}</sup>`;
+            } else if (b === 1) {
+                expression = `(1 + ax)<sup>${n}</sup>`;
+            } else {
+                expression = `(${b} + ax)<sup>${n}</sup>`;
+            }
+            
+            return {
+                question: `The coefficient of x<sup>${k}</sup> in the expansion of ${expression} is ${coefficient}. Find the positive value of a.`,
+                answer: a.toString(),
+                hint: "Answer as integer"
+            };
+        }
+        
+        function generateQ5() {
+            const a = getRandomInt(1, 6);
+            const d = getRandomInt(1, 6);
+            const c = getRandomInt(1, 6);
+            const n = getRandomInt(3, 5);
+            
+            const b1 = getRandomInt(1, 4);
+            
+            const A = a * nCr(n, 2) * Math.pow(c, n - 2);
+            const B = -d * nCr(n, 1) * Math.pow(c, n - 1);
+            
+            const p = A * b1 * b1 + B * b1;
+            const b2 = -B / A - b1;
+            
+            let b2Formatted;
+            if (Math.abs(b2 - Math.round(b2)) < 0.001) {
+                b2Formatted = Math.round(b2).toString();
+            } else {
+                b2Formatted = Math.round(b2 * 100) / 100;
+            }
+            
+            const aDisplay = a === 1 ? "" : a;
+            const dDisplay = d === 1 ? "" : d;
+            const cDisplay = c === 1 ? "" : c;
+            
+            return {
+                question: `The coefficient of x<sup>2</sup> in the expansion of (${aDisplay} - ${dDisplay}x)(${cDisplay} + bx)<sup>${n}</sup> is ${Math.round(p)}. Find the possible values of b.`,
+                answer: `${b1},${b2Formatted}`,
+                hint: "Enter both values separated by comma (e.g., 2, -3)"
+            };
+        }
+        
+        function generateQ6() {
+            const a = getRandomInt(1, 7);
+            const b = getRandomInt(2, 7);
+            const n = getRandomInt(3, 5);
+            
+            const term0 = Math.pow(a, n);
+            const term1Num = -n * Math.pow(a, n - 1);
+            const term1Den = b;
+            const term2Num = nCr(n, 2) * Math.pow(a, n - 2);
+            const term2Den = Math.pow(b, 2);
+            const term3Num = -nCr(n, 3) * Math.pow(a, n - 3);
+            const term3Den = Math.pow(b, 3);
+            
+            const g1 = gcd(term1Num, term1Den);
+            const g2 = gcd(term2Num, term2Den);
+            const g3 = gcd(term3Num, term3Den);
+            
+            const term1 = `${term1Num/g1}/${term1Den/g1}`;
+            const term2 = `${term2Num/g2}/${term2Den/g2}`;
+            const term3 = `${term3Num/g3}/${term3Den/g3}`;
+            
+            const answer = `${term0}${term1Num/g1 >= 0 ? '+' : ''}${term1}x${term2Num/g2 >= 0 ? '+' : ''}${term2}x^2${term3Num/g3 >= 0 ? '+' : ''}${term3}x^3`;
+            
+            const aDisplay = a === 1 ? "" : a;
+            // FIX: Use stacked fraction for display
+            const displayFraction = b === 1 ? "1" : createFractionTimesX("1", b);
+            
+            return {
+                question: `Find the first four terms in the expansion of (${aDisplay} - ${displayFraction})<sup>${n}</sup>`,
+                answer: answer.replace(/\s+/g, ''),
+                hint: "Format: 64-192/5x+96/25x^2-16/125x^3"
+            };
+        }
+        
+        function generateQ7() {
+            const a = getRandomInt(1, 7);
+            const b = getRandomInt(1, 7);
+            const n = getRandomInt(3, 4);
+            
+            let answer = "";
+            for (let r = 0; r <= n; r++) {
+                const coeff = nCr(n, r) * Math.pow(a, n - r) * Math.pow(b, r);
+                const power = n - 2 * r;
+                
+                if (coeff !== 0) {
+                    if (answer && coeff > 0) answer += "+";
+                    if (coeff < 0) answer += "-";
+                    const absCoeff = Math.abs(coeff);
+                    if (absCoeff !== 1) answer += absCoeff;
+                    
+                    if (power > 0) {
+                        answer += "x";
+                        if (power > 1) answer += `^${power}`;
+                    } else if (power < 0) {
+                        const absPower = Math.abs(power);
+                        answer += `/x`;
+                        if (absPower > 1) answer += `^${absPower}`;
+                    }
+                }
+            }
+            
+            const aDisplay = a === 1 ? "" : a;
+            const bDisplay = b === 1 ? "" : b;
+            
+            return {
+                question: `Find the binomial expansion of (${aDisplay}x + ${createStackedFraction(bDisplay, "x")})<sup>${n}</sup>`,
+                answer: answer.replace(/\b1([a-zA-Z])/g, '$1').replace(/\b-1([a-zA-Z])/g, '-$1'),
+                hint: `For n=3: a^3x^3+3a^2b x+3ab^2/x+b^3/x^3<br>For n=4: a^4x^4+4a^3b x^2+6a^2b^2+4ab^3/x^2+b^4/x^4`
+            };
+        }
+        
+        function generateQ8() {
+            const a = getRandomInt(1, 7);
+            const b = getRandomInt(1, 7);
+            const n = getRandomInt(2, 5);
+            const power = 2 * n;
+            
+            const r = n;
+            const coeff = nCr(power, r) * Math.pow(a, power - r) * Math.pow(b, r);
+            
+            const aDisplay = a === 1 ? "" : a;
+            const bDisplay = b === 1 ? "" : b;
+            
+            return {
+                question: `Find the term independent of x in the expansion of (${aDisplay}x + ${createStackedFraction(bDisplay, "x")})<sup>${power}</sup>`,
+                answer: coeff.toString(),
+                hint: "Answer as integer"
+            };
+        }
+        
+        function generateQ9() {
+            const p = getRandomInt(1, 7);
+            const q = getRandomInt(1, 7);
+            const n = getRandomInt(2, 5);
+            
+            const a = p * Math.pow(q, n);
+            const b = p * n * Math.pow(q, n - 1) - Math.pow(q, n);
+            const c = p * nCr(n, 2) * Math.pow(q, n - 2) - n * Math.pow(q, n - 1);
+            
+            const pDisplay = p === 1 ? "" : p;
+            const qDisplay = q === 1 ? "" : q;
+            
+            return {
+                question: `If x is so small that terms of x<sup>3</sup> and higher can be ignored and (${pDisplay} - x)(${qDisplay} + x)<sup>${n}</sup> = a + bx + cx<sup>2</sup>. Find a, b, c.`,
+                answer: `a=${a},b=${b},c=${c}`,
+                hint: "Format: a=8,b=4,c=1 (no spaces)"
+            };
+        }
+        
+        function generateQ10() {
+            const a = getRandomInt(1, 7);
+            const b = getRandomInt(1, 7);
+            const n = getRandomInt(2, 4);
+            const power = 3 * n;
+            
+            const r = n;
+            const coeff = nCr(power, r) * Math.pow(a, power - r) * Math.pow(b, r);
+            
+            const aDisplay = a === 1 ? "" : a;
+            const bDisplay = b === 1 ? "" : b;
+            
+            return {
+                question: `Find the term independent of x in the expansion of (${aDisplay}x + ${createStackedFraction(bDisplay, "x<sup>2</sup>")})<sup>${power}</sup>`,
+                answer: coeff.toString(),
+                hint: "Answer as integer"
+            };
+        }
+        
+        // ========== QUIZ MANAGEMENT ==========
+        
+        function startQuiz() {
+            studentName = document.getElementById('studentNameInput').value.trim();
+            if (!studentName) {
+                alert("Please enter your name to start the quiz.");
+                return;
+            }
+            
+            document.getElementById('nameSection').style.display = 'none';
+            document.getElementById('quizInstructions').style.display = 'block';
+            document.getElementById('quizContainer').style.display = 'block';
+            document.getElementById('buttonSection').style.display = 'block';
+            
+            generateNewQuiz();
+        }
+        
+        function generateNewQuiz() {
+            answersChecked = false;
+            currentQuiz = [
+                generateQ1(),
+                generateQ2(),
+                generateQ3(),
+                generateQ4(),
+                generateQ5(),
+                generateQ6(),
+                generateQ7(),
+                generateQ8(),
+                generateQ9(),
+                generateQ10()
+            ];
+            
+            displayQuiz();
+            document.getElementById('resultArea').innerHTML = '';
+            document.getElementById('certificate').style.display = 'none';
+            document.getElementById('checkButton').disabled = false;
+            document.getElementById('checkButton').innerText = 'Check All Answers';
+        }
+        
+        function resetQuiz() {
+            if (confirm("Are you sure you want to start a new quiz? Your current progress will be lost.")) {
+                generateNewQuiz();
+            }
+        }
+        
+        function displayQuiz() {
+            let html = '';
+            
+            currentQuiz.forEach((q, index) => {
+                html += `
+                    <div class="question" id="q${index}">
+                        <div class="question-number">Question ${index + 1}</div>
+                        <div class="question-text math-display">${q.question}</div>
+                        
+                        <div class="preview-label">Your answer (click preview to copy back):</div>
+                        <div class="answer-row">
+                            <input type="text" id="ans${index}" class="answer-input" 
+                                   placeholder="${q.hint}" ${answersChecked ? 'disabled' : ''}>
+                            <div class="preview-box" id="ans${index}-preview" title="Click to copy formatted answer back to input"></div>
+                        </div>
+                        <div class="click-hint">Click the right box to copy the formatted answer back</div>
+                        
+                        <div class="feedback" id="fb${index}"></div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('quizContainer').innerHTML = html;
+            
+            if (!answersChecked) {
+                setTimeout(() => {
+                    for (let i = 0; i < currentQuiz.length; i++) {
+                        setupSuperscriptPreview(`ans${i}`);
+                    }
+                }, 100);
+            }
+        }
+        
+        function checkAllAnswers() {
+            if (answersChecked) {
+                alert("You have already checked your answers. Start a new quiz to try again.");
+                return;
+            }
+            
+            let score = 0;
+            let allAnswered = true;
+            
+            for (let i = 0; i < currentQuiz.length; i++) {
+                document.getElementById(`ans${i}`).disabled = true;
+            }
+            document.getElementById('checkButton').disabled = true;
+            document.getElementById('checkButton').innerText = 'Answers Checked';
+            answersChecked = true;
+            
+            for (let i = 0; i < currentQuiz.length; i++) {
+                const studentAnswer = document.getElementById(`ans${i}`).value.trim();
+                const correctAnswer = currentQuiz[i].answer;
+                const feedbackDiv = document.getElementById(`fb${i}`);
+                const questionDiv = document.getElementById(`q${i}`);
+                
+                if (!studentAnswer) {
+                    allAnswered = false;
+                    continue;
+                }
+                
+                const normalizedStudent = studentAnswer.replace(/\s+/g, '').toLowerCase();
+                const normalizedCorrect = correctAnswer.replace(/\s+/g, '').toLowerCase();
+                
+                let isCorrect = false;
+                
+                if (i === 4) {
+                    const studentVals = normalizedStudent.split(',').map(v => parseFloat(v.trim())).sort((a,b) => a-b);
+                    const correctVals = normalizedCorrect.split(',').map(v => parseFloat(v.trim())).sort((a,b) => a-b);
+                    
+                    if (studentVals.length === 2 && correctVals.length === 2 &&
+                        Math.abs(studentVals[0] - correctVals[0]) < 0.01 &&
+                        Math.abs(studentVals[1] - correctVals[1]) < 0.01) {
+                        isCorrect = true;
+                    }
+                } else if (i === 8) {
+                    const studentParts = normalizedStudent.replace(/a=|b=|c=/g, '').split(',').map(x => parseInt(x));
+                    const correctParts = normalizedCorrect.replace(/a=|b=|c=/g, '').split(',').map(x => parseInt(x));
+                    
+                    if (studentParts.length === 3 && correctParts.length === 3 &&
+                        studentParts[0] === correctParts[0] &&
+                        studentParts[1] === correctParts[1] &&
+                        studentParts[2] === correctParts[2]) {
+                        isCorrect = true;
+                    }
+                } else if (i === 1 || i === 5) {
+                    const parseFraction = (str) => {
+                        if (str.includes('/')) {
+                            const [num, den] = str.split('/').map(Number);
+                            return num / den;
+                        }
+                        return parseFloat(str);
+                    };
+                    
+                    if (Math.abs(parseFraction(normalizedStudent) - parseFraction(normalizedCorrect)) < 0.001) {
+                        isCorrect = true;
+                    }
+                } else {
+                    if (normalizedStudent === normalizedCorrect) {
+                        isCorrect = true;
+                    }
+                }
+                
+                if (isCorrect) {
+                    score++;
+                    feedbackDiv.innerHTML = "<strong>✓ Correct</strong>";
+                    feedbackDiv.className = "feedback correct";
+                    questionDiv.style.borderLeftColor = "#28a745";
+                } else {
+                    feedbackDiv.innerHTML = `<strong>✗ Incorrect</strong><br>Correct answer: ${convertToSuperscript(correctAnswer)}`;
+                    feedbackDiv.className = "feedback incorrect";
+                    questionDiv.style.borderLeftColor = "#dc3545";
+                }
+                
+                feedbackDiv.style.display = 'block';
+            }
+            
+            const resultArea = document.getElementById('resultArea');
+            if (!allAnswered) {
+                resultArea.innerHTML = `
+                    <div class="result incorrect">
+                        <h3>⚠️ Please answer all questions!</h3>
+                        <p>You still have unanswered questions. Complete all before checking.</p>
+                    </div>
+                `;
+                for (let i = 0; i < currentQuiz.length; i++) {
+                    document.getElementById(`ans${i}`).disabled = false;
+                }
+                document.getElementById('checkButton').disabled = false;
+                document.getElementById('checkButton').innerText = 'Check All Answers';
+                answersChecked = false;
+                return;
+            }
+            
+            resultArea.innerHTML = `
+                <div class="result ${score === 10 ? 'correct' : 'incorrect'}">
+                    <h3>📊 Quiz Results</h3>
+                    <div class="score">Score: ${score}/10 (${score * 10}%)</div>
+                    <p>${score === 10 ? '🎉 Perfect score! You\'ve mastered binomial expansion!' : 'Keep practicing! Try again to improve your score.'}</p>
+                    ${score < 10 ? '<p><em>Start a new quiz to try again.</em></p>' : ''}
+                </div>
+            `;
+            
+            if (score === 10) {
+                showCertificate();
+            }
+            
+            resultArea.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function showCertificate() {
+            const certificate = document.getElementById('certificate');
+            const nameSpan = document.getElementById('certificateName');
+            const dateSpan = document.getElementById('certificateDate');
+            
+            nameSpan.textContent = studentName;
+            dateSpan.textContent = new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            certificate.style.display = 'block';
+            certificate.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function hideCertificate() {
+            document.getElementById('certificate').style.display = 'none';
+        }
+        
+        function printCertificate() {
+            const printWindow = window.open('', '_blank');
+            
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Certificate - Binomial Expansion Mastery</title>
+                    <style>
+                        body {
+                            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                            padding: 60px;
+                            text-align: center;
+                        }
+                        .certificate-print {
+                            border: 20px solid #f1c40f;
+                            padding: 80px;
+                            border-radius: 25px;
+                        }
+                        h2 { 
+                            color: #2c3e50; 
+                            font-size: 2.8rem;
+                            margin-bottom: 30px;
+                        }
+                        .student-name {
+                            font-size: 3rem;
+                            color: #3498db;
+                            margin: 40px 0;
+                            padding: 30px;
+                            border-bottom: 6px solid #f1c40f;
+                            display: inline-block;
+                        }
+                        p {
+                            font-size: 1.4rem;
+                            margin: 15px 0;
+                        }
+                        @media print {
+                            .no-print { display: none; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="certificate-print">
+                        <h2>🎓 Certificate of Mastery</h2>
+                        <p>This certifies that</p>
+                        <div class="student-name">${studentName}</div>
+                        <p>has successfully mastered Binomial Expansion</p>
+                        <p>with a perfect score of 10/10</p>
+                        <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+                        <br><br>
+                        <p class="no-print">To print: Press Ctrl+P or select Print from your browser menu.</p>
+                    </div>
+                </body>
+                </html>
+            `);
+            
+            printWindow.document.close();
+            printWindow.focus();
+            setTimeout(() => {
+                printWindow.print();
+            }, 500);
+        }
+    </script>
+</body>
+</html>
