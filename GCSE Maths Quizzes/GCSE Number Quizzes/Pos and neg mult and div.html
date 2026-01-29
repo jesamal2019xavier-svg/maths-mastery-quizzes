@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCSE Foundation: Multiplying & Dividing Integers</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            line-height: 1.6;
+            font-size: 18px;
+            background-color: #f8f9fa;
+        }
+        h1 { font-size: 2.2em; color: #2c3e50; }
+        h2 { font-size: 1.8em; }
+        h3 { font-size: 1.4em; }
+
+        #intro-container, #quiz-container, #result-container {
+            margin: 20px 0;
+            padding: 25px;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        /* STICKY TIMER */
+        #timer-container {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            text-align: center;
+            font-size: 1.3em;
+            margin: 0 0 20px 0;
+            padding: 15px;
+            background-color: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        #time-remaining { color: #e74c3c; font-size: 1.6em; }
+
+        /* TWO-COLUMN QUESTION LAYOUT */
+        #quiz-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .question {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-left: 5px solid #3498db;
+            border-radius: 5px;
+            break-inside: avoid;
+        }
+
+        /* CERTIFICATE STYLING (Final View) */
+        .certificate-view {
+            font-family: 'Georgia', serif;
+            width: 500px;
+            margin: 40px auto;
+            padding: 30px;
+            border: 12px double #2c3e50;
+            border-radius: 3px;
+            background-color: #ffffff;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        .certificate-view h1 {
+            color: #2c3e50;
+            font-size: 2.2em;
+            margin-bottom: 15px;
+        }
+        .certificate-view .student-name {
+            color: #c0392b;
+            font-size: 1.8em;
+            font-weight: bold;
+            margin: 15px 0;
+            padding: 8px 0;
+            border-bottom: 2px solid #3498db;
+            display: inline-block;
+        }
+        .certificate-view .quiz-title {
+            font-size: 1.4em;
+            color: #27ae60;
+            margin: 10px 0;
+            font-style: italic;
+        }
+        .certificate-view .date {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-top: 20px;
+            font-size: 0.95em;
+        }
+
+        input[type="text"], input[type="number"] {
+            padding: 10px;
+            font-size: 1em;
+            margin: 8px 5px;
+            border: 2px solid #bdc3c7;
+            border-radius: 5px;
+            width: 80px;
+            text-align: center;
+        }
+        input:focus { border-color: #3498db; outline: none; }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin: 10px 5px;
+        }
+        button:hover { background-color: #2980b9; }
+        #start-btn { background-color: #27ae60; }
+        #start-btn:hover { background-color: #219653; }
+        #retry-btn { background-color: #9b59b6; }
+        #retry-btn:hover { background-color: #8e44ad; }
+
+        .correct { color: #27ae60; font-weight: bold; }
+        .incorrect { color: #e74c3c; }
+        #feedback-area {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="intro-container">
+        <h1>GCSE Foundation: Multiplying & Dividing Integers</h1>
+        <p>Enter your full name to begin. You will have <strong>10 minutes</strong> to complete <strong>20 questions</strong>.</p>
+        <p><strong>Rules:</strong> No calculators or external help allowed. You need all 20 correct to pass.</p>
+        <label for="student-name">Your Full Name: </label>
+        <input type="text" id="student-name" placeholder="e.g., Alex Johnson" size="30">
+        <br><br>
+        <button id="start-btn" onclick="startQuiz()">Start the Timed Quiz</button>
+    </div>
+
+    <div id="timer-container" style="display:none;">
+        <h3>⏰ Time Remaining:</h3>
+        <div id="time-remaining">10:00</div>
+    </div>
+
+    <div id="quiz-container" style="display:none;">
+        <h2>Quiz Questions</h2>
+        <form id="quiz-form"></form>
+        <button type="button" onclick="checkAnswers()">Submit All Answers</button>
+        <button type="button" onclick="resetQuiz()">Restart Quiz</button>
+    </div>
+
+    <div id="result-container" style="display:none;">
+        <h2 id="result-title">Quiz Result</h2>
+        <p id="score-display"></p>
+        <div id="feedback-area"></div>
+    </div>
+
+    <script>
+        // ============== CONFIGURATION ==============
+        const totalQuestions = 20;
+        const quizTimeMinutes = 10;
+        // RANGES for Multiplication/Division: a and b between -7 and 13, excluding 0
+        const aMin = -7;
+        const aMax = 13;
+        const bMin = -7;
+        const bMax = 13;
+
+        let timeLeft = quizTimeMinutes * 60;
+        let timerInterval = null;
+        let studentName = '';
+        let questions = [];
+        let userAnswers = new Array(totalQuestions).fill('');
+
+        // ============== TIMER ==============
+        function startTimer() {
+            const timerDisplay = document.getElementById('time-remaining');
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "TIME'S UP!";
+                    checkAnswers();
+                    return;
+                }
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                timeLeft--;
+            }, 1000);
+        }
+
+        // ============== QUIZ FLOW ==============
+        function startQuiz() {
+            studentName = document.getElementById('student-name').value.trim();
+            if (!studentName) {
+                alert("Please enter your name to start the quiz.");
+                return;
+            }
+            document.getElementById('intro-container').style.display = 'none';
+            document.getElementById('timer-container').style.display = 'block';
+            document.getElementById('quiz-container').style.display = 'block';
+            generateQuiz();
+            startTimer();
+        }
+
+        function jumpToNextInput(currentIndex, event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const nextIndex = currentIndex + 1;
+                if (nextIndex < totalQuestions) {
+                    document.getElementById(`answer-${nextIndex}`).focus();
+                }
+            }
+        }
+
+        // ============== YOUR NEW QUESTION LOGIC ==============
+        function generateQuestion(index) {
+            let a, b;
+            do { a = Math.floor(Math.random() * (aMax - aMin + 1)) + aMin; } while (a === 0);
+            do { b = Math.floor(Math.random() * (bMax - bMin + 1)) + bMin; } while (b === 0);
+
+            const product = a * b;
+            const operationType = Math.floor(Math.random() * 2) + 1; // 1 for ×, 2 for ÷
+
+            let questionText, correctAnswer;
+
+            if (operationType === 1) {
+                // Multiplication
+                questionText = `${a} × ${b} =`;
+                correctAnswer = product;
+            } else {
+                // Division: (a*b) ÷ a = b
+                questionText = `${product} ÷ ${a} =`;
+                correctAnswer = b;
+            }
+
+            questions[index] = { questionText, correctAnswer };
+
+            return `
+                <div class="question">
+                    <strong>Q${index + 1}:</strong> ${questionText}
+                    <input type="number" id="answer-${index}" step="1" placeholder="?"
+                           onchange="userAnswers[${index}] = this.value"
+                           onkeydown="jumpToNextInput(${index}, event)">
+                </div>
+            `;
+        }
+
+        function generateQuiz() {
+            const form = document.getElementById('quiz-form');
+            form.innerHTML = '';
+            questions = [];
+            for (let i = 0; i < totalQuestions; i++) {
+                form.innerHTML += generateQuestion(i);
+            }
+            userAnswers.fill('');
+        }
+
+        // ============== CHECK ANSWERS ==============
+        function checkAnswers() {
+            clearInterval(timerInterval);
+            document.getElementById('timer-container').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'none';
+
+            let score = 0;
+            let feedbackHtml = '<h3>Question Review:</h3>';
+            const oldCert = document.getElementById('certificate');
+            const oldRetry = document.querySelector('#result-container button[onclick="resetQuiz()"]');
+            if (oldCert) oldCert.remove();
+            if (oldRetry) oldRetry.remove();
+
+            for (let i = 0; i < totalQuestions; i++) {
+                const q = questions[i];
+                const inputElement = document.getElementById(`answer-${i}`);
+                const rawValue = inputElement ? inputElement.value : '';
+                let userAnswer;
+                if (rawValue.trim() === '') {
+                    userAnswer = NaN;
+                } else {
+                    userAnswer = Number(rawValue);
+                }
+                const isCorrect = userAnswer === q.correctAnswer;
+                if (isCorrect) score++;
+                const displayAnswer = (rawValue.trim() === '') ? '?' : rawValue;
+                // Updated to use q.questionText
+                feedbackHtml += `<p class="${isCorrect ? 'correct' : 'incorrect'}">
+                    Q${i + 1}: ${q.questionText} ${displayAnswer}
+                    ${isCorrect ? '✅' : `❌ (Correct: ${q.correctAnswer})`}
+                </p>`;
+            }
+
+            const resultContainer = document.getElementById('result-container');
+            document.getElementById('score-display').innerHTML = `<strong>Score: ${score}/${totalQuestions}</strong>`;
+            document.getElementById('feedback-area').innerHTML = feedbackHtml;
+            resultContainer.style.display = 'block';
+
+            if (score === totalQuestions) {
+                document.getElementById('result-title').textContent = "Perfect Score! 🎉";
+                document.getElementById('result-title').style.color = '#27ae60';
+                showCertificateOnlyView();
+            } else {
+                document.getElementById('result-title').textContent = "Not Quite Perfect";
+                document.getElementById('result-title').style.color = '#e74c3c';
+                document.getElementById('result-title').innerHTML += `<br><small>You need all ${totalQuestions} correct to earn the certificate. Try again!</small>`;
+            }
+            const retryButton = `<br><br><button id="retry-btn" onclick="resetQuiz()">🔄 Retry This Quiz</button>`;
+            document.getElementById('result-container').insertAdjacentHTML('beforeend', retryButton);
+        }
+
+        // ============== CERTIFICATE-ONLY FINAL VIEW ==============
+        function showCertificateOnlyView() {
+            const today = new Date().toLocaleDateString('en-GB', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            const certificateHTML = `
+                <div class="certificate-view">
+                    <h1>CERTIFICATE OF ACHIEVEMENT</h1>
+                    <p>This certifies that</p>
+                    <div class="student-name">${studentName}</div>
+                    <p>has successfully completed with a perfect score</p>
+                    <div class="quiz-title">"GCSE Foundation: Multiplying & Dividing Integers"</div>
+                    <p>demonstrating mastery of operations with positive and negative integers.</p>
+                    <p class="date">Awarded on: ${today}</p>
+                    <p><em>This certificate is awarded by the Maths Mastery Quizzes programme.</em></p>
+                    <hr>
+                    <p><strong>To save:</strong> Click the button below, or use your browser's Print function (Ctrl+P).</p>
+                    <button onclick="window.print()">🖨️ Print / Save as PDF</button>
+                    <p style="margin-top:20px; font-size:0.9em;">
+                        <a href="javascript:location.reload()">↩ Retake Quiz</a> |
+                        <a href="../">← Back to Topic List</a>
+                    </p>
+                </div>
+            `;
+            document.body.innerHTML = certificateHTML;
+        }
+
+        // ============== RESET QUIZ (PRESERVES NAME) ==============
+        function resetQuiz() {
+            clearInterval(timerInterval);
+            timeLeft = quizTimeMinutes * 60;
+            document.getElementById('result-container').style.display = 'none';
+            document.getElementById('intro-container').style.display = 'block';
+            document.getElementById('timer-container').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'none';
+            // Do NOT clear the name field
+            document.getElementById('time-remaining').textContent = '10:00';
+            userAnswers.fill('');
+            generateQuiz();
+        }
+    </script>
+</body>
+</html>
