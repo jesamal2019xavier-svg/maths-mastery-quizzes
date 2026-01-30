@@ -254,7 +254,7 @@
         }
         
         .superscript {
-            font-size: 0.85em;  /* Fixed: increased from 0.7em to 0.85em */
+            font-size: 0.85em;
             vertical-align: super;
             line-height: 0;
         }
@@ -265,26 +265,57 @@
             text-align: center;
             vertical-align: middle;
             margin: 0 2px;
+            line-height: 1;
         }
         
         .fraction-numerator {
             display: block;
             border-bottom: 1px solid #333;
-            padding: 0 3px;
-            line-height: 1.2;
+            padding: 0 4px;
+            line-height: 1.1;
+            min-height: 1.2em;
         }
         
         .fraction-denominator {
             display: block;
-            padding: 0 3px;
-            line-height: 1.2;
+            padding: 0 4px;
+            line-height: 1.1;
+            min-height: 1.2em;
         }
         
-        /* For fractions with x */
-        .fraction-with-x {
-            display: inline-flex;
-            align-items: center;
+        /* Special styling for answer input fractions */
+        .fraction-input {
+            display: inline-block;
+            text-align: center;
+            margin: 0 2px;
             vertical-align: middle;
+        }
+        
+        .frac-num-input, .frac-den-input {
+            width: 40px;
+            text-align: center;
+            padding: 2px;
+            border: 1px solid #ccc;
+            border-radius: 2px;
+            font-size: 0.9em;
+        }
+        
+        .frac-num-input {
+            border-bottom: none;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        
+        .frac-den-input {
+            border-top: 1px solid #ccc;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+        
+        .fraction-separator {
+            margin: 0 8px;
+            color: #666;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -304,7 +335,7 @@
             <strong>🎯 Instructions:</strong>
             <ul>
                 <li>Answer all 10 questions</li>
-                <li>Enter fractions as <strong>a/b</strong> (e.g., 3/4 for ¾)</li>
+                <li>For fractions: Use <strong>numerator/denominator</strong> format (e.g., 3/4 for ¾)</li>
                 <li>For multiple values, separate with comma (e.g., 2, 3)</li>
                 <li>Use ^ for powers (e.g., x^2 for x²)</li>
                 <li><strong>Click the preview box</strong> to copy formatted answer back</li>
@@ -364,30 +395,31 @@
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
         
-        // ========== FIXED SUPERSCRIPT CONVERSION FUNCTIONS ==========
+        // ========== ENHANCED SUPERSCRIPT CONVERSION WITH FRACTIONS ==========
         function convertToSuperscript(text) {
             if (!text) return '';
             
-            // FIX: Handle text that starts with ^ (like ^2)
-            if (text.startsWith('^')) {
-                // Add a space at the beginning to prevent leading superscript
-                text = ' ' + text;
-            }
-            
             let result = text;
             
-            // Replace patterns like x^2, y^3, etc. but NOT standalone ^ at start
-            // Match ^ followed by digits, but not if it's at the very start
+            // Convert fractions like 3/4 to stacked fractions
+            result = result.replace(/(-?\d+)\/(-?\d+)/g, function(match, num, den) {
+                return `<span class="stacked-fraction">
+                    <span class="fraction-numerator">${num}</span>
+                    <span class="fraction-denominator">${den}</span>
+                </span>`;
+            });
+            
+            // Convert powers
             result = result.replace(/([a-zA-Z0-9\)])\^(\d+)/g, function(match, before, num) {
                 const superscriptDigits = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
                 const superscript = num.split('').map(d => superscriptDigits[d] || d).join('');
                 return before + '<span class="superscript">' + superscript + '</span>';
             });
             
-            // Remove the leading space we added if present
-            if (result.startsWith(' ')) {
-                result = result.substring(1);
-            }
+            // Convert a=..., b=..., c=... format
+            result = result.replace(/a=(-?\d+),b=(-?\d+),c=(-?\d+)/g, function(match, a, b, c) {
+                return `a=${a}, b=${b}, c=${c}`;
+            });
             
             return result;
         }
@@ -395,10 +427,14 @@
         function convertFromSuperscript(html) {
             if (!html) return '';
             
-            // Convert HTML back to text with ^ notation
             let text = html;
             
-            // Replace superscript spans with ^ notation
+            // Convert stacked fractions back to a/b format
+            text = text.replace(/<span class="stacked-fraction">.*?<span class="fraction-numerator">(-?\d+)<\/span>.*?<span class="fraction-denominator">(-?\d+)<\/span>.*?<\/span>/g, function(match, num, den) {
+                return `${num}/${den}`;
+            });
+            
+            // Convert superscript back to ^ notation
             text = text.replace(/<span class="superscript">([⁰¹²³⁴⁵⁶⁷⁸⁹]+)<\/span>/g, function(match, sup) {
                 const normalDigits = {'⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};
                 const num = sup.split('').map(d => normalDigits[d] || d).join('');
@@ -407,6 +443,9 @@
             
             // Remove any remaining HTML tags
             text = text.replace(/<[^>]*>/g, '');
+            
+            // Remove extra spaces in a=...,b=...,c=... format
+            text = text.replace(/a\s*=\s*(-?\d+)\s*,\s*b\s*=\s*(-?\d+)\s*,\s*c\s*=\s*(-?\d+)/g, 'a=$1,b=$2,c=$3');
             
             return text;
         }
@@ -426,6 +465,28 @@
             </span>`;
         }
         
+        // ========== FRACTION SIMPLIFICATION ==========
+        function simplifyFraction(numerator, denominator) {
+            if (denominator === 0) return {numerator: 0, denominator: 1};
+            if (numerator === 0) return {numerator: 0, denominator: 1};
+            
+            const g = gcd(numerator, denominator);
+            const sign = (numerator * denominator < 0) ? -1 : 1;
+            
+            return {
+                numerator: sign * Math.abs(numerator) / g,
+                denominator: Math.abs(denominator) / g
+            };
+        }
+        
+        function formatFraction(numerator, denominator) {
+            const simplified = simplifyFraction(numerator, denominator);
+            if (simplified.denominator === 1) {
+                return simplified.numerator.toString();
+            }
+            return `${simplified.numerator}/${simplified.denominator}`;
+        }
+        
         // ========== SETUP PREVIEW WITH WORKING COPY-BACK ==========
         function setupSuperscriptPreview(inputId) {
             const input = document.getElementById(inputId);
@@ -434,7 +495,6 @@
             
             if (!preview) return;
             
-            // Update preview on input
             function updatePreview() {
                 preview.innerHTML = convertToSuperscript(input.value);
             }
@@ -442,19 +502,12 @@
             input.addEventListener('input', updatePreview);
             input.addEventListener('keyup', updatePreview);
             
-            // Click preview to copy formatted text back to input
             preview.addEventListener('click', function() {
-                // Get the HTML content of the preview
                 const htmlContent = this.innerHTML;
-                
-                // Convert back to ^ notation
                 const textContent = convertFromSuperscript(htmlContent);
-                
-                // Update the input
                 input.value = textContent;
                 input.focus();
                 
-                // Show visual feedback
                 this.style.background = '#e8f4fc';
                 this.style.borderColor = '#3498db';
                 setTimeout(() => {
@@ -462,11 +515,9 @@
                     this.style.borderColor = '#e0e0e0';
                 }, 300);
                 
-                // Trigger input event to update preview immediately
                 input.dispatchEvent(new Event('input'));
             });
             
-            // Initial update
             updatePreview();
         }
         
@@ -476,7 +527,6 @@
         let answersChecked = false;
         
         // ========== QUESTION GENERATORS ==========
-        // (Keeping the same as before - they work well)
         
         function generateQ1() {
             const a = getRandomInt(1, 6);
@@ -518,18 +568,16 @@
         
         function generateQ2() {
             const a = getRandomInt(1, 6);
-            const b = [2, 3, 4, 5][getRandomInt(0, 3)];
+            const b = getRandomInt(2, 7);
             const n = getRandomInt(3, 6);
             const k = getRandomInt(2, n - 1);
             
             const numerator = nCr(n, k) * Math.pow(a, n - k);
             const denominator = Math.pow(b, k);
-            const g = gcd(numerator, denominator);
             
-            const answer = `${numerator/g}/${denominator/g}`;
+            const answer = formatFraction(numerator, denominator);
             
-            // FIX: Use stacked fraction for display
-            const displayFraction = b === 1 ? "1" : createFractionTimesX("1", b);
+            const displayFraction = b === 1 ? "x" : createStackedFraction("x", b);
             
             return {
                 question: `Find the coefficient of x<sup>${k}</sup> in the expansion of (${a} + ${displayFraction})<sup>${n}</sup>`,
@@ -615,19 +663,39 @@
             const c = getRandomInt(1, 6);
             const n = getRandomInt(3, 5);
             
-            const b1 = getRandomInt(1, 4);
+            const b1Num = getRandomInt(1, 4);
+            const b1Den = getRandomInt(2, 5);
+            
+            // Simplify initial b1 fraction
+            const b1Simplified = simplifyFraction(b1Num, b1Den);
+            const b1 = b1Simplified.numerator / b1Simplified.denominator;
             
             const A = a * nCr(n, 2) * Math.pow(c, n - 2);
             const B = -d * nCr(n, 1) * Math.pow(c, n - 1);
             
             const p = A * b1 * b1 + B * b1;
-            const b2 = -B / A - b1;
             
+            // Solve quadratic: A*b² + B*b - p = 0
+            // b2 = (-B - A*b1) / A (since sum of roots = -B/A)
+            const b2 = (-B - A * b1) / A;
+            
+            // Format b1 as fraction if not integer
+            let b1Formatted;
+            if (b1Simplified.denominator === 1) {
+                b1Formatted = b1Simplified.numerator.toString();
+            } else {
+                b1Formatted = `${b1Simplified.numerator}/${b1Simplified.denominator}`;
+            }
+            
+            // Format b2 as fraction
+            const b2Simplified = simplifyFraction(Math.round(b2 * 1000), 1000);
             let b2Formatted;
             if (Math.abs(b2 - Math.round(b2)) < 0.001) {
                 b2Formatted = Math.round(b2).toString();
+            } else if (b2Simplified.denominator === 1) {
+                b2Formatted = b2Simplified.numerator.toString();
             } else {
-                b2Formatted = Math.round(b2 * 100) / 100;
+                b2Formatted = `${b2Simplified.numerator}/${b2Simplified.denominator}`;
             }
             
             const aDisplay = a === 1 ? "" : a;
@@ -636,42 +704,74 @@
             
             return {
                 question: `The coefficient of x<sup>2</sup> in the expansion of (${aDisplay} - ${dDisplay}x)(${cDisplay} + bx)<sup>${n}</sup> is ${Math.round(p)}. Find the possible values of b.`,
-                answer: `${b1},${b2Formatted}`,
-                hint: "Enter both values separated by comma (e.g., 2, -3)"
+                answer: `${b1Formatted},${b2Formatted}`,
+                hint: "Enter both fractions separated by comma (e.g., 1/2, -3/4)"
             };
         }
         
         function generateQ6() {
-            const a = getRandomInt(1, 7);
-            const b = getRandomInt(2, 7);
-            const n = getRandomInt(3, 5);
+            // FIXED: Based on specification: (a - 1/b x)^n where 0 < a, b < 7, n ∈ [3,4,5]
+            const a = getRandomInt(1, 6);  // 1 to 6 inclusive (0 < a < 7)
+            const b = getRandomInt(1, 6);  // 1 to 6 inclusive (0 < b < 7)
+            const n = [3, 4, 5][getRandomInt(0, 2)];  // n ∈ {3,4,5}
             
+            // Calculate terms using the formula: a^n - (n*a^(n-1)/b)x + (n(n-1)a^(n-2)/(2b^2))x^2 - (n(n-1)(n-2)a^(n-3)/(6b^3))x^3
             const term0 = Math.pow(a, n);
+            
+            // First term: -(n*a^(n-1))/b
             const term1Num = -n * Math.pow(a, n - 1);
             const term1Den = b;
-            const term2Num = nCr(n, 2) * Math.pow(a, n - 2);
-            const term2Den = Math.pow(b, 2);
-            const term3Num = -nCr(n, 3) * Math.pow(a, n - 3);
-            const term3Den = Math.pow(b, 3);
             
-            const g1 = gcd(term1Num, term1Den);
-            const g2 = gcd(term2Num, term2Den);
-            const g3 = gcd(term3Num, term3Den);
+            // Second term: n(n-1)a^(n-2)/(2b^2)
+            const term2Num = n * (n - 1) * Math.pow(a, n - 2);
+            const term2Den = 2 * Math.pow(b, 2);
             
-            const term1 = `${term1Num/g1}/${term1Den/g1}`;
-            const term2 = `${term2Num/g2}/${term2Den/g2}`;
-            const term3 = `${term3Num/g3}/${term3Den/g3}`;
+            // Third term: -n(n-1)(n-2)a^(n-3)/(6b^3)
+            const term3Num = -n * (n - 1) * (n - 2) * Math.pow(a, n - 3);
+            const term3Den = 6 * Math.pow(b, 3);
             
-            const answer = `${term0}${term1Num/g1 >= 0 ? '+' : ''}${term1}x${term2Num/g2 >= 0 ? '+' : ''}${term2}x^2${term3Num/g3 >= 0 ? '+' : ''}${term3}x^3`;
+            // Simplify all fractions
+            const term1 = simplifyFraction(term1Num, term1Den);
+            const term2 = simplifyFraction(term2Num, term2Den);
+            const term3 = simplifyFraction(term3Num, term3Den);
             
-            const aDisplay = a === 1 ? "" : a;
-            // FIX: Use stacked fraction for display
-            const displayFraction = b === 1 ? "1" : createFractionTimesX("1", b);
+            // Build answer string with proper formatting
+            let answer = term0.toString();
+            
+            // Add term1
+            if (term1.numerator >= 0) answer += "+";
+            if (term1.denominator === 1) {
+                answer += `${term1.numerator}x`;
+            } else {
+                answer += `${term1.numerator}/${term1.denominator}x`;
+            }
+            
+            // Add term2
+            if (term2.numerator >= 0) answer += "+";
+            if (term2.denominator === 1) {
+                answer += `${term2.numerator}x^2`;
+            } else {
+                answer += `${term2.numerator}/${term2.denominator}x^2`;
+            }
+            
+            // Add term3
+            if (term3.numerator >= 0) answer += "+";
+            if (term3.denominator === 1) {
+                answer += `${term3.numerator}x^3`;
+            } else {
+                answer += `${term3.numerator}/${term3.denominator}x^3`;
+            }
+            
+            // Remove any ++ or +- patterns
+            answer = answer.replace(/\+\-/g, "-").replace(/\+\+/g, "+");
+            
+            // Create display fraction (1/b)
+            const displayFraction = b === 1 ? "x" : createFractionTimesX("1", b);
             
             return {
-                question: `Find the first four terms in the expansion of (${aDisplay} - ${displayFraction})<sup>${n}</sup>`,
+                question: `Find the first four terms in the expansion of (${a} - ${displayFraction})<sup>${n}</sup>`,
                 answer: answer.replace(/\s+/g, ''),
-                hint: "Format: 64-192/5x+96/25x^2-16/125x^3"
+                hint: "Format: 64-48/5x+12/25x^2-1/125x^3 (use fractions, not decimals)"
             };
         }
         
@@ -680,33 +780,63 @@
             const b = getRandomInt(1, 7);
             const n = getRandomInt(3, 4);
             
-            let answer = "";
+            let answerTerms = [];
+            
             for (let r = 0; r <= n; r++) {
                 const coeff = nCr(n, r) * Math.pow(a, n - r) * Math.pow(b, r);
                 const power = n - 2 * r;
                 
                 if (coeff !== 0) {
-                    if (answer && coeff > 0) answer += "+";
-                    if (coeff < 0) answer += "-";
-                    const absCoeff = Math.abs(coeff);
-                    if (absCoeff !== 1) answer += absCoeff;
+                    let term = "";
+                    
+                    if (coeff !== 1 || power === 0) {
+                        term += coeff;
+                    } else if (coeff === -1) {
+                        term += "-";
+                    }
                     
                     if (power > 0) {
-                        answer += "x";
-                        if (power > 1) answer += `^${power}`;
+                        if (term === "-") {
+                            term += "x";
+                        } else if (term === "" && coeff === 1) {
+                            term = "x";
+                        } else if (term === "" && coeff === -1) {
+                            term = "-x";
+                        } else {
+                            term += "x";
+                        }
+                        
+                        if (power > 1) {
+                            term += `^${power}`;
+                        }
                     } else if (power < 0) {
                         const absPower = Math.abs(power);
-                        answer += `/x`;
-                        if (absPower > 1) answer += `^${absPower}`;
+                        term += `/x`;
+                        if (absPower > 1) {
+                            term += `^${absPower}`;
+                        }
                     }
+                    
+                    answerTerms.push({ coeff, term });
                 }
+            }
+            
+            let answer = "";
+            for (let i = 0; i < answerTerms.length; i++) {
+                const { coeff, term } = answerTerms[i];
+                if (i > 0 && coeff > 0) {
+                    answer += "+";
+                }
+                answer += term;
             }
             
             const aDisplay = a === 1 ? "" : a;
             const bDisplay = b === 1 ? "" : b;
             
+            const secondTerm = b === 1 ? "x" : createStackedFraction(bDisplay, "x");
+            
             return {
-                question: `Find the binomial expansion of (${aDisplay}x + ${createStackedFraction(bDisplay, "x")})<sup>${n}</sup>`,
+                question: `Find the binomial expansion of (${aDisplay}x + ${secondTerm})<sup>${n}</sup>`,
                 answer: answer.replace(/\b1([a-zA-Z])/g, '$1').replace(/\b-1([a-zA-Z])/g, '-$1'),
                 hint: `For n=3: a^3x^3+3a^2b x+3ab^2/x+b^3/x^3<br>For n=4: a^4x^4+4a^3b x^2+6a^2b^2+4ab^3/x^2+b^4/x^4`
             };
@@ -724,46 +854,49 @@
             const aDisplay = a === 1 ? "" : a;
             const bDisplay = b === 1 ? "" : b;
             
+            const secondTerm = b === 1 ? "x" : createStackedFraction(bDisplay, "x");
+            
             return {
-                question: `Find the term independent of x in the expansion of (${aDisplay}x + ${createStackedFraction(bDisplay, "x")})<sup>${power}</sup>`,
+                question: `Find the term independent of x in the expansion of (${aDisplay}x + ${secondTerm})<sup>${power}</sup>`,
                 answer: coeff.toString(),
                 hint: "Answer as integer"
             };
         }
         
         function generateQ9() {
-            const p = getRandomInt(1, 7);
-            const q = getRandomInt(1, 7);
+            // FIXED: Ensure p and q are between 1 and 7 (exclusive)
+            const p = getRandomInt(2, 6); // 2 to 6 (since 1 < p < 7)
+            const q = getRandomInt(2, 6); // 2 to 6 (since 1 < q < 7)
             const n = getRandomInt(2, 5);
             
+            // Expand (p - x)(q + x)^n
             const a = p * Math.pow(q, n);
             const b = p * n * Math.pow(q, n - 1) - Math.pow(q, n);
             const c = p * nCr(n, 2) * Math.pow(q, n - 2) - n * Math.pow(q, n - 1);
             
-            const pDisplay = p === 1 ? "" : p;
-            const qDisplay = q === 1 ? "" : q;
-            
             return {
-                question: `If x is so small that terms of x<sup>3</sup> and higher can be ignored and (${pDisplay} - x)(${qDisplay} + x)<sup>${n}</sup> = a + bx + cx<sup>2</sup>. Find a, b, c.`,
+                question: `If x is so small that terms of x<sup>3</sup> and higher can be ignored and (${p} - x)(${q} + x)<sup>${n}</sup> = a + bx + cx<sup>2</sup>. Find a, b, c.`,
                 answer: `a=${a},b=${b},c=${c}`,
                 hint: "Format: a=8,b=4,c=1 (no spaces)"
             };
         }
         
         function generateQ10() {
-            const a = getRandomInt(1, 7);
-            const b = getRandomInt(1, 7);
-            const n = getRandomInt(2, 4);
+            // FIXED: Based on specification: (ax + b/x²)^(3n) where 1 < a, b < 6, n ∈ {2,3,4,5}
+            const a = getRandomInt(2, 5);  // 2 to 5 (since 1 < a < 6)
+            const b = getRandomInt(2, 5);  // 2 to 5 (since 1 < b < 6)
+            const n = [2, 3, 4, 5][getRandomInt(0, 3)];  // n ∈ {2,3,4,5}
             const power = 3 * n;
             
+            // Term independent of x occurs when power of x is 0
+            // General term: C(3n, r) * (ax)^(3n-r) * (b/x²)^r
+            // Power of x: (3n - r) - 2r = 3n - 3r
+            // Set equal to 0: 3n - 3r = 0 => r = n
             const r = n;
             const coeff = nCr(power, r) * Math.pow(a, power - r) * Math.pow(b, r);
             
-            const aDisplay = a === 1 ? "" : a;
-            const bDisplay = b === 1 ? "" : b;
-            
             return {
-                question: `Find the term independent of x in the expansion of (${aDisplay}x + ${createStackedFraction(bDisplay, "x<sup>2</sup>")})<sup>${power}</sup>`,
+                question: `Find the term independent of x in the expansion of (${a}x + ${createStackedFraction(b, "x<sup>2</sup>")})<sup>${power}</sup>`,
                 answer: coeff.toString(),
                 hint: "Answer as integer"
             };
@@ -874,46 +1007,128 @@
                     continue;
                 }
                 
-                const normalizedStudent = studentAnswer.replace(/\s+/g, '').toLowerCase();
-                const normalizedCorrect = correctAnswer.replace(/\s+/g, '').toLowerCase();
-                
                 let isCorrect = false;
                 
-                if (i === 4) {
-                    const studentVals = normalizedStudent.split(',').map(v => parseFloat(v.trim())).sort((a,b) => a-b);
-                    const correctVals = normalizedCorrect.split(',').map(v => parseFloat(v.trim())).sort((a,b) => a-b);
+                // Special handling for each question type
+                if (i === 4) { // Q5 - two fractions, order doesn't matter
+                    const studentVals = studentAnswer.split(',').map(v => v.trim());
+                    const correctVals = correctAnswer.split(',').map(v => v.trim());
                     
-                    if (studentVals.length === 2 && correctVals.length === 2 &&
-                        Math.abs(studentVals[0] - correctVals[0]) < 0.01 &&
-                        Math.abs(studentVals[1] - correctVals[1]) < 0.01) {
-                        isCorrect = true;
-                    }
-                } else if (i === 8) {
-                    const studentParts = normalizedStudent.replace(/a=|b=|c=/g, '').split(',').map(x => parseInt(x));
-                    const correctParts = normalizedCorrect.replace(/a=|b=|c=/g, '').split(',').map(x => parseInt(x));
-                    
-                    if (studentParts.length === 3 && correctParts.length === 3 &&
-                        studentParts[0] === correctParts[0] &&
-                        studentParts[1] === correctParts[1] &&
-                        studentParts[2] === correctParts[2]) {
-                        isCorrect = true;
-                    }
-                } else if (i === 1 || i === 5) {
-                    const parseFraction = (str) => {
-                        if (str.includes('/')) {
-                            const [num, den] = str.split('/').map(Number);
-                            return num / den;
+                    if (studentVals.length === 2 && correctVals.length === 2) {
+                        // Parse fractions
+                        const parseFraction = (str) => {
+                            if (str.includes('/')) {
+                                const [num, den] = str.split('/').map(Number);
+                                return num / den;
+                            }
+                            return parseFloat(str);
+                        };
+                        
+                        const studentNum1 = parseFraction(studentVals[0]);
+                        const studentNum2 = parseFraction(studentVals[1]);
+                        const correctNum1 = parseFraction(correctVals[0]);
+                        const correctNum2 = parseFraction(correctVals[1]);
+                        
+                        // Check both orders
+                        if ((Math.abs(studentNum1 - correctNum1) < 0.001 && Math.abs(studentNum2 - correctNum2) < 0.001) ||
+                            (Math.abs(studentNum1 - correctNum2) < 0.001 && Math.abs(studentNum2 - correctNum1) < 0.001)) {
+                            isCorrect = true;
                         }
-                        return parseFloat(str);
+                    }
+                } else if (i === 8) { // Q9 - a=...,b=...,c=... format
+                    const studentParts = studentAnswer.toLowerCase().replace(/\s+/g, '').match(/a=(-?\d+),b=(-?\d+),c=(-?\d+)/);
+                    const correctParts = correctAnswer.toLowerCase().replace(/\s+/g, '').match(/a=(-?\d+),b=(-?\d+),c=(-?\d+)/);
+                    
+                    if (studentParts && correctParts &&
+                        studentParts[1] === correctParts[1] &&
+                        studentParts[2] === correctParts[2] &&
+                        studentParts[3] === correctParts[3]) {
+                        isCorrect = true;
+                    }
+                } else if (i === 5) { // Q6 - special handling for fractions in expansion
+                    // Normalize both answers
+                    const normalizeAnswer = (ans) => {
+                        return ans.replace(/\s+/g, '').toLowerCase()
+                            .replace(/\+\-/g, '-')
+                            .replace(/\-\-/g, '+')
+                            .replace(/\+\+/g, '+');
                     };
                     
-                    if (Math.abs(parseFraction(normalizedStudent) - parseFraction(normalizedCorrect)) < 0.001) {
-                        isCorrect = true;
+                    const normalizedStudent = normalizeAnswer(studentAnswer);
+                    const normalizedCorrect = normalizeAnswer(correctAnswer);
+                    
+                    // Check if they match
+                    isCorrect = normalizedStudent === normalizedCorrect;
+                    
+                    // Also check with simplified fractions
+                    if (!isCorrect) {
+                        // Try to parse and compare numerically
+                        const parseExpression = (expr) => {
+                            const terms = expr.split(/(?=[+-])/);
+                            const parsed = {};
+                            terms.forEach(term => {
+                                const match = term.match(/(-?\d*\/?\d*)(x(?:\^\d+)?)?/);
+                                if (match) {
+                                    const coeff = match[1];
+                                    const variable = match[2] || '';
+                                    if (coeff && variable !== undefined) {
+                                        parsed[variable] = coeff;
+                                    }
+                                }
+                            });
+                            return parsed;
+                        };
+                        
+                        const studentParsed = parseExpression(normalizedStudent);
+                        const correctParsed = parseExpression(normalizedCorrect);
+                        
+                        // Compare coefficients for each term
+                        const allTerms = new Set([...Object.keys(studentParsed), ...Object.keys(correctParsed)]);
+                        let allMatch = true;
+                        
+                        for (const term of allTerms) {
+                            const studentCoeff = studentParsed[term] || '0';
+                            const correctCoeff = correctParsed[term] || '0';
+                            
+                            const parseCoeff = (coeff) => {
+                                if (coeff.includes('/')) {
+                                    const [num, den] = coeff.split('/').map(Number);
+                                    return num / den;
+                                }
+                                return parseFloat(coeff) || 0;
+                            };
+                            
+                            if (Math.abs(parseCoeff(studentCoeff) - parseCoeff(correctCoeff)) > 0.001) {
+                                allMatch = false;
+                                break;
+                            }
+                        }
+                        
+                        isCorrect = allMatch;
                     }
+                } else if (i === 1 || i === 6) { // Questions with simple fractions
+                    const parseFraction = (str) => {
+                        // Remove spaces and parse
+                        const cleanStr = str.replace(/\s+/g, '');
+                        if (cleanStr.includes('/')) {
+                            const parts = cleanStr.split('/');
+                            if (parts.length === 2) {
+                                const num = parseFloat(parts[0]);
+                                const den = parseFloat(parts[1]);
+                                if (den !== 0) return num / den;
+                            }
+                        }
+                        return parseFloat(cleanStr);
+                    };
+                    
+                    const studentNum = parseFraction(studentAnswer);
+                    const correctNum = parseFraction(correctAnswer);
+                    isCorrect = Math.abs(studentNum - correctNum) < 0.001;
                 } else {
-                    if (normalizedStudent === normalizedCorrect) {
-                        isCorrect = true;
-                    }
+                    // For other questions, simple comparison
+                    const normalizedStudent = studentAnswer.replace(/\s+/g, '').toLowerCase();
+                    const normalizedCorrect = correctAnswer.replace(/\s+/g, '').toLowerCase();
+                    isCorrect = normalizedStudent === normalizedCorrect;
                 }
                 
                 if (isCorrect) {
