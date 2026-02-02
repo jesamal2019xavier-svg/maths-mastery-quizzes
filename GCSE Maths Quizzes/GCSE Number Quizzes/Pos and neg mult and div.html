@@ -56,45 +56,56 @@
             border-left: 5px solid #3498db;
             border-radius: 5px;
             break-inside: avoid;
+            font-size: 1.2em;
         }
 
-        /* CERTIFICATE STYLING (Final View) */
-        .certificate-view {
-            font-family: 'Georgia', serif;
-            width: 500px;
+        /* === FINAL CERTIFICATE STYLING === */
+        .certificate-view-simple {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            width: 700px;
             margin: 40px auto;
             padding: 30px;
-            border: 12px double #2c3e50;
-            border-radius: 3px;
-            background-color: #ffffff;
+            border: 15px solid #000000; /* Thick Black Outline */
+            background: #fffef0; /* Light Yellow Background */
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        .certificate-view h1 {
+        .certificate-view-simple .cert-title {
+            font-size: 2.5rem;
             color: #2c3e50;
-            font-size: 2.2em;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
         }
-        .certificate-view .student-name {
-            color: #c0392b;
-            font-size: 1.8em;
-            font-weight: bold;
+        .certificate-view-simple .topic {
+            font-size: 1.8rem;
+            color: #3498db;
             margin: 15px 0;
-            padding: 8px 0;
-            border-bottom: 2px solid #3498db;
-            display: inline-block;
+            font-weight: bold;
         }
-        .certificate-view .quiz-title {
-            font-size: 1.4em;
+        .certificate-view-simple .congrats {
+            font-size: 1.6rem;
             color: #27ae60;
-            margin: 10px 0;
-            font-style: italic;
+            margin: 20px 0;
         }
-        .certificate-view .date {
-            font-style: italic;
-            color: #7f8c8d;
+        .certificate-view-simple .student-name {
+            font-size: 2.8rem;
+            color: #2c3e50;
+            margin: 25px 0;
+            padding: 15px;
+            font-weight: bold;
+            border-top: 2px solid #eee;
+            border-bottom: 2px solid #eee;
+        }
+        .certificate-view-simple .date {
+            font-size: 1.4rem;
+            color: #d35400;
+            margin-top: 30px;
+            font-weight: bold;
+        }
+        .certificate-view-simple .footer {
             margin-top: 20px;
-            font-size: 0.95em;
+            font-size: 1.1rem;
+            color: #555;
         }
 
         input[type="text"], input[type="number"] {
@@ -167,17 +178,43 @@
         // ============== CONFIGURATION ==============
         const totalQuestions = 20;
         const quizTimeMinutes = 10;
-        // RANGES for Multiplication/Division: a and b between -7 and 13, excluding 0
-        const aMin = -7;
-        const aMax = 13;
-        const bMin = -7;
-        const bMax = 13;
+        // === UPDATED RANGES: a and b between -15 and 5, excluding 0 ===
+        const aMin = -15;
+        const aMax = 5;
+        const bMin = -15;
+        const bMax = 5;
+
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzAE0xS33zL8vCsO2lyN4HRxDaAAxKqExF5A0j4P_jfyMeqgsyQvGimk2gZuHc2VmZr/exec";
 
         let timeLeft = quizTimeMinutes * 60;
         let timerInterval = null;
         let studentName = '';
         let questions = [];
         let userAnswers = new Array(totalQuestions).fill('');
+
+        // ============== NEW FUNCTION: SUBMIT TO GOOGLE SHEETS ==============
+        async function submitAchievementAndShowCertificate() {
+            const achievementData = {
+                name: studentName,
+                topic: "GCSE Maths Foundation: Multiplying & Dividing Integers",
+                date: new Date().toLocaleDateString('en-GB'),
+                score: "100%",
+                level: "GCSE"
+            };
+            console.log("Sending data:", achievementData);
+            try {
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(achievementData)
+                });
+                console.log('Data sent.');
+            } catch (error) {
+                console.error('Error:', error);
+            }
+            setTimeout(showCertificateOnlyView, 100);
+        }
 
         // ============== TIMER ==============
         function startTimer() {
@@ -220,29 +257,29 @@
             }
         }
 
-        // ============== YOUR NEW QUESTION LOGIC ==============
+        // ============== UPDATED QUESTION GENERATOR (NEW RANGES) ==============
         function generateQuestion(index) {
             let a, b;
+            // Generate numbers in the new range [-15, 5], excluding 0
             do { a = Math.floor(Math.random() * (aMax - aMin + 1)) + aMin; } while (a === 0);
             do { b = Math.floor(Math.random() * (bMax - bMin + 1)) + bMin; } while (b === 0);
 
-            const product = a * b;
             const operationType = Math.floor(Math.random() * 2) + 1; // 1 for ×, 2 for ÷
-
             let questionText, correctAnswer;
 
             if (operationType === 1) {
-                // Multiplication
+                // Multiplication: a × b
                 questionText = `${a} × ${b} =`;
-                correctAnswer = product;
+                correctAnswer = a * b;
             } else {
-                // Division: (a*b) ÷ a = b
-                questionText = `${product} ÷ ${a} =`;
-                correctAnswer = b;
+                // Division: a ÷ b (ensuring integer result is possible)
+                // To keep it simple and fair, we use (a * b) ÷ b = a
+                const product = a * b;
+                questionText = `${product} ÷ ${b} =`;
+                correctAnswer = a;
             }
 
             questions[index] = { questionText, correctAnswer };
-
             return `
                 <div class="question">
                     <strong>Q${index + 1}:</strong> ${questionText}
@@ -280,16 +317,10 @@
                 const q = questions[i];
                 const inputElement = document.getElementById(`answer-${i}`);
                 const rawValue = inputElement ? inputElement.value : '';
-                let userAnswer;
-                if (rawValue.trim() === '') {
-                    userAnswer = NaN;
-                } else {
-                    userAnswer = Number(rawValue);
-                }
+                let userAnswer = rawValue.trim() === '' ? NaN : Number(rawValue);
                 const isCorrect = userAnswer === q.correctAnswer;
                 if (isCorrect) score++;
-                const displayAnswer = (rawValue.trim() === '') ? '?' : rawValue;
-                // Updated to use q.questionText
+                const displayAnswer = rawValue.trim() === '' ? '?' : rawValue;
                 feedbackHtml += `<p class="${isCorrect ? 'correct' : 'incorrect'}">
                     Q${i + 1}: ${q.questionText} ${displayAnswer}
                     ${isCorrect ? '✅' : `❌ (Correct: ${q.correctAnswer})`}
@@ -304,7 +335,7 @@
             if (score === totalQuestions) {
                 document.getElementById('result-title').textContent = "Perfect Score! 🎉";
                 document.getElementById('result-title').style.color = '#27ae60';
-                showCertificateOnlyView();
+                submitAchievementAndShowCertificate();
             } else {
                 document.getElementById('result-title').textContent = "Not Quite Perfect";
                 document.getElementById('result-title').style.color = '#e74c3c';
@@ -314,38 +345,25 @@
             document.getElementById('result-container').insertAdjacentHTML('beforeend', retryButton);
         }
 
-        // ============== CERTIFICATE-ONLY FINAL VIEW ==============
+        // ============== FINAL CERTIFICATE FUNCTION ==============
         function showCertificateOnlyView() {
             const today = new Date().toLocaleDateString('en-GB', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
             });
-
             const certificateHTML = `
-                <div class="certificate-view">
-                    <h1>CERTIFICATE OF ACHIEVEMENT</h1>
-                    <p>This certifies that</p>
+                <div class="certificate-view-simple">
+                    <div class="cert-title">CERTIFICATE OF MASTERY</div>
+                    <div class="topic">GCSE Maths Foundation: Multiplying & Dividing Integers</div>
+                    <div class="congrats">🎉 Congratulations! 🎉</div>
                     <div class="student-name">${studentName}</div>
-                    <p>has successfully completed with a perfect score</p>
-                    <div class="quiz-title">"GCSE Foundation: Multiplying & Dividing Integers"</div>
-                    <p>demonstrating mastery of operations with positive and negative integers.</p>
-                    <p class="date">Awarded on: ${today}</p>
-                    <p><em>This certificate is awarded by the Maths Mastery Quizzes programme.</em></p>
-                    <hr>
-                    <p><strong>To save:</strong> Click the button below, or use your browser's Print function (Ctrl+P).</p>
-                    <button onclick="window.print()">🖨️ Print / Save as PDF</button>
-                    <p style="margin-top:20px; font-size:0.9em;">
-                        <a href="javascript:location.reload()">↩ Retake Quiz</a> |
-                        <a href="../">← Back to Topic List</a>
-                    </p>
+                    <div class="date">Date of Achievement: ${today}</div>
+                    <div class="footer">Successfully completed with a perfect score.</div>
                 </div>
             `;
             document.body.innerHTML = certificateHTML;
         }
 
-        // ============== RESET QUIZ (PRESERVES NAME) ==============
+        // ============== RESET QUIZ ==============
         function resetQuiz() {
             clearInterval(timerInterval);
             timeLeft = quizTimeMinutes * 60;
@@ -353,7 +371,6 @@
             document.getElementById('intro-container').style.display = 'block';
             document.getElementById('timer-container').style.display = 'none';
             document.getElementById('quiz-container').style.display = 'none';
-            // Do NOT clear the name field
             document.getElementById('time-remaining').textContent = '10:00';
             userAnswers.fill('');
             generateQuiz();
