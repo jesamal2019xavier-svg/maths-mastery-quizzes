@@ -1,197 +1,188 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>GCSE Number Quizzes</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maths Quiz Hub</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            line-height: 1.6;
-            max-width: 800px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
         }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 90%;
+            max-width: 900px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            text-align: center;
+            margin-top: 20px;
+        }
+        
         h1 {
             color: #2c3e50;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
+            margin-bottom: 10px;
+            font-size: 2.8rem;
+            background: linear-gradient(90deg, #2575fc, #6a11cb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
-        h2 {
-            color: #2c3e50;
+        
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            font-size: 1.2rem;
+        }
+        
+        .quiz-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
             margin-top: 30px;
         }
-        .quiz-section {
-            margin: 25px 0;
-            padding: 20px;
+        
+        .quiz-card {
             background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 5px solid #3498db;
-        }
-        .quiz-link {
-            display: block;
-            background: #3498db;
-            color: white;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 5px;
+            border-radius: 15px;
+            padding: 25px 20px;
             text-decoration: none;
-            font-weight: bold;
+            color: #2c3e50;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border: 2px solid transparent;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
-        .quiz-link:hover {
-            background: #2980b9;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        
+        .quiz-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+            border-color: #3498db;
+            background: #e8f4fc;
         }
-        .rounding-link {
-            background: #27ae60;
+        
+        .quiz-card h2 {
+            margin-bottom: 12px;
+            font-size: 1.4rem;
+            color: #2575fc;
         }
-        .rounding-link:hover {
-            background: #219653;
+        
+        .quiz-card p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
         }
-        .negatives-link {
-            background: #e74c3c;
-        }
-        .negatives-link:hover {
-            background: #c0392b;
-        }
-        .operations-link {
-            background: #9b59b6;
-        }
-        .operations-link:hover {
-            background: #8e44ad;
-        }
-        .testing-link {
-            background: #e67e22;
-        }
-        .testing-link:hover {
-            background: #d35400;
-        }
-        .back-link {
+        
+        .icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
             display: inline-block;
-            background: #7f8c8d;
-            color: white;
-            padding: 10px 20px;
-            margin: 10px 0;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
         }
-        .back-link:hover {
-            background: #616a6b;
+        
+        .footer {
+            margin-top: 40px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
         }
-        .quiz-description {
-            font-size: 0.9em;
-            color: #555;
-            margin-top: 5px;
-            margin-left: 5px;
-        }
-        .progress-indicator {
-            font-size: 0.8em;
-            color: #27ae60;
-            font-weight: bold;
-            margin-left: 10px;
+        
+        @media (max-width: 768px) {
+            .quiz-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .container {
+                padding: 25px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>GCSE Foundation: Number Quizzes</h1>
-    <a href="../" class="back-link">← Back to GCSE Mathematics Home</a>
-    
-    <p>Practice your number skills with these interactive quizzes. Each quiz has 20 questions and a 10-minute time limit. Perfect scores earn certificates!</p>
-    
-    <!-- NEW SECTION: For Testing & Core Skills -->
-    <div class="quiz-section">
-        <h2>🧪 Testing & Core Skills</h2>
-        <a href="FINAL_QUIZ_TEST.html" class="quiz-link testing-link">
-            Core Quiz (Test Version)
-            <span class="progress-indicator">• System Test</span>
-        </a>
-        <div class="quiz-description">The main quiz for testing the Google Sheets logging system (Adding & Subtracting Integers).</div>
+    <div class="container">
+        <h1>📚 Maths Quiz Hub</h1>
+        <p class="subtitle">Test your skills across different maths topics</p>
         
-        <a href="Adding & Subtracting Integers.html" class="quiz-link testing-link">
-            Adding & Subtracting Integers
-            <span class="progress-indicator">• Foundation</span>
-        </a>
-        <div class="quiz-description">Add and subtract positive and negative integers.</div>
-    </div>
-    
-    <div class="quiz-section">
-        <h2>🔢 Rounding Quizzes</h2>
+        <div class="quiz-grid">
+            <!-- 1st Quiz -->
+            <a href="Mixed operation neg and pos.html" class="quiz-card">
+                <div class="icon">➕➖</div>
+                <h2>Mixed Operations with Positives & Negatives</h2>
+                <p>Practice addition, subtraction, multiplication, and division with positive and negative numbers.</p>
+            </a>
+            
+            <!-- 2nd Quiz -->
+            <a href="Pos and neg mult and div.html" class="quiz-card">
+                <div class="icon">✖️➗</div>
+                <h2>Multiplication & Division with Positives & Negatives</h2>
+                <p>Focus on multiplying and dividing positive and negative numbers.</p>
+            </a>
+            
+            <!-- 3rd Quiz -->
+            <a href="Pos and neg number add and sub.html" class="quiz-card">
+                <div class="icon">➕➖</div>
+                <h2>Addition & Subtraction with Positives & Negatives</h2>
+                <p>Practice adding and subtracting positive and negative numbers.</p>
+            </a>
+            
+            <!-- 4th Quiz -->
+            <a href="Round 1 2 3 dp.html" class="quiz-card">
+                <div class="icon">🔢</div>
+                <h2>Rounding to 1, 2, or 3 Decimal Places</h2>
+                <p>Test your ability to round numbers to specific decimal places.</p>
+            </a>
+            
+            <!-- 5th Quiz -->
+            <a href="Round 1 2 3 sig fig.html" class="quiz-card">
+                <div class="icon">📐</div>
+                <h2>Rounding to 1, 2, or 3 Significant Figures</h2>
+                <p>Practice rounding numbers to 1, 2, or 3 significant figures.</p>
+            </a>
+            
+            <!-- 6th Quiz -->
+            <a href="Rounding 10 100 1000.html" class="quiz-card">
+                <div class="icon">🔟</div>
+                <h2>Rounding to Nearest 10, 100, or 1000</h2>
+                <p>Test rounding numbers to the nearest ten, hundred, or thousand.</p>
+            </a>
+            
+            <!-- 7th Quiz -->
+            <a href="Three integer two op.html" class="quiz-card">
+                <div class="icon">🧮</div>
+                <h2>Three Integers with Two Operations</h2>
+                <p>Solve problems with three integers and two different operations.</p>
+            </a>
+            
+            <!-- 8th Quiz - This was missing in my previous version -->
+            <!-- Add your 8th quiz file here when you create it -->
+            <!-- Example placeholder: -->
+            <!--
+            <a href="YourEighthQuizFile.html" class="quiz-card">
+                <div class="icon">🔢</div>
+                <h2>Eighth Quiz Title</h2>
+                <p>Description of what this quiz tests.</p>
+            </a>
+            -->
+        </div>
         
-        <a href="Rounding 10 100 1000.html" class="quiz-link rounding-link">
-            Rounding to 10, 100, 1000
-            <span class="progress-indicator">• Foundation</span>
-        </a>
-        <div class="quiz-description">Round numbers to the nearest 10, 100, or 1000</div>
-        
-        <a href="Round 1 2 3 dp.html" class="quiz-link rounding-link">
-            Rounding to Decimal Places
-            <span class="progress-indicator">• Foundation</span>
-        </a>
-        <div class="quiz-description">Round decimal numbers to 1, 2, or 3 decimal places</div>
-        
-        <a href="Round 1 2 3 sig fig.html" class="quiz-link rounding-link">
-            Rounding to Significant Figures
-            <span class="progress-indicator">• Foundation</span>
-        </a>
-        <div class="quiz-description">Round numbers to 1, 2, or 3 significant figures</div>
-    </div>
-    
-    <div class="quiz-section">
-        <h2>➕➖ Positive & Negative Numbers</h2>
-        
-        <a href="Pos and neg number add and sub.html" class="quiz-link negatives-link">
-            Addition & Subtraction
-            <span class="progress-indicator">• Foundation</span>
-        </a>
-        <div class="quiz-description">Add and subtract positive and negative numbers</div>
-        
-        <a href="Pos and neg mult and div.html" class="quiz-link negatives-link">
-            Multiplication & Division
-            <span class="progress-indicator">• Foundation</span>
-        </a>
-        <div class="quiz-description">Multiply and divide positive and negative numbers</div>
-        
-        <a href="Mixed operation neg and pos.html" class="quiz-link negatives-link">
-            Mixed Operations
-            <span class="progress-indicator">• Foundation</span>
-        </a>
-        <div class="quiz-description">Mixed calculations with positive and negative numbers</div>
-    </div>
-    
-    <div class="quiz-section">
-        <h2>🔢 Integer Operations</h2>
-        
-        <a href="Three integer two op.html" class="quiz-link operations-link">
-            Three Integers, Two Operations
-            <span class="progress-indicator">• Foundation</span>
-        </a>
-        <div class="quiz-description">Solve calculations with three integers and two operations</div>
-    </div>
-    
-    <div class="quiz-section">
-        <h2>📊 Progress Tracking</h2>
-        <p>To track your progress across quizzes, make sure to:</p>
-        <ul>
-            <li>Use the same name for each quiz</li>
-            <li>Aim for perfect scores to earn certificates</li>
-            <li>Review incorrect answers in the feedback section</li>
-            <li>Retry quizzes to improve your speed and accuracy</li>
-        </ul>
-        <p><strong>Tip:</strong> Complete quizzes in order from top to bottom for progressive learning!</p>
-    </div>
-    
-    <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd;">
-        <p><strong>Note:</strong> All quizzes are designed for GCSE Foundation level. Each quiz includes:</p>
-        <ul>
-            <li>📝 20 questions with instant feedback</li>
-            <li>⏱️ 10-minute time limit</li>
-            <li>🏆 Certificate for perfect scores</li>
-            <li>📖 Explanation of key concepts</li>
-            <li>🔄 Option to retry and improve</li>
-        </ul>
+        <div class="footer">
+            <p>Complete all 8 quizzes to master these fundamental maths skills!</p>
+            <p style="margin-top: 10px; color: #e74c3c;">Note: You have 7 quiz files listed. Add your 8th when ready!</p>
+        </div>
     </div>
 </body>
 </html>

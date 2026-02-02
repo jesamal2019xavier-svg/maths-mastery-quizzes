@@ -556,8 +556,9 @@
                 }
             }
             
-            const bDisplay = b < 0 ? `- ${Math.abs(b)}` : `+ ${b}`;
-            const aDisplay = a === 1 ? "" : a;
+            // === FIXED: Always show 'a', show 'b' with sign ===
+            const bDisplay = b < 0 ? `- ${Math.abs(b)}` : `+ ${Math.abs(b)}`;
+            const aDisplay = a.toString(); // Always show 'a' (even if it's 1)
             
             return {
                 question: `Expand (${aDisplay}x ${bDisplay}y)<sup>${n}</sup>`,
@@ -621,8 +622,9 @@
                 }
             }
             
-            const aDisplay = a === 1 ? "" : a;
-            const bDisplay = b === 1 ? "" : b;
+            // === FIXED: Always show constants 'a' and 'b' ===
+            const aDisplay = a.toString(); // Always show 'a'
+            const bDisplay = b.toString(); // Always show 'b'
             
             return {
                 question: `Expand (1 + ${aDisplay}x)(1 + ${bDisplay}x)<sup>${n}</sup>`,
@@ -641,13 +643,17 @@
             
             const coefficient = nCr(n, k) * Math.pow(b, n - k) * Math.pow(a, k);
             
+            // === FIXED: Always show constant 'b', hide 'a' only if it's 1 before 'x' ===
+            const bDisplay = b.toString(); // Always show 'b'
+            const aDisplay = a === 1 ? "" : a; // Hide 'a' only if it's 1 before 'x'
+            
             let expression;
-            if (b === 1 && k === n) {
-                expression = `(ax)<sup>${n}</sup>`;
-            } else if (b === 1) {
-                expression = `(1 + ax)<sup>${n}</sup>`;
+            if (aDisplay === "" && k === n) {
+                expression = `(x)<sup>${n}</sup>`;
+            } else if (aDisplay === "") {
+                expression = `(${b} + x)<sup>${n}</sup>`;
             } else {
-                expression = `(${b} + ax)<sup>${n}</sup>`;
+                expression = `(${b} + ${aDisplay}x)<sup>${n}</sup>`;
             }
             
             return {
@@ -698,24 +704,23 @@
                 b2Formatted = `${b2Simplified.numerator}/${b2Simplified.denominator}`;
             }
             
-            const aDisplay = a === 1 ? "" : a;
-            const dDisplay = d === 1 ? "" : d;
-            const cDisplay = c === 1 ? "" : c;
+            // === FIXED: Always show 'a' and 'c', hide 'd' only if it's 1 before 'x' ===
+            const aShow = a.toString(); // Always show 'a'
+            const dShow = d === 1 ? "x" : `${d}x`; // Hide the coefficient 1
+            const cShow = c.toString(); // Always show 'c'
             
             return {
-                question: `The coefficient of x<sup>2</sup> in the expansion of (${aDisplay} - ${dDisplay}x)(${cDisplay} + bx)<sup>${n}</sup> is ${Math.round(p)}. Find the possible values of b.`,
+                question: `The coefficient of x<sup>2</sup> in the expansion of (${aShow} - ${dShow})(${cShow} + bx)<sup>${n}</sup> is ${Math.round(p)}. Find the possible values of b.`,
                 answer: `${b1Formatted},${b2Formatted}`,
                 hint: "Enter both fractions separated by comma (e.g., 1/2, -3/4)"
             };
         }
         
         function generateQ6() {
-            // FIXED: Based on specification: (a - 1/b x)^n where 0 < a, b < 7, n ∈ [3,4,5]
-            const a = getRandomInt(1, 6);  // 1 to 6 inclusive (0 < a < 7)
-            const b = getRandomInt(1, 6);  // 1 to 6 inclusive (0 < b < 7)
-            const n = [3, 4, 5][getRandomInt(0, 2)];  // n ∈ {3,4,5}
+            const a = getRandomInt(1, 6);
+            const b = getRandomInt(1, 6);
+            const n = [3, 4, 5][getRandomInt(0, 2)];
             
-            // Calculate terms using the formula: a^n - (n*a^(n-1)/b)x + (n(n-1)a^(n-2)/(2b^2))x^2 - (n(n-1)(n-2)a^(n-3)/(6b^3))x^3
             const term0 = Math.pow(a, n);
             
             // First term: -(n*a^(n-1))/b
@@ -830,8 +835,9 @@
                 answer += term;
             }
             
-            const aDisplay = a === 1 ? "" : a;
-            const bDisplay = b === 1 ? "" : b;
+            // === FIXED: Always show constants 'a' and 'b' ===
+            const aDisplay = a.toString(); // Always show 'a'
+            const bDisplay = b.toString(); // Always show 'b'
             
             const secondTerm = b === 1 ? "x" : createStackedFraction(bDisplay, "x");
             
@@ -851,8 +857,9 @@
             const r = n;
             const coeff = nCr(power, r) * Math.pow(a, power - r) * Math.pow(b, r);
             
-            const aDisplay = a === 1 ? "" : a;
-            const bDisplay = b === 1 ? "" : b;
+            // === FIXED: Always show constants 'a' and 'b' ===
+            const aDisplay = a.toString(); // Always show 'a'
+            const bDisplay = b.toString(); // Always show 'b'
             
             const secondTerm = b === 1 ? "x" : createStackedFraction(bDisplay, "x");
             
@@ -864,9 +871,8 @@
         }
         
         function generateQ9() {
-            // FIXED: Ensure p and q are between 1 and 7 (exclusive)
-            const p = getRandomInt(2, 6); // 2 to 6 (since 1 < p < 7)
-            const q = getRandomInt(2, 6); // 2 to 6 (since 1 < q < 7)
+            const p = getRandomInt(2, 6);
+            const q = getRandomInt(2, 6);
             const n = getRandomInt(2, 5);
             
             // Expand (p - x)(q + x)^n
@@ -882,10 +888,9 @@
         }
         
         function generateQ10() {
-            // FIXED: Based on specification: (ax + b/x²)^(3n) where 1 < a, b < 6, n ∈ {2,3,4,5}
-            const a = getRandomInt(2, 5);  // 2 to 5 (since 1 < a < 6)
-            const b = getRandomInt(2, 5);  // 2 to 5 (since 1 < b < 6)
-            const n = [2, 3, 4, 5][getRandomInt(0, 3)];  // n ∈ {2,3,4,5}
+            const a = getRandomInt(2, 5);
+            const b = getRandomInt(2, 5);
+            const n = [2, 3, 4, 5][getRandomInt(0, 3)];
             const power = 3 * n;
             
             // Term independent of x occurs when power of x is 0
