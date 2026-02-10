@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order of Operations Mastery Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f9ff;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+        
+        .subtitle {
+            color: #2c3e50;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+        
+        .student-name-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 10px;
+            background-color: #f0f7ff;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #3498db;
+        }
+        
+        .student-name-label {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+        
+        #student-name {
+            padding: 10px 20px;
+            border: 2px solid #3498db;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            width: 280px;
+            max-width: 100%;
+            text-align: center;
+            font-weight: 600;
+            background-color: white;
+        }
+        
+        .question-container {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid #eaeaea;
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #3498db;
+        }
+        
+        .question-number {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #3498db;
+            background-color: #f0f7ff;
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+        
+        .expression {
+            font-family: 'Cambria', 'Times New Roman', serif;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 10px 0;
+            padding: 12px;
+            background-color: #f0f7ff;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px solid #e1e8ed;
+        }
+        
+        .answer-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e8ed;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            margin: 10px 0 5px 0;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+        
+        .answer-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        .answer-feedback {
+            margin-top: 8px;
+            padding: 10px;
+            border-radius: 6px;
+            display: none;
+            font-size: 0.95rem;
+        }
+        
+        .correct-feedback {
+            background-color: rgba(39, 174, 96, 0.1);
+            border: 1px solid #27ae60;
+            color: #27ae60;
+        }
+        
+        .incorrect-feedback {
+            background-color: rgba(231, 76, 60, 0.1);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+        }
+        
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        
+        .correct-answer {
+            font-family: 'Cambria', 'Times New Roman', serif;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-top: 5px;
+        }
+        
+        .submit-section {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #eaeaea;
+        }
+        
+        button {
+            padding: 12px 30px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0 10px 10px 0;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        
+        button:disabled:hover {
+            background-color: #95a5a6;
+        }
+        
+        #retry-btn {
+            background-color: #2ecc71;
+        }
+        
+        #retry-btn:hover {
+            background-color: #27ae60;
+        }
+        
+        .superscript {
+            font-size: 0.8em;
+            vertical-align: super;
+            line-height: 0;
+        }
+        
+        /* Certificate Modal */
+        .certificate-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .certificate-content {
+            background: linear-gradient(135deg, #f9f9ff 0%, #ffffff 100%);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 8px solid #3498db;
+            position: relative;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .certificate-header {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .certificate-divider {
+            height: 3px;
+            background: linear-gradient(to right, transparent, #3498db, transparent);
+            margin: 20px 0;
+        }
+        
+        .certificate-text {
+            color: #333;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .certificate-name {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: rgba(52, 152, 219, 0.1);
+            border-radius: 8px;
+            font-weight: 700;
+        }
+        
+        .certificate-score {
+            font-size: 1.5rem;
+            color: #27ae60;
+            margin: 15px 0;
+            font-weight: 700;
+        }
+        
+        .certificate-date {
+            color: #7f8c8d;
+            font-size: 1rem;
+            margin-top: 20px;
+        }
+        
+        .certificate-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #7f8c8d;
+            cursor: pointer;
+            padding: 5px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .certificate-close:hover {
+            color: #2c3e50;
+            background-color: rgba(0, 0, 0, 0.05);
+            border-radius: 50%;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .question-container {
+                padding: 12px;
+                margin-bottom: 15px;
+            }
+            
+            .expression {
+                font-size: 1.2rem;
+                padding: 10px;
+            }
+            
+            .certificate-content {
+                width: 95%;
+                padding: 20px;
+                margin: 20px;
+            }
+            
+            .certificate-header {
+                font-size: 1.5rem;
+            }
+            
+            .certificate-name {
+                font-size: 1.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .student-name-label {
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            button {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+                margin: 0 5px 5px 0;
+            }
+            
+            .submit-section {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            #student-name {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Certificate Modal -->
+    <div id="certificate-modal" class="certificate-modal">
+        <div class="certificate-content">
+            <button class="certificate-close" id="certificate-close">&times;</button>
+            <div class="certificate-header">
+                <i class="fas fa-award"></i> Certificate of Achievement
+            </div>
+            <div class="certificate-divider"></div>
+            <div class="certificate-text">
+                Awarded to:
+            </div>
+            <div class="certificate-name" id="certificate-name">Student Name</div>
+            <div class="certificate-text">
+                For Perfect Score in<br>Order of Operations Quiz
+            </div>
+            <div class="certificate-score" id="certificate-score">Score: 100%</div>
+            <div class="certificate-date" id="certificate-date">Date: </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-calculator"></i> Order of Operations Quiz</h1>
+            <p class="subtitle">Complete all 20 questions. Remember PEMDAS/BODMAS rules. Achieve 100% mastery to earn your certificate!</p>
+            
+            <div class="student-name-container">
+                <div class="student-name-label">Student Name:</div>
+                <input type="text" id="student-name" placeholder="Enter your name" maxlength="30">
+            </div>
+        </header>
+        
+        <div id="quiz-container">
+            <!-- Questions will be generated here -->
+        </div>
+        
+        <div class="submit-section">
+            <button id="submit-btn"><i class="fas fa-check"></i> Submit Answers</button>
+            <button id="retry-btn"><i class="fas fa-redo"></i> Retry Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        // ==============================
+        // QUESTION GENERATORS (20 Questions)
+        // ==============================
+        
+        function randBetween(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        
+        function getSuperscript(num) {
+            const superscripts = {
+                '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', 
+                '7': '⁷', '8': '⁸', '9': '⁹'
+            };
+            return num.toString().split('').map(digit => superscripts[digit]).join('');
+        }
+        
+        // Question 1: a × b - c
+        function generateQuestion1() {
+            const a = randBetween(2, 9);
+            const b = randBetween(2, 9);
+            const c = randBetween(2, 9);
+            const answer = a * b - c;
+            
+            return {
+                id: 1,
+                expression: `${a} × ${b} - ${c}`,
+                answer: answer.toString(),
+                working: `First: ${a} × ${b} = ${a*b}, then: ${a*b} - ${c} = ${answer}`
+            };
+        }
+        
+        // Question 2: a + b × c
+        function generateQuestion2() {
+            const a = randBetween(2, 9);
+            const b = randBetween(2, 9);
+            const c = randBetween(2, 9);
+            const answer = a + b * c;
+            
+            return {
+                id: 2,
+                expression: `${a} + ${b} × ${c}`,
+                answer: answer.toString(),
+                working: `First: ${b} × ${c} = ${b*c}, then: ${a} + ${b*c} = ${answer}`
+            };
+        }
+        
+        // Question 3: (a - b) × c
+        function generateQuestion3() {
+            const a = randBetween(2, 9);
+            const b = randBetween(2, 9);
+            const c = randBetween(2, 9);
+            const answer = (a - b) * c;
+            
+            return {
+                id: 3,
+                expression: `(${a} - ${b}) × ${c}`,
+                answer: answer.toString(),
+                working: `First: ${a} - ${b} = ${a-b}, then: ${a-b} × ${c} = ${answer}`
+            };
+        }
+        
+        // Question 4: a + b^c
+        function generateQuestion4() {
+            const a = randBetween(2, 9);
+            const b = randBetween(2, 5);
+            const c = randBetween(2, 3);
+            const bc = Math.pow(b, c);
+            const answer = a + bc;
+            
+            return {
+                id: 4,
+                expression: `${a} + ${b}${getSuperscript(c)}`,
+                answer: answer.toString(),
+                working: `First: ${b}${getSuperscript(c)} = ${bc}, then: ${a} + ${bc} = ${answer}`
+            };
+        }
+        
+        // Question 5: a × b - c × d
+        function generateQuestion5() {
+            const a = randBetween(2, 9);
+            const b = randBetween(2, 9);
+            const c = randBetween(2, 9);
+            const d = randBetween(2, 9);
+            const answer = a * b - c * d;
+            
+            return {
+                id: 5,
+                expression: `${a} × ${b} - ${c} × ${d}`,
+                answer: answer.toString(),
+                working: `First: ${a} × ${b} = ${a*b} and ${c} × ${d} = ${c*d}, then: ${a*b} - ${c*d} = ${answer}`
+            };
+        }
+        
+        // Question 6: (a + b)²
+        function generateQuestion6() {
+            const a = randBetween(2, 9);
+            const b = randBetween(2, 9);
+            const ab = a + b;
+            const answer = ab * ab;
+            
+            return {
+                id: 6,
+                expression: `(${a} + ${b})²`,
+                answer: answer.toString(),
+                working: `First: ${a} + ${b} = ${ab}, then: ${ab} × ${ab} = ${answer}`
+            };
+        }
+        
+        // Question 7: a + e ÷ c where e = b × c
+        function generateQuestion7() {
+            const a = randBetween(2, 9);
+            const b = randBetween(2, 9);
+            const c = randBetween(2, 9);
+            const e = b * c;
+            const answer = a + (e / c);
+            
+            return {
+                id: 7,
+                expression: `${a} + ${e} ÷ ${c}`,
+                answer: answer.toString(),
+                working: `First: ${b} × ${c} = ${e}, then: ${e} ÷ ${c} = ${b}, then: ${a} + ${b} = ${answer}`
+            };
+        }
+        
+        // Question 8: a + 10 × b³
+        function generateQuestion8() {
+            const a = randBetween(2, 9);
+            const b = randBetween(2, 4);
+            const b3 = Math.pow(b, 3);
+            const tenB3 = 10 * b3;
+            const answer = a + tenB3;
+            
+            return {
+                id: 8,
+                expression: `${a} + 10 × ${b}³`,
+                answer: answer.toString(),
+                working: `First: ${b}³ = ${b3}, then: 10 × ${b3} = ${tenB3}, then: ${a} + ${tenB3} = ${answer}`
+            };
+        }
+        
+        // Question 9: a - b × c
+        function generateQuestion9() {
+            const a = randBetween(2, 9);
+            const b = randBetween(2, 9);
+            const c = randBetween(2, 9);
+            const bc = b * c;
+            const answer = a - bc;
+            
+            return {
+                id: 9,
+                expression: `${a} - ${b} × ${c}`,
+                answer: answer.toString(),
+                working: `First: ${b} × ${c} = ${bc}, then: ${a} - ${bc} = ${answer}`
+            };
+        }
+        
+        // Question 10: a + b²
+        function generateQuestion10() {
+            const a = randBetween(2, 9);
+            const b = randBetween(2, 9);
+            const b2 = b * b;
+            const answer = a + b2;
+            
+            return {
+                id: 10,
+                expression: `${a} + ${b}²`,
+                answer: answer.toString(),
+                working: `First: ${b}² = ${b2}, then: ${a} + ${b2} = ${answer}`
+            };
+        }
+        
+        // Question 11: (a - b) × (c - d)
+        function generateQuestion11() {
+            const a = randBetween(2, 9);
+            const b = randBetween(2, 9);
+            const c = randBetween(2, 9);
+            const d = randBetween(2, 9);
+            const ab = a - b;
+            const cd = c - d;
+            const answer = ab * cd;
+            
+            return {
+                id: 11,
+                expression: `(${a} - ${b}) × (${c} - ${d})`,
+                answer: answer.toString(),
+                working: `First: ${a} - ${b} = ${ab} and ${c} - ${d} = ${cd}, then: ${ab} × ${cd} = ${answer}`
+            };
+        }
+        
+        // Question 12: a² + b × c
+        function generateQuestion12() {
+            const a = randBetween(2, 9);
+            const b = randBetween(2, 9);
+            const c = randBetween(2, 9);
+            const a2 = a * a;
+            const bc = b * c;
+            const answer = a2 + bc;
+            
+            return {
+                id: 12,
+                expression: `${a}² + ${b} × ${c}`,
+                answer: answer.toString(),
+                working: `First: ${a}² = ${a2} and ${b} × ${c} = ${bc}, then: ${a2} + ${bc} = ${answer}`
+            };
+        }
+        
+        // Question 13: a × (b - c)
+        function generateQuestion13() {
+            const a = randBetween(2, 9);
+            const b = randBetween(2, 9);
+            const c = randBetween(2, 9);
+            const bc = b - c;
+            const answer = a * bc;
+            
+            return {
+                id: 13,
+                expression: `${a} × (${b} - ${c})`,
+                answer: answer.toString(),
+                working: `First: ${b} - ${c} = ${bc}, then: ${a} × ${bc} = ${answer}`
+            };
+        }
+        
+        // Question 14: a + b × e ÷ d where e = c × d
+        function generateQuestion14() {
+            const a = randBetween(2, 9);
+            const b = randBetween(2, 9);
+            const c = randBetween(2, 9);
+            const d = randBetween(2, 9);
+            const e = c * d;
+            const answer = a + (b * e) / d;
+            
+            return {
+                id: 14,
+                expression: `${a} + ${b} × ${e} ÷ ${d}`,
+                answer: answer.toString(),
+                working: `First: ${c} × ${d} = ${e}, then: ${b} × ${e} = ${b*e}, then: ${b*e} ÷ ${d} = ${b*c}, then: ${a} + ${b*c} = ${answer}`
+            };
+        }
+        
+        // Question 15: a × b + c ÷ d
+        function generateQuestion15() {
+            const a = randBetween(2, 9);
+            const b = randBetween(2, 9);
+            const c = randBetween(2, 9);
+            const d = randBetween(2, 9);
+            const ab = a * b;
+            const cd = c / d;
+            const answer = ab + cd;
+            
+            return {
+                id: 15,
+                expression: `${a} × ${b} + ${c} ÷ ${d}`,
+                answer: answer.toString(),
+                working: `First: ${a} × ${b} = ${ab} and ${c} ÷ ${d} = ${cd}, then: ${ab} + ${cd} = ${answer}`
+            };
+        }
+        
+        // Question 16: a - b + c × d
+        function generateQuestion16() {
+            const a = randBetween(2, 9);
+            const b = randBetween(2, 9);
+            const c = randBetween(2, 9);
+            const d = randBetween(2, 9);
+            const cd = c * d;
+            const ab = a - b;
+            const answer = ab + cd;
+            
+            return {
+                id: 16,
+                expression: `${a} - ${b} + ${c} × ${d}`,
+                answer: answer.toString(),
+                working: `First: ${c} × ${d} = ${cd}, then: ${a} - ${b} = ${ab}, then: ${ab} + ${cd} = ${answer}`
+            };
+        }
+        
+        // Question 17: a + b × c + d
+        function generateQuestion17() {
+            const a = randBetween(2, 9);
+            const b = randBetween(2, 9);
+            const c = randBetween(2, 9);
+            const d = randBetween(2, 9);
+            const bc = b * c;
+            const abc = a + bc;
+            const answer = abc + d;
+            
+            return {
+                id: 17,
+                expression: `${a} + ${b} × ${c} + ${d}`,
+                answer: answer.toString(),
+                working: `First: ${b} × ${c} = ${bc}, then: ${a} + ${bc} = ${abc}, then: ${abc} + ${d} = ${answer}`
+            };
+        }
+        
+        // Question 18: a + (b + c)²
+        function generateQuestion18() {
+            const a = randBetween(2, 9);
+            const b = randBetween(2, 6);
+            const c = randBetween(2, 6);
+            const bc = b + c;
+            const bc2 = bc * bc;
+            const answer = a + bc2;
+            
+            return {
+                id: 18,
+                expression: `${a} + (${b} + ${c})²`,
+                answer: answer.toString(),
+                working: `First: ${b} + ${c} = ${bc}, then: ${bc}² = ${bc2}, then: ${a} + ${bc2} = ${answer}`
+            };
+        }
+        
+        // Question 19: (a × 10) ÷ (10 ÷ b)
+        function generateQuestion19() {
+            const a = randBetween(2, 9);
+            const b = randBetween(2, 9);
+            const a10 = a * 10;
+            const tenDivB = 10 / b;
+            const answer = a10 / tenDivB;
+            
+            return {
+                id: 19,
+                expression: `(${a} × 10) ÷ (10 ÷ ${b})`,
+                answer: answer.toString(),
+                working: `First: ${a} × 10 = ${a10} and 10 ÷ ${b} = ${tenDivB}, then: ${a10} ÷ ${tenDivB} = ${answer}`
+            };
+        }
+        
+        // Question 20: a × b - c × d (another variation)
+        function generateQuestion20() {
+            const a = randBetween(2, 9);
+            const b = randBetween(2, 9);
+            const c = randBetween(2, 9);
+            const d = randBetween(2, 9);
+            const answer = a * b - c * d;
+            
+            return {
+                id: 20,
+                expression: `${a} × ${b} - ${c} × ${d}`,
+                answer: answer.toString(),
+                working: `First: ${a} × ${b} = ${a*b} and ${c} × ${d} = ${c*d}, then: ${a*b} - ${c*d} = ${answer}`
+            };
+        }
+        
+        // ==============================
+        // QUIZ STATE
+        // ==============================
+        
+        let currentQuestions = [];
+        let hasSubmitted = false;
+        
+        // ==============================
+        // QUIZ RENDERING AND LOGIC
+        // ==============================
+        
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+            
+            currentQuestions.forEach((question, index) => {
+                const questionNum = index + 1;
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-container';
+                questionDiv.id = `question-${questionNum}`;
+                
+                questionDiv.innerHTML = `
+                    <div class="question-header">
+                        <div class="question-number">Question ${questionNum}</div>
+                    </div>
+                    <div class="expression">${question.expression}</div>
+                    <input type="text" class="answer-input" id="answer-${questionNum}" 
+                           placeholder="Enter your answer" data-question-id="${questionNum}"
+                           autocomplete="off" ${hasSubmitted ? 'disabled' : ''}>
+                    <div class="answer-feedback" id="feedback-${questionNum}"></div>
+                `;
+                
+                container.appendChild(questionDiv);
+            });
+            
+            setupAutoFocus();
+        }
+        
+        function setupAutoFocus() {
+            const inputs = document.querySelectorAll('.answer-input:not(:disabled)');
+            
+            inputs.forEach((input, index) => {
+                input.onkeydown = null;
+                
+                input.addEventListener('keydown', function(event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        
+                        const nextIndex = index + 1;
+                        if (nextIndex < inputs.length) {
+                            inputs[nextIndex].focus();
+                        } else {
+                            document.getElementById('submit-btn').focus();
+                        }
+                    }
+                });
+            });
+            
+            setTimeout(() => {
+                if (inputs.length > 0) {
+                    inputs[0].focus();
+                }
+            }, 100);
+        }
+        
+        function initializeQuiz() {
+            hasSubmitted = false;
+            currentQuestions = [
+                generateQuestion1(),
+                generateQuestion2(),
+                generateQuestion3(),
+                generateQuestion4(),
+                generateQuestion5(),
+                generateQuestion6(),
+                generateQuestion7(),
+                generateQuestion8(),
+                generateQuestion9(),
+                generateQuestion10(),
+                generateQuestion11(),
+                generateQuestion12(),
+                generateQuestion13(),
+                generateQuestion14(),
+                generateQuestion15(),
+                generateQuestion16(),
+                generateQuestion17(),
+                generateQuestion18(),
+                generateQuestion19(),
+                generateQuestion20()
+            ];
+            renderQuiz();
+            document.getElementById('submit-btn').disabled = false;
+        }
+        
+        function checkAnswers() {
+            if (hasSubmitted) return;
+            
+            hasSubmitted = true;
+            document.getElementById('submit-btn').disabled = true;
+            
+            let score = 0;
+            let total = currentQuestions.length;
+            let allCorrect = true;
+            
+            document.querySelectorAll('.answer-input').forEach(input => {
+                input.disabled = true;
+            });
+            
+            currentQuestions.forEach((question, index) => {
+                const questionNum = index + 1;
+                const input = document.getElementById(`answer-${questionNum}`);
+                const userAnswer = input.value.trim();
+                const feedback = document.getElementById(`feedback-${questionNum}`);
+                
+                const isCorrect = (userAnswer === question.answer);
+                
+                if (isCorrect) {
+                    score++;
+                    input.style.borderColor = '#27ae60';
+                    input.style.backgroundColor = 'rgba(39, 174, 96, 0.1)';
+                    
+                    feedback.className = 'answer-feedback correct-feedback';
+                    feedback.innerHTML = `
+                        <div class="feedback-title">✓ Correct!</div>
+                        <div>${question.working}</div>
+                    `;
+                } else {
+                    allCorrect = false;
+                    input.style.borderColor = '#e74c3c';
+                    input.style.backgroundColor = 'rgba(231, 76, 60, 0.1)';
+                    
+                    feedback.className = 'answer-feedback incorrect-feedback';
+                    feedback.innerHTML = `
+                        <div class="feedback-title">✗ Incorrect</div>
+                        <div>${question.working}</div>
+                        <div class="correct-answer">Correct answer: ${question.answer}</div>
+                    `;
+                }
+                
+                feedback.style.display = 'block';
+            });
+            
+            const percentage = Math.round((score/total)*100);
+            
+            if (allCorrect && score === total) {
+                setTimeout(() => {
+                    showCertificate(percentage);
+                }, 500);
+            } else {
+                setTimeout(() => {
+                    alert(`You got ${score} out of ${total} correct (${percentage}%)\n\nClick "Retry Quiz" to try again and aim for 100%!`);
+                }, 300);
+            }
+        }
+        
+        function showCertificate(score) {
+            const studentName = document.getElementById('student-name').value || 'Student';
+            const certificateName = document.getElementById('certificate-name');
+            const certificateScore = document.getElementById('certificate-score');
+            const certificateDate = document.getElementById('certificate-date');
+            
+            certificateName.textContent = studentName;
+            certificateScore.textContent = `Score: ${score}%`;
+            
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            certificateDate.textContent = `Date: ${now.toLocaleDateString('en-US', options)}`;
+            
+            document.getElementById('certificate-modal').style.display = 'flex';
+        }
+        
+        function closeCertificate() {
+            document.getElementById('certificate-modal').style.display = 'none';
+        }
+        
+        function retryQuiz() {
+            document.querySelectorAll('.answer-input').forEach(input => {
+                input.value = '';
+                input.style.borderColor = '';
+                input.style.backgroundColor = '';
+                input.disabled = false;
+            });
+            
+            document.querySelectorAll('.answer-feedback').forEach(feedback => {
+                feedback.innerHTML = '';
+                feedback.style.display = 'none';
+            });
+            
+            initializeQuiz();
+        }
+        
+        // ==============================
+        // INITIALIZATION
+        // ==============================
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeQuiz();
+            
+            document.getElementById('submit-btn').addEventListener('click', checkAnswers);
+            document.getElementById('retry-btn').addEventListener('click', retryQuiz);
+            document.getElementById('certificate-close').addEventListener('click', closeCertificate);
+            
+            document.getElementById('certificate-modal').addEventListener('click', function(e) {
+                if (e.target === this) closeCertificate();
+            });
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeCertificate();
+            });
+            
+            document.getElementById('student-name').focus();
+            
+            document.getElementById('student-name').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const firstInput = document.querySelector('.answer-input:not(:disabled)');
+                    if (firstInput) {
+                        firstInput.focus();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

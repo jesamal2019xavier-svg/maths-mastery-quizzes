@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Probability Mastery Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            color: #1a2980;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #5d6d7e;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+        
+        .mastery-badge {
+            background: #e8f4fc;
+            border-left: 5px solid #3498db;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .name-input-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 2px dashed #3498db;
+        }
+        
+        .name-input {
+            font-size: 1.2rem;
+            padding: 12px 20px;
+            width: 300px;
+            border: 2px solid #3498db;
+            border-radius: 6px;
+            margin: 10px;
+        }
+        
+        .question {
+            background: #f8f9fa;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 15px;
+            border-left: 6px solid #2ecc71;
+            transition: all 0.3s ease;
+        }
+        
+        .question.incorrect {
+            border-left-color: #e74c3c;
+        }
+        
+        .question.correct {
+            border-left-color: #2ecc71;
+        }
+        
+        .question-number {
+            background: #1a2980;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .question-text {
+            margin: 15px 0;
+            line-height: 1.6;
+            font-size: 1.2rem;
+        }
+        
+        .math-display {
+            font-family: 'Cambria Math', 'Times New Roman', serif;
+            font-size: 1.3rem;
+            background: #f0f7ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        /* VENN DIAGRAM STYLES */
+        .venn-container {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 2px solid #2c3e50;
+        }
+        
+        .venn-title {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #1a2980;
+            font-size: 1.2rem;
+        }
+        
+        .venn-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .venn-diagram {
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+        }
+        
+        .venn-svg {
+            width: 100%;
+            height: 400px;
+            display: block;
+        }
+        
+        .venn-circle {
+            fill-opacity: 0.3;
+            stroke-width: 2;
+            stroke: #000;
+        }
+        
+        .circle-a {
+            fill: #3498db;
+            stroke: #2980b9;
+        }
+        
+        .circle-b {
+            fill: #e74c3c;
+            stroke: #c0392b;
+        }
+        
+        .circle-c {
+            fill: #2ecc71;
+            stroke: #27ae60;
+        }
+        
+        .circle-r {
+            fill: #f39c12;
+            stroke: #d68910;
+        }
+        
+        .circle-f {
+            fill: #9b59b6;
+            stroke: #8e44ad;
+        }
+        
+        .venn-text {
+            font-size: 18px;
+            font-weight: bold;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+        
+        .venn-label {
+            font-size: 22px;
+            font-weight: bold;
+            fill: #2c3e50;
+        }
+        
+        .outside-box {
+            fill: none;
+            stroke: #2c3e50;
+            stroke-width: 3;
+        }
+        
+        .answer-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .answer-input-group {
+            margin: 10px 0;
+        }
+        
+        .answer-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .answer-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s ease;
+        }
+        
+        .answer-input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            outline: none;
+            background-color: #f0f7ff;
+        }
+        
+        /* Style for inputs that have content */
+        .answer-input:not(:placeholder-shown) {
+            border-color: #2ecc71;
+        }
+        
+        /* Style for incorrect answers (when shown) */
+        .answer-input.incorrect {
+            border-color: #e74c3c;
+            background-color: #fdf2f2;
+        }
+        
+        /* Style for correct answers (when shown) */
+        .answer-input.correct {
+            border-color: #2ecc71;
+            background-color: #f0fff4;
+        }
+        
+        .feedback {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            font-size: 1rem;
+        }
+        
+        .correct-fb {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .incorrect-fb {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .part-feedback {
+            margin: 5px 0;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 0.95rem;
+        }
+        
+        button {
+            background: linear-gradient(90deg, #1a2980, #26d0ce);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            margin: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-reset {
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+        }
+        
+        .center {
+            text-align: center;
+        }
+        
+        .result {
+            margin: 30px 0;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+            display: none;
+        }
+        
+        .score {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #1a2980;
+        }
+        
+        .certificate {
+            margin: 30px 0;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+            display: block;
+            background: linear-gradient(135deg, #fdfcfb, #e2d1c3);
+            border: 15px solid #1a2980;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .certificate h2 {
+            color: #1a2980;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .certificate h3 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin: 20px 0;
+        }
+        
+        .certificate p {
+            margin: 10px 0;
+            font-size: 1.1rem;
+        }
+        
+        .certificate-border {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 5px solid #3498db;
+            pointer-events: none;
+        }
+        
+        .instructions {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 6px solid #ffc107;
+            font-size: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .venn-diagram {
+                min-width: 100%;
+            }
+            
+            .name-input {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .certificate h2 {
+                font-size: 2rem;
+            }
+            
+            .certificate h3 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Probability Mastery Quiz</h1>
+        <p class="subtitle">Mutually Exclusive & Independent Events • Score 100% for Certificate</p>
+        
+        <div class="mastery-badge">
+            🔥 100% MASTERY REQUIRED • Unlimited Attempts • Master the Concepts
+        </div>
+        
+        <div class="name-input-section" id="nameSection">
+            <strong>📝 Enter Your Name to Begin:</strong><br>
+            <input type="text" id="studentNameInput" class="name-input" placeholder="Your full name">
+            <br><br>
+            <button onclick="startQuiz()">Start Mastery Quiz</button>
+        </div>
+        
+        <div class="instructions" id="quizInstructions" style="display: none;">
+            <strong>📚 Instructions for Mastery:</strong>
+            <ul>
+                <li>Answer all 7 questions correctly to earn the certificate</li>
+                <li>Use fractions (e.g., 1/4) or decimals (e.g., 0.25)</li>
+                <li>For mutually exclusive: P(A or B) = P(A) + P(B)</li>
+                <li>For independent: P(A and B) = P(A) × P(B)</li>
+                <li>Unlimited attempts - learn from mistakes!</li>
+                <li><strong>Tip:</strong> Press <kbd>Enter</kbd> to jump to next answer box</li>
+                <li><strong>Tip:</strong> Press <kbd>Enter</kbd> on last box to check answers</li>
+            </ul>
+        </div>
+        
+        <div id="quizContainer" style="display: none;"></div>
+        
+        <div class="center" id="buttonSection" style="display: none;">
+            <button onclick="checkAllAnswers()" id="checkButton">Check All Answers</button>
+            <button class="btn-reset" onclick="resetQuiz()">Restart Quiz</button>
+        </div>
+        
+        <div id="resultArea"></div>
+        <div id="certificateArea"></div>
+    </div>
+
+    <script>
+        // ========== QUIZ STATE ==========
+        let currentQuiz = [];
+        let studentName = "";
+        
+        // ========== MATH UTILITIES ==========
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        
+        // Get random decimal with step size (e.g., 0.1 step)
+        function getRandomStepDecimal(min, max, step) {
+            const steps = Math.floor((max - min) / step) + 1;
+            const randomStep = Math.floor(Math.random() * steps);
+            return min + (randomStep * step);
+        }
+        
+        // Helper function to pick random element from array
+        function getRandomElement(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+        
+        // Simplify fraction
+        function simplifyFraction(num, den) {
+            const gcd = (x, y) => {
+                while(y) {
+                    const t = y;
+                    y = x % y;
+                    x = t;
+                }
+                return x;
+            };
+            const divisor = gcd(num, den);
+            return `${num/divisor}/${den/divisor}`;
+        }
+        
+        // ========== SIMPLE ENTER-TO-ADVANCE CURSOR ==========
+        function setupAutoAdvance() {
+            // Add event listeners to all answer inputs
+            document.querySelectorAll('.answer-input').forEach((input, index, inputs) => {
+                // Allow Enter key to advance
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const nextIndex = index + 1;
+                        
+                        if (nextIndex < inputs.length) {
+                            // Move to next input
+                            inputs[nextIndex].focus();
+                            inputs[nextIndex].select();
+                        } else {
+                            // On last input, check all answers
+                            checkAllAnswers();
+                        }
+                    }
+                });
+                
+                // Add click-to-select functionality
+                input.addEventListener('click', function() {
+                    this.select();
+                });
+                
+                // Select all text when focused
+                input.addEventListener('focus', function() {
+                    setTimeout(() => {
+                        this.select();
+                    }, 10);
+                });
+            });
+            
+            // Focus first input automatically
+            setTimeout(() => {
+                const firstInput = document.querySelector('.answer-input');
+                if (firstInput) {
+                    firstInput.focus();
+                    firstInput.select();
+                }
+            }, 100);
+        }
+        
+        // ========== QUESTION GENERATORS ==========
+        
+        // Question 1: Mutually Exclusive Events
+        function generateQ1() {
+            let a, b;
+            do {
+                a = getRandomStepDecimal(0.1, 0.4, 0.1);
+                b = getRandomStepDecimal(0.1, 0.4, 0.1);
+            } while (Math.abs(a - b) < 0.05);
+            
+            const pAorB = a + b;
+            const pAbutNotB = a;
+            const pNeither = 1 - pAorB;
+            
+            return {
+                id: 1,
+                question: `Events A and B are mutually exclusive. P(A) = ${a.toFixed(1)} and P(B) = ${b.toFixed(1)}. Find:`,
+                type: 'multi-part',
+                parts: [
+                    { label: 'a) P(A or B)', answer: pAorB.toFixed(1) },
+                    { label: 'b) P(A but not B)', answer: pAbutNotB.toFixed(1) },
+                    { label: 'c) P(neither A nor B)', answer: pNeither.toFixed(2) }
+                ],
+                explanation: `For mutually exclusive events:<br>
+                    • P(A or B) = P(A) + P(B) = ${a.toFixed(1)} + ${b.toFixed(1)} = ${pAorB.toFixed(1)}<br>
+                    • P(A but not B) = P(A) = ${a.toFixed(1)}<br>
+                    • P(neither) = 1 - P(A or B) = 1 - ${pAorB.toFixed(1)} = ${pNeither.toFixed(2)}`
+            };
+        }
+        
+        // Question 2: Independent Events (Fractions)
+        function generateQ2() {
+            const a = getRandomInt(2, 6);
+            const b = getRandomInt(2, 6);
+            
+            return {
+                id: 2,
+                question: `Events A and B are independent. P(A) = 1/${a} and P(B) = 1/${b}. Find P(A and B).`,
+                type: 'single',
+                answer: `1/${a * b}`,
+                explanation: `For independent events: P(A and B) = P(A) × P(B) = 1/${a} × 1/${b} = 1/${a * b}`
+            };
+        }
+        
+        // Question 3: Three-set Venn Diagram
+        function generateQ3() {
+            // Generate values
+            const a = getRandomInt(2, 10);
+            const b = getRandomInt(2, 10);
+            const c = getRandomInt(2, 10);
+            const d = getRandomInt(2, 10);
+            const e = getRandomInt(2, 10);
+            const f = getRandomInt(2, 10);
+            
+            const total = a + b + c + d + e + f;
+            
+            // Calculate P(B∪C)
+            const numerator = b + c + d + e;
+            const denominator = total;
+            const fractionAnswer = simplifyFraction(numerator, denominator);
+            
+            // Check if A and B are independent
+            const pA = (a + b) / total;
+            const pB = (b + c + d) / total;
+            const pAandB = b / total;
+            const pAtimesB = pA * pB;
+            
+            const independent = Math.abs(pAandB - pAtimesB) < 0.001;
+            
+            const vennHTML = `
+                <div class="venn-container">
+                    <div class="venn-wrapper">
+                        <div class="venn-diagram">
+                            <svg viewBox="0 0 500 350" class="venn-svg">
+                                <rect x="30" y="30" width="440" height="290" class="outside-box"/>
+                                
+                                <circle cx="150" cy="175" r="80" class="venn-circle circle-a"/>
+                                <circle cx="250" cy="175" r="80" class="venn-circle circle-b"/>
+                                <circle cx="350" cy="175" r="80" class="venn-circle circle-c"/>
+                                
+                                <text x="100" y="175" class="venn-text">${a}</text>
+                                <text x="185" y="175" class="venn-text">${b}</text>
+                                <text x="250" y="120" class="venn-text">${c}</text>
+                                <text x="315" y="175" class="venn-text">${d}</text>
+                                <text x="400" y="175" class="venn-text">${e}</text>
+                                <text x="250" y="300" class="venn-text">${f}</text>
+                                
+                                <text x="80" y="120" class="venn-label">A</text>
+                                <text x="240" y="80" class="venn-label">B</text>
+                                <text x="400" y="120" class="venn-label">C</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return {
+                id: 3,
+                question: `The Venn diagram shows the number of students in a particular class who watch any of three popular TV programmes.${vennHTML}`,
+                type: 'multi-part',
+                parts: [
+                    { 
+                        label: 'a) Find the probability that a student chosen at random watches B or C or both. (Answer as fraction)', 
+                        answer: fractionAnswer
+                    },
+                    { 
+                        label: 'b) Determine whether watching A and watching B are statistically independent. (yes/no)', 
+                        answer: independent ? 'yes' : 'no' 
+                    }
+                ],
+                explanation: `a) P(B or C or both) = (${b} + ${c} + ${d} + ${e})/${total} = ${fractionAnswer}<br><br>
+                    b) P(A) = ${a + b}/${total}, P(B) = ${b + c + d}/${total}, P(A and B) = ${b}/${total}<br>
+                    ${independent ? 'Since P(A)×P(B) = P(A and B), A and B ARE independent' : 'Since P(A)×P(B) ≠ P(A and B), A and B are NOT independent'}`
+            };
+        }
+        
+        // Question 4: Basic Independent Events
+        function generateQ4() {
+            const a = getRandomStepDecimal(0.1, 0.9, 0.1);
+            const b = getRandomStepDecimal(0.1, 0.9, 0.1);
+            const product = (a * b).toFixed(2);
+            
+            return {
+                id: 4,
+                question: `P(A) = ${a.toFixed(1)} and P(B) = ${b.toFixed(1)}. Given that A and B are independent, find P(A and B).`,
+                type: 'single',
+                answer: product,
+                explanation: `For independent events: P(A and B) = P(A) × P(B) = ${a.toFixed(1)} × ${b.toFixed(1)} = ${product}`
+            };
+        }
+        
+        // Question 5: Find P(B) given P(A) and P(A and B)
+        function generateQ5() {
+            const a = getRandomStepDecimal(0.1, 0.9, 0.1);
+            const b = getRandomStepDecimal(0.1, 0.9, 0.1);
+            const c = (a * b).toFixed(2);
+            
+            return {
+                id: 5,
+                question: `P(A) = ${a.toFixed(1)} and P(A and B) = ${c}. Given that A and B are independent, find P(B).`,
+                type: 'single',
+                answer: b.toFixed(1),
+                explanation: `For independent events: P(A and B) = P(A) × P(B)<br>
+                            So P(B) = P(A and B) ÷ P(A) = ${c} ÷ ${a.toFixed(1)} = ${b.toFixed(1)}`
+            };
+        }
+        
+        // Question 6: Test for Independence
+        function generateQ6() {
+            const s = getRandomStepDecimal(0.3, 0.9, 0.1);
+            const t = getRandomStepDecimal(0.3, 0.9, 0.1);
+            const product = (s * t).toFixed(2);
+            const sandNotT = (s - parseFloat(product)).toFixed(2);
+            
+            const pSandT = product;
+            const pNeither = (1 - (s + t - parseFloat(product))).toFixed(2);
+            
+            return {
+                id: 6,
+                question: `S and T are two events such that P(S) = ${s.toFixed(1)}, P(T) = ${t.toFixed(1)} and P(S and not T) = ${sandNotT}.`,
+                type: 'multi-part',
+                parts: [
+                    { label: 'a) P(S and T)', answer: pSandT },
+                    { label: 'b) P(neither S nor T)', answer: pNeither },
+                    { label: 'c) Are S and T independent? (yes/no)', answer: 'yes' }
+                ],
+                explanation: `
+                    a) P(S and T) = P(S) - P(S and not T) = ${s.toFixed(1)} - ${sandNotT} = ${pSandT}<br><br>
+                    b) P(neither) = 1 - [P(S) + P(T) - P(S and T)] = 1 - [${s.toFixed(1)} + ${t.toFixed(1)} - ${pSandT}] = ${pNeither}<br><br>
+                    c) Since P(S)×P(T) = ${product} = P(S and T), S and T ARE independent`
+            };
+        }
+        
+        // Question 7: Venn with A, R, F - FIXED with random P(A∪R)
+        function generateQ7() {
+            // Random values as requested
+            const pA = getRandomElement([0.20, 0.25, 0.30]);
+            const pRandFprime = getRandomElement([0.20, 0.25, 0.30]);
+            const pAorR = getRandomElement([0.55, 0.60, 0.65]);
+            
+            // Ensure P(A) is less than P(A∪R) for valid probability
+            if (pA >= pAorR) {
+                // If invalid, swap or adjust - simple fix: use default values
+                return generateQ7(); // Recursively try again
+            }
+            
+            // Calculate x and y
+            const pR = (pAorR - pA).toFixed(2);
+            
+            // Check if P(R) is positive
+            if (parseFloat(pR) <= 0) {
+                return generateQ7(); // Recursively try again
+            }
+            
+            // Calculate x = P(R) - P(R∩F')
+            let x = (parseFloat(pR) - pRandFprime).toFixed(2);
+            
+            // Ensure x is non-negative
+            if (parseFloat(x) < 0) {
+                return generateQ7(); // Recursively try again
+            }
+            
+            // Calculate y = 1 - P(A) - P(R∩F') - x - P(none)
+            // P(none) = 0.10 (given in the diagram)
+            let y = (1 - pA - pRandFprime - parseFloat(x) - 0.10).toFixed(2);
+            
+            // Ensure y is non-negative
+            if (parseFloat(y) < 0) {
+                return generateQ7(); // Recursively try again
+            }
+            
+            // Check independence of R and F
+            const pF = (parseFloat(x) + parseFloat(y)).toFixed(2);
+            const pRandF = parseFloat(x);
+            const pRtimesF = (parseFloat(pR) * parseFloat(pF)).toFixed(3);
+            const independent = Math.abs(pRandF - parseFloat(pRtimesF)) < 0.001;
+            
+            const vennHTML = `
+                <div class="venn-container">
+                    <div class="venn-wrapper">
+                        <div class="venn-diagram">
+                            <svg viewBox="0 0 500 400" class="venn-svg">
+                                <rect x="30" y="30" width="440" height="340" class="outside-box"/>
+                                
+                                <circle cx="250" cy="100" r="60" class="venn-circle circle-a"/>
+                                <circle cx="200" cy="250" r="70" class="venn-circle circle-r"/>
+                                <circle cx="300" cy="250" r="70" class="venn-circle circle-f"/>
+                                
+                                <text x="250" y="100" class="venn-text">${pA.toFixed(2)}</text>
+                                <text x="150" y="250" class="venn-text">${pRandFprime.toFixed(2)}</text>
+                                <text x="250" y="250" class="venn-text">x</text>
+                                <text x="350" y="250" class="venn-text">y</text>
+                                <text x="250" y="330" class="venn-text">0.10</text>
+                                
+                                <text x="250" y="60" class="venn-label">A</text>
+                                <text x="150" y="200" class="venn-label">R</text>
+                                <text x="350" y="200" class="venn-label">F</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return {
+                id: 7,
+                question: `The Venn diagram shows the probabilities of members of a social club taking part in charitable activities.<br>
+                A represents taking part in an archery competition<br>
+                R represents taking part in raffle<br>
+                F represents taking part in a fun run<br>
+                The probability that a member takes part in archery competition or the raffle is ${pAorR.toFixed(2)}.${vennHTML}`,
+                type: 'multi-part',
+                parts: [
+                    { label: 'a) Find the value of x', answer: x },
+                    { label: 'b) Find the value of y', answer: y },
+                    { label: 'c) Are R and F independent? (yes/no)', answer: independent ? 'yes' : 'no' }
+                ],
+                explanation: `
+                    <strong>Given:</strong><br>
+                    P(A) = ${pA.toFixed(2)}<br>
+                    P(R∩F') = ${pRandFprime.toFixed(2)}<br>
+                    P(A∪R) = ${pAorR.toFixed(2)}<br>
+                    P(none) = 0.10<br><br>
+                    
+                    <strong>Finding x:</strong><br>
+                    Since A and R don't intersect: P(A∪R) = P(A) + P(R)<br>
+                    So ${pAorR.toFixed(2)} = ${pA.toFixed(2)} + P(R)<br>
+                    P(R) = ${pAorR.toFixed(2)} - ${pA.toFixed(2)} = ${pR}<br>
+                    Also P(R) = P(R∩F') + P(R∩F) = ${pRandFprime.toFixed(2)} + x<br>
+                    So x = ${pR} - ${pRandFprime.toFixed(2)} = ${x}<br><br>
+                    
+                    <strong>Finding y:</strong><br>
+                    Total probability = 1<br>
+                    1 = P(A) + P(R∩F') + x + y + P(none)<br>
+                    1 = ${pA.toFixed(2)} + ${pRandFprime.toFixed(2)} + ${x} + y + 0.10<br>
+                    y = 1 - ${(pA + pRandFprime + parseFloat(x) + 0.10).toFixed(2)} = ${y}<br><br>
+                    
+                    <strong>Check independence of R and F:</strong><br>
+                    P(R) = ${pR}<br>
+                    P(F) = x + y = ${x} + ${y} = ${pF}<br>
+                    P(R∩F) = x = ${x}<br>
+                    P(R) × P(F) = ${pR} × ${pF} = ${pRtimesF}<br><br>
+                    ${independent ? 
+                      `Since P(R∩F) = ${x} equals P(R)×P(F) = ${pRtimesF}, R and F ARE independent.` : 
+                      `Since P(R∩F) = ${x} ≠ P(R)×P(F) = ${pRtimesF}, R and F are NOT independent.`}`
+            };
+        }
+        
+        // ========== QUIZ MANAGEMENT ==========
+        function startQuiz() {
+            studentName = document.getElementById('studentNameInput').value.trim();
+            if (!studentName) {
+                alert("Please enter your name to begin the mastery quiz.");
+                return;
+            }
+            
+            document.getElementById('nameSection').style.display = 'none';
+            document.getElementById('quizInstructions').style.display = 'block';
+            document.getElementById('buttonSection').style.display = 'block';
+            
+            generateNewQuiz();
+        }
+        
+        function generateNewQuiz() {
+            currentQuiz = [
+                generateQ1(),
+                generateQ2(),
+                generateQ3(),
+                generateQ4(),
+                generateQ5(),
+                generateQ6(),
+                generateQ7()
+            ];
+            
+            displayQuiz();
+            document.getElementById('resultArea').innerHTML = '';
+            document.getElementById('certificateArea').innerHTML = '';
+            document.getElementById('checkButton').disabled = false;
+            document.getElementById('checkButton').innerText = 'Check All Answers';
+        }
+        
+        function displayQuiz() {
+            let html = '';
+            
+            currentQuiz.forEach((q, index) => {
+                html += `<div class="question" id="q${index}">
+                    <div class="question-number">Question ${index + 1}</div>
+                    <div class="question-text">${q.question}</div>`;
+                
+                if (q.type === 'single') {
+                    html += `
+                        <div class="answer-input-group">
+                            <div class="answer-label">Your answer:</div>
+                            <input type="text" id="ans${index}" class="answer-input" placeholder="Enter answer (e.g., 0.25 or 1/4)">
+                        </div>`;
+                } else if (q.type === 'multi-part') {
+                    html += `<div class="answer-section">`;
+                    q.parts.forEach((part, partIndex) => {
+                        const placeholder = part.label.includes('fraction') ? 'Enter fraction (e.g., 3/5)' : 'Enter answer';
+                        html += `
+                            <div class="answer-input-group">
+                                <div class="answer-label">${part.label}</div>
+                                <input type="text" id="ans${index}_${partIndex}" class="answer-input" placeholder="${placeholder}">
+                            </div>`;
+                    });
+                    html += `</div>`;
+                }
+                
+                html += `<div class="feedback" id="fb${index}"></div></div>`;
+            });
+            
+            document.getElementById('quizContainer').innerHTML = html;
+            document.getElementById('quizContainer').style.display = 'block';
+            
+            // Setup auto-advance after displaying quiz
+            setTimeout(setupAutoAdvance, 300);
+        }
+        
+        function checkAllAnswers() {
+            let correctQuestions = 0;
+            let allAnswered = true;
+            
+            currentQuiz.forEach((q, index) => {
+                const questionDiv = document.getElementById(`q${index}`);
+                const feedbackDiv = document.getElementById(`fb${index}`);
+                
+                let questionIsFullyCorrect = true;
+                let detailedFeedback = '';
+                
+                if (q.type === 'single') {
+                    const studentAnswer = document.getElementById(`ans${index}`).value.trim();
+                    const inputElement = document.getElementById(`ans${index}`);
+                    
+                    if (!studentAnswer) {
+                        allAnswered = false;
+                        questionIsFullyCorrect = false;
+                        return;
+                    }
+                    
+                    let isCorrect = false;
+                    
+                    // Check if answer matches
+                    if (studentAnswer.includes('/')) {
+                        const parts = studentAnswer.split('/');
+                        if (parts.length === 2) {
+                            const num = parseInt(parts[0]);
+                            const den = parseInt(parts[1]);
+                            if (q.answer.includes('/')) {
+                                const answerParts = q.answer.split('/');
+                                isCorrect = (num === parseInt(answerParts[0]) && den === parseInt(answerParts[1]));
+                            }
+                        }
+                    } else {
+                        isCorrect = studentAnswer.toLowerCase() === q.answer.toLowerCase();
+                        
+                        if (!isCorrect && !isNaN(parseFloat(studentAnswer)) && !isNaN(parseFloat(q.answer))) {
+                            const studentVal = parseFloat(studentAnswer);
+                            const correctVal = parseFloat(q.answer);
+                            isCorrect = Math.abs(studentVal - correctVal) < 0.01;
+                        }
+                    }
+                    
+                    if (isCorrect) {
+                        inputElement.classList.add('correct');
+                        inputElement.classList.remove('incorrect');
+                        detailedFeedback += `<div class="part-feedback correct-fb">✓ Correct!</div>`;
+                    } else {
+                        inputElement.classList.add('incorrect');
+                        inputElement.classList.remove('correct');
+                        detailedFeedback += `<div class="part-feedback incorrect-fb">✗ Incorrect. The correct answer is: ${q.answer}</div>`;
+                        questionIsFullyCorrect = false;
+                    }
+                    
+                } else if (q.type === 'multi-part') {
+                    detailedFeedback += `<div class="part-feedback-container">`;
+                    
+                    q.parts.forEach((part, partIndex) => {
+                        const studentAnswer = document.getElementById(`ans${index}_${partIndex}`).value.trim();
+                        const inputElement = document.getElementById(`ans${index}_${partIndex}`);
+                        
+                        if (!studentAnswer) {
+                            allAnswered = false;
+                            questionIsFullyCorrect = false;
+                            return;
+                        }
+                        
+                        let partCorrect = false;
+                        
+                        if (part.answer.toLowerCase() === 'yes' || part.answer.toLowerCase() === 'no') {
+                            partCorrect = studentAnswer.toLowerCase() === part.answer.toLowerCase();
+                        } else {
+                            if (studentAnswer.includes('/')) {
+                                const parts = studentAnswer.split('/');
+                                if (parts.length === 2) {
+                                    const num = parseInt(parts[0]);
+                                    const den = parseInt(parts[1]);
+                                    if (part.answer.includes('/')) {
+                                        const answerParts = part.answer.split('/');
+                                        partCorrect = (num === parseInt(answerParts[0]) && den === parseInt(answerParts[1]));
+                                    } else {
+                                        const fractionValue = num / den;
+                                        const correctValue = parseFloat(part.answer);
+                                        partCorrect = Math.abs(fractionValue - correctValue) < 0.01;
+                                    }
+                                }
+                            } else {
+                                const studentVal = parseFloat(studentAnswer);
+                                const correctVal = parseFloat(part.answer);
+                                partCorrect = !isNaN(studentVal) && Math.abs(studentVal - correctVal) < 0.01;
+                            }
+                        }
+                        
+                        if (partCorrect) {
+                            inputElement.classList.add('correct');
+                            inputElement.classList.remove('incorrect');
+                            detailedFeedback += `<div class="part-feedback correct-fb">${part.label}: ✓ Correct!</div>`;
+                        } else {
+                            inputElement.classList.add('incorrect');
+                            inputElement.classList.remove('correct');
+                            detailedFeedback += `<div class="part-feedback incorrect-fb">${part.label}: ✗ Incorrect. The correct answer is: ${part.answer}</div>`;
+                            questionIsFullyCorrect = false;
+                        }
+                    });
+                    
+                    detailedFeedback += `</div>`;
+                }
+                
+                // Set overall question border color
+                if (questionIsFullyCorrect) {
+                    questionDiv.classList.remove('incorrect');
+                    questionDiv.classList.add('correct');
+                    correctQuestions++;
+                } else {
+                    questionDiv.classList.remove('correct');
+                    questionDiv.classList.add('incorrect');
+                }
+                
+                // Add explanation
+                detailedFeedback += `<div class="explanation" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;">${q.explanation}</div>`;
+                
+                feedbackDiv.innerHTML = detailedFeedback;
+                feedbackDiv.style.display = 'block';
+            });
+            
+            if (!allAnswered) {
+                document.getElementById('resultArea').innerHTML = `
+                    <div class="result incorrect-fb">
+                        <h3>⚠️ Complete All Questions!</h3>
+                        <p>Please answer every question before checking.</p>
+                    </div>`;
+                document.getElementById('certificateArea').innerHTML = '';
+                return;
+            }
+            
+            const percentage = (correctQuestions / 7) * 100;
+            const isPerfect = correctQuestions === 7;
+            
+            const resultArea = document.getElementById('resultArea');
+            const certificateArea = document.getElementById('certificateArea');
+            
+            if (isPerfect) {
+                // Show certificate
+                const today = new Date();
+                const dateStr = today.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+                
+                certificateArea.innerHTML = `
+                    <div class="certificate">
+                        <div class="certificate-border"></div>
+                        <h2>🎓 Certificate of Mastery</h2>
+                        <h3>Probability & Statistics</h3>
+                        <p style="font-size: 1.3rem; margin: 25px 0;">This certifies that</p>
+                        <h3 style="color: #1a2980; font-size: 2.2rem; margin: 15px 0;">${studentName}</h3>
+                        <p style="font-size: 1.3rem; margin: 25px 0;">has successfully demonstrated complete mastery of</p>
+                        <p style="font-weight: bold; font-size: 1.4rem; color: #2c3e50;">Mutually Exclusive & Independent Events</p>
+                        <p style="margin: 20px 0;">by achieving a perfect score on all 7 questions of the Probability Mastery Quiz</p>
+                        <p style="margin: 15px 0;"><strong>Date:</strong> ${dateStr}</p>
+                        <p style="margin: 15px 0;"><strong>Score:</strong> 7/7 Questions (100%)</p>
+                        <button onclick="window.print()" style="margin-top: 20px; background: #1a2980; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">🖨️ Print Certificate</button>
+                    </div>`;
+                
+                resultArea.innerHTML = `
+                    <div class="result correct-fb">
+                        <h3>🎉 PERFECT MASTERY ACHIEVED!</h3>
+                        <div class="score">${correctQuestions}/7 (100%)</div>
+                        <p>Congratulations ${studentName}! You have earned the Certificate of Mastery!</p>
+                        <p><em>Scroll down to view your certificate.</em></p>
+                    </div>`;
+            } else {
+                certificateArea.innerHTML = '';
+                resultArea.innerHTML = `
+                    <div class="result incorrect-fb">
+                        <h3>📊 Progress: ${correctQuestions}/7 Questions</h3>
+                        <div class="score">${correctQuestions}/7 (${percentage.toFixed(1)}%)</div>
+                        <p>You need 100% for mastery. Review the feedback and try again!</p>
+                        <p><em>Remember: You can try unlimited times until you achieve perfection.</em></p>
+                    </div>`;
+                
+                document.getElementById('checkButton').innerText = 'Try Again';
+                document.getElementById('checkButton').onclick = function() {
+                    currentQuiz.forEach((q, index) => {
+                        if (q.type === 'single') {
+                            const input = document.getElementById(`ans${index}`);
+                            input.value = '';
+                            input.classList.remove('correct', 'incorrect');
+                        } else if (q.type === 'multi-part') {
+                            q.parts.forEach((part, partIndex) => {
+                                const input = document.getElementById(`ans${index}_${partIndex}`);
+                                input.value = '';
+                                input.classList.remove('correct', 'incorrect');
+                            });
+                        }
+                        document.getElementById(`fb${index}`).style.display = 'none';
+                        document.getElementById(`q${index}`).classList.remove('correct', 'incorrect');
+                    });
+                    document.getElementById('resultArea').innerHTML = '';
+                    document.getElementById('certificateArea').innerHTML = '';
+                    document.getElementById('checkButton').innerText = 'Check All Answers';
+                    // Re-focus first input
+                    setTimeout(() => {
+                        const firstInput = document.querySelector('.answer-input');
+                        if (firstInput) {
+                            firstInput.focus();
+                            firstInput.select();
+                        }
+                    }, 100);
+                };
+            }
+            
+            // Scroll to certificate if it exists
+            if (isPerfect) {
+                certificateArea.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                resultArea.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        function resetQuiz() {
+            if (confirm("Start a new quiz with different questions?")) {
+                generateNewQuiz();
+            }
+        }
+        
+        // Allow pressing Enter in name input to start quiz
+        document.getElementById('studentNameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                startQuiz();
+            }
+        });
+    </script>
+</body>
+</html>
