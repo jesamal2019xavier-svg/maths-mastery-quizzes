@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algebra: Solving Equations (Advanced) – Final</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        body {
+            background: linear-gradient(145deg, #f0f4fa 0%, #e6ecf5 100%);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+        .card {
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(8px);
+            border-radius: 30px;
+            box-shadow: 0 12px 30px rgba(0,10,30,0.2);
+            padding: 1.5rem 1.8rem;
+            width: 100%;
+            max-width: 800px;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        h1 {
+            margin: 0 0 0.2rem 0;
+            font-weight: 600;
+            font-size: 1.8rem;
+            color: #0b2b44;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 0.4rem;
+        }
+        .header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin: 0.5rem 0 0.8rem 0;
+        }
+        .stage-box {
+            background: #0b2b44;
+            color: white;
+            border-radius: 40px;
+            padding: 0.3rem 1.2rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+            box-shadow: 0 3px 0 #041a2b;
+            display: inline-block;
+        }
+        .streak-box {
+            background: #1e6f9f;
+            color: white;
+            border-radius: 40px;
+            padding: 0.3rem 1.2rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+            box-shadow: 0 3px 0 #0f3b5e;
+        }
+        .teacher-icon {
+            cursor: pointer;
+            font-size: 1.4rem;
+            margin-left: 10px;
+            color: #475569;
+        }
+        .teacher-icon:hover {
+            color: #0b2b44;
+        }
+        .teacher-panel {
+            display: none;
+            margin-top: 10px;
+            background: #f0f4fa;
+            padding: 10px 15px;
+            border-radius: 30px;
+            align-items: center;
+            gap: 10px;
+        }
+        .teacher-panel label {
+            font-weight: 600;
+            color: #1e4b6e;
+        }
+        .teacher-panel input {
+            width: 80px;
+            padding: 0.3rem;
+            border: 2px solid #b9d3ec;
+            border-radius: 20px;
+            text-align: center;
+        }
+        .teacher-panel button {
+            background: #0b5e8e;
+            border: none;
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+        .lesson-box {
+            background: #e9f0f9;
+            border-left: 6px solid #1e6f9f;
+            border-radius: 20px;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0 1.5rem 0;
+            font-size: 1rem;
+            color: #0b2b44;
+            position: relative;
+        }
+        .lesson-box .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: #475569;
+        }
+        .lesson-box .close-btn:hover {
+            color: #0b2b44;
+        }
+        .diagram {
+            text-align: center;
+            margin: 0.5rem 0;
+        }
+        svg {
+            max-width: 100%;
+            height: auto;
+            border: 1px dashed #b0c4d9;
+            border-radius: 10px;
+            background: #f9fbfd;
+        }
+        .question-desc {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #0f3b5e;
+            margin: 1rem 0 0.5rem 0;
+            line-height: 1.5;
+        }
+        .part-container {
+            margin: 0.5rem 0 1rem 0;
+            padding: 0.5rem;
+            background: #f8fafc;
+            border-radius: 20px;
+        }
+        .part-label {
+            font-weight: 700;
+            color: #1e4b6e;
+            margin-right: 10px;
+            font-size: 1.1rem;
+            display: inline-block;
+        }
+        .answer-input {
+            width: 100%;
+            padding: 0.8rem 1.2rem;
+            border: 2px solid #b9d3ec;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            outline: none;
+            font-family: 'Courier New', monospace;
+        }
+        .answer-input:focus {
+            border-color: #0b5e8e;
+            box-shadow: 0 0 0 3px rgba(17, 107, 175, 0.2);
+        }
+        button {
+            background: #0b5e8e;
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 0.8rem 1.8rem;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.15s;
+            border-bottom: 3px solid #073a57;
+            box-shadow: 0 4px 8px rgba(0,30,60,0.2);
+        }
+        button:hover {
+            background: #0f6fa8;
+            transform: translateY(-1px);
+        }
+        button:active {
+            transform: translateY(2px);
+            border-bottom-width: 2px;
+        }
+        button:disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .feedback {
+            margin: 1rem 0;
+            padding: 0.8rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 500;
+            background: #f8fafc;
+            border-left: 6px solid #94a3b8;
+        }
+        .feedback.correct {
+            background: #e6f7e6;
+            border-left-color: #2e7d32;
+            color: #1e4a2a;
+        }
+        .feedback.incorrect {
+            background: #ffebee;
+            border-left-color: #b71c1c;
+            color: #941212;
+        }
+        .reset-btn {
+            background: #475569;
+            border-bottom-color: #1e293b;
+            margin-right: 8px;
+        }
+        .note {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #4b5a6b;
+            background: #e9edf2;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+        }
+        .certificate-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .certificate-content {
+            background: linear-gradient(135deg, #f9f9ff, #ffffff);
+            border-radius: 30px;
+            width: 90%;
+            max-width: 400px;
+            padding: 30px;
+            text-align: center;
+            border: 8px solid #3498db;
+            position: relative;
+        }
+        .certificate-header {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        .certificate-divider {
+            height: 3px;
+            background: linear-gradient(to right, transparent, #3498db, transparent);
+            margin: 20px 0;
+        }
+        .certificate-name {
+            font-size: 2rem;
+            color: #2c3e50;
+            background: #f0f7ff;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        .certificate-close {
+            position: absolute;
+            top: 10px; right: 10px;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div id="certificateModal" class="certificate-modal">
+        <div class="certificate-content">
+            <button class="certificate-close" id="certificateClose">&times;</button>
+            <div class="certificate-header">🎓 Certificate of Mastery</div>
+            <div class="certificate-divider"></div>
+            <div class="certificate-text">Awarded to</div>
+            <div class="certificate-name" id="certStudentName">Student</div>
+            <div>for completing all 11 levels of</div>
+            <div style="font-weight:700; margin:10px 0;">Advanced Equations</div>
+            <div id="certDate"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h1>
+            <i>📐</i> Solving Equations (Advanced)
+            <span class="teacher-icon" id="teacherIcon" title="Teacher settings">⚙️</span>
+        </h1>
+        <p style="color: #1f4b73;">Get <strong><span id="targetDisplay">3</span> consecutive correct</strong> per level to advance.</p>
+        
+        <div class="header-row">
+            <div class="stage-box" id="stageDisplay">Level 1 · Q1</div>
+            <div class="streak-box" id="streakDisplay">🔥 0 / 3</div>
+            <div id="teacherPanel" class="teacher-panel">
+                <label for="targetInput">Target per level:</label>
+                <input type="number" id="targetInput" min="1" max="10" value="3" step="1">
+                <button id="setTargetBtn">Set</button>
+                <span style="color:#666; font-size:0.9rem;">(teacher)</span>
+            </div>
+        </div>
+
+        <div id="lessonBox" class="lesson-box" style="display: none;">
+            <span class="close-btn" id="closeLessonBtn">&times;</span>
+            <div id="lessonContent">🔹 **Advanced equations**<br>Read each question carefully and enter your answers.</div>
+        </div>
+
+        <div class="diagram" id="diagramContainer">
+            <svg width="300" height="170" viewBox="0 0 300 170" id="shapeSVG">
+                <!-- Diagram will be drawn here -->
+            </svg>
+        </div>
+
+        <div id="quizParts"></div>
+
+        <div class="feedback" id="feedbackMessage">
+            Enter all answers and click Check.
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 0.5rem;">
+            <button id="submitBtn">✓ Check Answers</button>
+            <button id="resetBtn" class="reset-btn">⟲ Reset all levels</button>
+            <button id="newQuestionBtn" style="background: #3b6e4b; border-bottom-color: #1f472a;">🎲 New question</button>
+        </div>
+
+        <div class="note">
+            ✅ For expressions, use x as variable (e.g., 13x+11). For values, enter numbers.<br>
+            ⭐ After a wrong answer, the correct answers are shown.
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const VERSION = 11; // Final version with Q10 tolerant parsing and auto-focus
+
+            function randBetween(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+            function randomFromArray(arr) {
+                return arr[Math.floor(Math.random() * arr.length)];
+            }
+
+            // Helper to format a term like "ax+b" without "1x"
+            function formatTerm(coeff, varName, constant) {
+                let term = '';
+                if (coeff === 1) term = varName;
+                else if (coeff === -1) term = '-' + varName;
+                else term = coeff + varName;
+                if (constant > 0) term += '+' + constant;
+                else if (constant < 0) term += constant;
+                return term;
+            }
+
+            function normalizeExpr(s) {
+                return s.replace(/\s+/g, '').toLowerCase().replace(/−/g, '-');
+            }
+
+            function isExprCorrect(userExpr, correctExpr) {
+                const normUser = normalizeExpr(userExpr);
+                let variants = [correctExpr];
+                variants.push(correctExpr.replace(/(\d)x/g, '$1*x'));
+                variants.push(correctExpr.replace(/([+-])/g, ' $1 ').trim());
+                variants.push(correctExpr.replace(/(\d)x/g, '$1 x'));
+                if (correctExpr.includes('+')) variants.push(correctExpr.replace(/\+/g, ' + '));
+                variants = [...new Set(variants)];
+                return variants.some(v => normalizeExpr(v) === normUser);
+            }
+
+            function isNumCorrect(userVal, correctVal) {
+                let num = parseFloat(userVal);
+                return !isNaN(num) && Math.abs(num - correctVal) < 0.0001;
+            }
+
+            // Special for Q10: accepts comma-separated numbers in any order, ignoring spaces
+            function isAngleListCorrect(userAns, correctAngles) {
+                // userAns: e.g., "29, 70, 81" or "70,29,81" etc.
+                let parts = userAns.split(',').map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
+                if (parts.length !== 3) return false;
+                parts.sort((a,b)=>a-b);
+                let correctSorted = [...correctAngles].sort((a,b)=>a-b);
+                return Math.abs(parts[0]-correctSorted[0])<0.0001 &&
+                       Math.abs(parts[1]-correctSorted[1])<0.0001 &&
+                       Math.abs(parts[2]-correctSorted[2])<0.0001;
+            }
+
+            const generators = [];
+
+            // ----- Q1: Triangle with fixed shape and fixed label positions -----
+            generators.push(function() {
+                let a,b,c,d,e,f,x;
+                let valid = false;
+                let attempts = 0;
+                while (!valid && attempts < 20) {
+                    a = randBetween(1,6); b = randBetween(1,6); c = randBetween(1,6); d = randBetween(1,6); e = randBetween(1,6); f = randBetween(1,6); x = randBetween(2,10);
+                    let L1 = a*x + b;
+                    let L2 = c*x - d;
+                    let L3 = e*x + f;
+                    if (L2 <= 0) continue;
+                    if (L1 + L2 <= L3 || L1 + L3 <= L2 || L2 + L3 <= L1) continue;
+                    valid = true;
+                }
+                if (!valid) { a=2; b=3; c=1; d=1; e=1; f=2; x=5; }
+                let side1 = formatTerm(a, 'x', b);
+                let side2 = c + 'x' + (d>0 ? '-'+d : '+' + (-d));
+                if (c === 1) side2 = 'x' + (d>0 ? '-'+d : '+' + (-d));
+                else side2 = c + 'x' + (d>0 ? '-'+d : '+' + (-d));
+                let side3 = formatTerm(e, 'x', f);
+                let coeffSum = a + c + e;
+                let constSum = b - d + f;
+                let perimeterExpr = (coeffSum === 1 ? '' : coeffSum) + 'x';
+                if (constSum > 0) perimeterExpr += '+' + constSum;
+                else if (constSum < 0) perimeterExpr += constSum;
+                let perimeterVal = coeffSum * x + constSum;
+                let desc = "The lengths, in cm, of the sides of a triangle are shown.";
+                let parts = [
+                    { label: "a) Write an expression for the perimeter.", answer: perimeterExpr, type: 'expr' },
+                    { label: "b) The perimeter is " + perimeterVal + " cm. Find x.", answer: x, type: 'num' }
+                ];
+                function draw(svg) {
+                    svg.innerHTML = '';
+                    let pts = [[50,140], [250,140], [150,30]];
+                    let poly = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                    poly.setAttribute("points", pts.map(p=>p.join(',')).join(' '));
+                    poly.setAttribute("fill", "none");
+                    poly.setAttribute("stroke", "#0b2b44");
+                    poly.setAttribute("stroke-width", "2");
+                    svg.appendChild(poly);
+                    let labels = [
+                        { x: 95, y: 85, text: side1 },
+                        { x: 205, y: 85, text: side2 },
+                        { x: 150, y: 150, text: side3 }
+                    ];
+                    labels.forEach(l => {
+                        let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                        text.setAttribute("x", l.x);
+                        text.setAttribute("y", l.y);
+                        text.setAttribute("fill", "#0b2b44");
+                        text.setAttribute("font-size", "14");
+                        text.setAttribute("font-weight", "600");
+                        text.setAttribute("text-anchor", "middle");
+                        text.textContent = l.text;
+                        svg.appendChild(text);
+                    });
+                }
+                return { desc, parts, draw };
+            });
+
+            // ----- Q2: Rectangle -----
+            generators.push(function() {
+                let a = randBetween(4,6);
+                let b = randBetween(4,6);
+                let c = randBetween(1,4);
+                let d = randBetween(1,4);
+                let x = randBetween(1,5);
+                let coeff = 2*(a+c);
+                let constTerm = 2*(b+d);
+                let perimeterExpr = (coeff === 1 ? '' : coeff) + 'x';
+                if (constTerm > 0) perimeterExpr += '+' + constTerm;
+                else if (constTerm < 0) perimeterExpr += constTerm;
+                let perimeterVal = coeff * x + constTerm;
+                let lengthStr = formatTerm(a, 'x', b);
+                let widthStr = formatTerm(c, 'x', d);
+                let desc = "A rectangle has length " + lengthStr + " cm and width " + widthStr + " cm.";
+                let parts = [
+                    { label: "a) Find an expression for the perimeter.", answer: perimeterExpr, type: 'expr' },
+                    { label: "b) The perimeter is " + perimeterVal + " cm. Find x.", answer: x, type: 'num' }
+                ];
+                function draw(svg) {
+                    svg.innerHTML = '';
+                    let rectX = 70, rectY = 70, rectW = 160, rectH = 80;
+                    let rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    rect.setAttribute("x", rectX);
+                    rect.setAttribute("y", rectY);
+                    rect.setAttribute("width", rectW);
+                    rect.setAttribute("height", rectH);
+                    rect.setAttribute("fill", "none");
+                    rect.setAttribute("stroke", "#0b2b44");
+                    rect.setAttribute("stroke-width", "2");
+                    svg.appendChild(rect);
+                    let lenLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    lenLabel.setAttribute("x", rectX + rectW/2);
+                    lenLabel.setAttribute("y", rectY - 10);
+                    lenLabel.setAttribute("fill", "#0b2b44");
+                    lenLabel.setAttribute("font-size", "14");
+                    lenLabel.setAttribute("font-weight", "600");
+                    lenLabel.setAttribute("text-anchor", "middle");
+                    lenLabel.textContent = lengthStr;
+                    svg.appendChild(lenLabel);
+                    let widLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    widLabel.setAttribute("x", rectX + rectW + 15);
+                    widLabel.setAttribute("y", rectY + rectH/2);
+                    widLabel.setAttribute("fill", "#0b2b44");
+                    widLabel.setAttribute("font-size", "14");
+                    widLabel.setAttribute("font-weight", "600");
+                    widLabel.setAttribute("text-anchor", "start");
+                    widLabel.textContent = widthStr;
+                    svg.appendChild(widLabel);
+                }
+                return { desc, parts, draw };
+            });
+
+            // ----- Q3: Angles around a point (improved diagram) -----
+            generators.push(function() {
+                let cList = [9,10,15,18,27];
+                let c = randomFromArray(cList);
+                let maxA = Math.min(10, c-1);
+                let a = randBetween(3, maxA);
+                let b = c - a;
+                let x = 270 / c;
+                let desc = "The diagram shows three angles around a point. Find the value of x.";
+                let parts = [
+                    { label: "x =", answer: x, type: 'num' }
+                ];
+                function draw(svg) {
+                    svg.innerHTML = '';
+                    let cx = 150, cy = 85;
+                    let angles = [0, a*x, a*x + b*x];
+                    function degToRad(d) { return d * Math.PI / 180; }
+                    let r = 55;
+                    for (let i=0; i<3; i++) {
+                        let ang = angles[i];
+                        let endX = cx + r * Math.cos(degToRad(ang));
+                        let endY = cy + r * Math.sin(degToRad(ang));
+                        let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        line.setAttribute("x1", cx);
+                        line.setAttribute("y1", cy);
+                        line.setAttribute("x2", endX);
+                        line.setAttribute("y2", endY);
+                        line.setAttribute("stroke", "#0b2b44");
+                        line.setAttribute("stroke-width", "2");
+                        svg.appendChild(line);
+                    }
+                    let labelDist = 28;
+                    let sectors = [
+                        { start: 0, end: a*x, label: (a===1?'':a) + 'x°' },
+                        { start: a*x, end: a*x + b*x, label: (b===1?'':b) + 'x°' }
+                    ];
+                    sectors.forEach(sec => {
+                        let mid = (sec.start + sec.end) / 2;
+                        let rad = degToRad(mid);
+                        let labX = cx + labelDist * Math.cos(rad);
+                        let labY = cy + labelDist * Math.sin(rad);
+                        let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                        text.setAttribute("x", labX);
+                        text.setAttribute("y", labY);
+                        text.setAttribute("fill", "#0b2b44");
+                        text.setAttribute("font-size", "14");
+                        text.setAttribute("font-weight", "600");
+                        text.setAttribute("text-anchor", "middle");
+                        text.textContent = sec.label;
+                        svg.appendChild(text);
+                    });
+                    let d = 12;
+                    let ang1 = angles[2];
+                    let ang2 = 0;
+                    let x1 = cx + d * Math.cos(degToRad(ang1));
+                    let y1 = cy + d * Math.sin(degToRad(ang1));
+                    let x2 = cx + d * Math.cos(degToRad(ang2));
+                    let y2 = cy + d * Math.sin(degToRad(ang2));
+                    let x3 = x1 + x2 - cx;
+                    let y3 = y1 + y2 - cy;
+                    let square = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                    square.setAttribute("points", `${cx},${cy} ${x1},${y1} ${x3},${y3} ${x2},${y2}`);
+                    square.setAttribute("fill", "none");
+                    square.setAttribute("stroke", "#0b2b44");
+                    square.setAttribute("stroke-width", "1.5");
+                    svg.appendChild(square);
+                }
+                return { desc, parts, draw };
+            });
+
+            // ----- Q4: Right triangle area -----
+            generators.push(function() {
+                let a = randBetween(2,6);
+                let b = randBetween(2,6);
+                let x = randBetween(2,6);
+                if ((a*b*x*x) % 2 !== 0) { a = 2; }
+                let area = 0.5 * a * b * x * x;
+                let desc = "A right-angled triangle has legs of length " + (a===1?'':a) + "x cm and " + (b===1?'':b) + "x cm.";
+                let parts = [
+                    { label: "The area is " + area + " cm². Find x.", answer: x, type: 'num' }
+                ];
+                function draw(svg) {
+                    svg.innerHTML = '';
+                    let baseX = 100, baseY = 120, legX = 120, legY = 40;
+                    let poly = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                    poly.setAttribute("points", `${baseX},${baseY} ${baseX+legX},${baseY} ${baseX},${baseY-legY}`);
+                    poly.setAttribute("fill", "none");
+                    poly.setAttribute("stroke", "#0b2b44");
+                    poly.setAttribute("stroke-width", "2");
+                    svg.appendChild(poly);
+                    let leg1 = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    leg1.setAttribute("x", baseX + legX/2);
+                    leg1.setAttribute("y", baseY + 15);
+                    leg1.setAttribute("fill", "#0b2b44");
+                    leg1.setAttribute("font-size", "14");
+                    leg1.setAttribute("font-weight", "600");
+                    leg1.setAttribute("text-anchor", "middle");
+                    leg1.textContent = (a===1?'':a) + 'x';
+                    svg.appendChild(leg1);
+                    let leg2 = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    leg2.setAttribute("x", baseX - 20);
+                    leg2.setAttribute("y", baseY - legY/2);
+                    leg2.setAttribute("fill", "#0b2b44");
+                    leg2.setAttribute("font-size", "14");
+                    leg2.setAttribute("font-weight", "600");
+                    leg2.setAttribute("text-anchor", "middle");
+                    leg2.textContent = (b===1?'':b) + 'x';
+                    svg.appendChild(leg2);
+                }
+                return { desc, parts, draw };
+            });
+
+            // ----- Q5: Triangle angles (with formatting) -----
+            generators.push(function() {
+                let maxAttempts = 500;
+                let found = false;
+                let a,c,e,b,d,f,x;
+                for (let attempt = 0; attempt < maxAttempts; attempt++) {
+                    x = randBetween(20, 30);
+                    let p = Math.floor(180 / x);
+                    let q = 180 - x * p;
+                    if (p < 3) continue;
+                    a = randBetween(1, p - 2);
+                    c = randBetween(1, p - a - 1);
+                    e = p - a - c;
+                    if (a <= 0 || c <= 0 || e <= 0) continue;
+                    b = randBetween(1, 30);
+                    d = randBetween(1, 30);
+                    let fVal = b + d - q;
+                    if (fVal <= 0 || fVal > 50) continue;
+                    if (e * x <= fVal) continue;
+                    f = fVal;
+                    found = true;
+                    break;
+                }
+                if (!found) { x = 24; a=2; c=2; e=3; b=5; d=8; f=1; }
+                let exprA = formatTerm(a, 'x', b);
+                let exprC = formatTerm(c, 'x', d);
+                let exprE = e + 'x' + (f > 0 ? '-' + f : '');
+                if (e === 1) exprE = 'x' + (f > 0 ? '-' + f : '');
+                else exprE = e + 'x' + (f > 0 ? '-' + f : '');
+                let desc = `The angles of a triangle are ${exprA}°, ${exprC}°, and ${exprE}°.`;
+                let parts = [
+                    { label: "Find the value of x.", answer: x, type: 'num' }
+                ];
+                function draw(svg) {
+                    svg.innerHTML = '';
+                    let pts = [[70,140], [230,140], [150,40]];
+                    let poly = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                    poly.setAttribute("points", pts.map(p=>p.join(',')).join(' '));
+                    poly.setAttribute("fill", "none");
+                    poly.setAttribute("stroke", "#0b2b44");
+                    poly.setAttribute("stroke-width", "2");
+                    svg.appendChild(poly);
+                    let labels = [
+                        { pos: [40,120], text: exprA + '°' },
+                        { pos: [240,120], text: exprC + '°' },
+                        { pos: [140,20], text: exprE + '°' }
+                    ];
+                    labels.forEach(l => {
+                        let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                        text.setAttribute("x", l.pos[0]);
+                        text.setAttribute("y", l.pos[1]);
+                        text.setAttribute("fill", "#0b2b44");
+                        text.setAttribute("font-size", "14");
+                        text.setAttribute("font-weight", "600");
+                        text.setAttribute("text-anchor", "middle");
+                        text.textContent = l.text;
+                        svg.appendChild(text);
+                    });
+                }
+                return { desc, parts, draw };
+            });
+
+            // ----- Q6: Rectangle with opposite sides and width x (fixed with a≠c) -----
+            generators.push(function() {
+                let a, b, c, x, d;
+                let valid = false;
+                let attempts = 0;
+                while (!valid && attempts < 100) {
+                    a = randBetween(2,6);
+                    c = randBetween(2,6);
+                    if (a === c) continue;
+                    b = randBetween(2,6);
+                    x = randBetween(2,6);
+                    d = (a - c) * x + b;
+                    if (d > 0) valid = true;
+                    attempts++;
+                }
+                if (!valid) { a=3; b=4; c=2; x=3; d = (3-2)*3+4; }
+                let length = a*x + b;
+                let width = x;
+                let perimeter = 2 * (length + width);
+                let topStr = formatTerm(a, 'x', b);
+                let bottomStr = formatTerm(c, 'x', d);
+                let desc = "A rectangle has one side " + topStr + " cm, the opposite side " + bottomStr + " cm, and width x cm.";
+                let parts = [
+                    { label: "Find the perimeter of the rectangle.", answer: perimeter, type: 'num' }
+                ];
+                function draw(svg) {
+                    svg.innerHTML = '';
+                    let rectX = 70, rectY = 70, rectW = 160, rectH = 60;
+                    let rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    rect.setAttribute("x", rectX);
+                    rect.setAttribute("y", rectY);
+                    rect.setAttribute("width", rectW);
+                    rect.setAttribute("height", rectH);
+                    rect.setAttribute("fill", "none");
+                    rect.setAttribute("stroke", "#0b2b44");
+                    rect.setAttribute("stroke-width", "2");
+                    svg.appendChild(rect);
+                    let top = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    top.setAttribute("x", rectX + rectW/2);
+                    top.setAttribute("y", rectY - 10);
+                    top.setAttribute("fill", "#0b2b44");
+                    top.setAttribute("font-size", "14");
+                    top.setAttribute("font-weight", "600");
+                    top.setAttribute("text-anchor", "middle");
+                    top.textContent = topStr;
+                    svg.appendChild(top);
+                    let bottom = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    bottom.setAttribute("x", rectX + rectW/2);
+                    bottom.setAttribute("y", rectY + rectH + 20);
+                    bottom.setAttribute("fill", "#0b2b44");
+                    bottom.setAttribute("font-size", "14");
+                    bottom.setAttribute("font-weight", "600");
+                    bottom.setAttribute("text-anchor", "middle");
+                    bottom.textContent = bottomStr;
+                    svg.appendChild(bottom);
+                    let wid = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    wid.setAttribute("x", rectX + rectW + 15);
+                    wid.setAttribute("y", rectY + rectH/2);
+                    wid.setAttribute("fill", "#0b2b44");
+                    wid.setAttribute("font-size", "14");
+                    wid.setAttribute("font-weight", "600");
+                    wid.setAttribute("text-anchor", "start");
+                    wid.textContent = 'x';
+                    svg.appendChild(wid);
+                }
+                return { desc, parts, draw };
+            });
+
+            // ----- Q7: Rectangle and triangle perimeters equal (with formatting) -----
+            generators.push(function() {
+                let a = randBetween(1,4);
+                let c = randBetween(1,4);
+                let e = randBetween(1,4);
+                let x = randBetween(1,5);
+                let b = randBetween(2,7);
+                let d = randBetween(2,7);
+                let rectPerim = 2*( (a*x+b) + (c*x-d) );
+                let f = rectPerim - (1+2*e)*x;
+                while (f <= 0) {
+                    x = randBetween(1,5);
+                    rectPerim = 2*( (a*x+b) + (c*x-d) );
+                    f = rectPerim - (1+2*e)*x;
+                }
+                let topStr = formatTerm(a, 'x', b);
+                let rightStr = c + 'x' + (d>0 ? '-'+d : '+' + (-d));
+                if (c === 1) rightStr = 'x' + (d>0 ? '-'+d : '+' + (-d));
+                else rightStr = c + 'x' + (d>0 ? '-'+d : '+' + (-d));
+                let triSide1 = (e===1?'x': e+'x');
+                let triSide2 = (e===1?'x': e+'x') + (f>0 ? '+' + f : '');
+                let desc = "A rectangle with sides " + topStr + " cm and " + rightStr + " cm has the same perimeter as a triangle with sides x, " + triSide1 + ", and " + triSide2 + " cm.";
+                let parts = [
+                    { label: "Find x.", answer: x, type: 'num' }
+                ];
+                function draw(svg) {
+                    svg.innerHTML = '';
+                    let rectX = 30, rectY = 80, rectW = 100, rectH = 60;
+                    let rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    rect.setAttribute("x", rectX);
+                    rect.setAttribute("y", rectY);
+                    rect.setAttribute("width", rectW);
+                    rect.setAttribute("height", rectH);
+                    rect.setAttribute("fill", "none");
+                    rect.setAttribute("stroke", "#0b2b44");
+                    rect.setAttribute("stroke-width", "2");
+                    svg.appendChild(rect);
+                    let top = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    top.setAttribute("x", rectX + rectW/2);
+                    top.setAttribute("y", rectY - 10);
+                    top.setAttribute("fill", "#0b2b44");
+                    top.setAttribute("font-size", "12");
+                    top.setAttribute("font-weight", "600");
+                    top.setAttribute("text-anchor", "middle");
+                    top.textContent = topStr;
+                    svg.appendChild(top);
+                    let right = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    right.setAttribute("x", rectX + rectW + 15);
+                    right.setAttribute("y", rectY + rectH/2);
+                    right.setAttribute("fill", "#0b2b44");
+                    right.setAttribute("font-size", "12");
+                    right.setAttribute("font-weight", "600");
+                    right.setAttribute("text-anchor", "start");
+                    right.textContent = rightStr;
+                    svg.appendChild(right);
+                    let triX = 170, triY = 80, triBase = 80, triHeight = 60;
+                    let tri = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                    tri.setAttribute("points", `${triX},${triY+triHeight} ${triX+triBase},${triY+triHeight} ${triX+triBase/2},${triY}`);
+                    tri.setAttribute("fill", "none");
+                    tri.setAttribute("stroke", "#0b2b44");
+                    tri.setAttribute("stroke-width", "2");
+                    svg.appendChild(tri);
+                    let baseLab = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    baseLab.setAttribute("x", triX + triBase/2);
+                    baseLab.setAttribute("y", triY + triHeight + 15);
+                    baseLab.setAttribute("fill", "#0b2b44");
+                    baseLab.setAttribute("font-size", "12");
+                    baseLab.setAttribute("font-weight", "600");
+                    baseLab.setAttribute("text-anchor", "middle");
+                    baseLab.textContent = 'x';
+                    svg.appendChild(baseLab);
+                    let leftSide = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    leftSide.setAttribute("x", triX + triBase/4);
+                    leftSide.setAttribute("y", triY + triHeight/2 - 5);
+                    leftSide.setAttribute("fill", "#0b2b44");
+                    leftSide.setAttribute("font-size", "12");
+                    leftSide.setAttribute("font-weight", "600");
+                    leftSide.setAttribute("text-anchor", "middle");
+                    leftSide.textContent = (e===1?'x': e+'x');
+                    svg.appendChild(leftSide);
+                    let rightSide = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    rightSide.setAttribute("x", triX + 3*triBase/4);
+                    rightSide.setAttribute("y", triY + triHeight/2 - 5);
+                    rightSide.setAttribute("fill", "#0b2b44");
+                    rightSide.setAttribute("font-size", "12");
+                    rightSide.setAttribute("font-weight", "600");
+                    rightSide.setAttribute("text-anchor", "middle");
+                    rightSide.textContent = (e===1?'x': e+'x') + (f>0 ? '+' + f : '');
+                    svg.appendChild(rightSide);
+                }
+                return { desc, parts, draw };
+            });
+
+            // ----- Q8: Parallelogram (updated) -----
+            generators.push(function() {
+                let a, c, b, d, x, w;
+                let attempts = 0;
+                let valid = false;
+                while (!valid && attempts < 100) {
+                    a = randBetween(2,6);
+                    c = randBetween(a+1, 8); // ensure c > a
+                    let diff = c - a;
+                    // choose x integer, then set sum b+d = diff * x
+                    x = randBetween(2,10);
+                    let sum = diff * x;
+                    // choose b randomly between 1 and sum-1
+                    if (sum > 1) {
+                        b = randBetween(1, sum-1);
+                        d = sum - b;
+                        // need d > 0, which it is
+                        valid = true;
+                    }
+                    attempts++;
+                }
+                if (!valid) { a=2; c=3; x=5; b=4; d=6; } // fallback
+                w = randBetween(5,10);
+                let base = a*x + b;
+                let area = base * w;
+                let topStr = formatTerm(a, 'x', b);
+                let bottomStr = c + 'x' + (d>0 ? '-'+d : '+' + (-d));
+                if (c === 1) bottomStr = 'x' + (d>0 ? '-'+d : '+' + (-d));
+                else bottomStr = c + 'x' + (d>0 ? '-'+d : '+' + (-d));
+                let desc = "ABCD is a parallelogram. AB = " + topStr + " cm, DC = " + bottomStr + " cm. The perpendicular height is " + w + " cm. Find the area of ABCD.";
+                let parts = [
+                    { label: "Area =", answer: area, type: 'num' }
+                ];
+                function draw(svg) {
+                    svg.innerHTML = '';
+                    let baseX = 50, baseY = 120, baseW = 200, offset = 40;
+                    let pts = [
+                        [baseX, baseY],
+                        [baseX+baseW, baseY],
+                        [baseX+baseW-offset, baseY-50],
+                        [baseX-offset, baseY-50]
+                    ];
+                    let poly = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                    poly.setAttribute("points", pts.map(p=>p.join(',')).join(' '));
+                    poly.setAttribute("fill", "none");
+                    poly.setAttribute("stroke", "#0b2b44");
+                    poly.setAttribute("stroke-width", "2");
+                    svg.appendChild(poly);
+                    let top = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    top.setAttribute("x", baseX + baseW/2 - offset/2);
+                    top.setAttribute("y", baseY - 60);
+                    top.setAttribute("fill", "#0b2b44");
+                    top.setAttribute("font-size", "14");
+                    top.setAttribute("font-weight", "600");
+                    top.setAttribute("text-anchor", "middle");
+                    top.textContent = topStr;
+                    svg.appendChild(top);
+                    let bottom = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    bottom.setAttribute("x", baseX + baseW/2);
+                    bottom.setAttribute("y", baseY + 15);
+                    bottom.setAttribute("fill", "#0b2b44");
+                    bottom.setAttribute("font-size", "14");
+                    bottom.setAttribute("font-weight", "600");
+                    bottom.setAttribute("text-anchor", "middle");
+                    bottom.textContent = bottomStr;
+                    svg.appendChild(bottom);
+                    let hLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                    hLine.setAttribute("x1", baseX - offset);
+                    hLine.setAttribute("y1", baseY - 50);
+                    hLine.setAttribute("x2", baseX - offset);
+                    hLine.setAttribute("y2", baseY);
+                    hLine.setAttribute("stroke", "#0b2b44");
+                    hLine.setAttribute("stroke-dasharray", "4,4");
+                    svg.appendChild(hLine);
+                    let hText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    hText.setAttribute("x", baseX - offset - 15);
+                    hText.setAttribute("y", baseY - 25);
+                    hText.setAttribute("fill", "#0b2b44");
+                    hText.setAttribute("font-size", "14");
+                    hText.setAttribute("font-weight", "600");
+                    hText.setAttribute("text-anchor", "middle");
+                    hText.textContent = w + ' cm';
+                    svg.appendChild(hText);
+                }
+                return { desc, parts, draw };
+            });
+
+            // ----- Q9: Marbles (updated) -----
+            generators.push(function() {
+                let a = randBetween(10,20);
+                let k = randBetween(2,4);
+                let b = randBetween(1,5);
+                let T = (2*k+1)*a + b;
+                let chris = k*a + b;
+                let desc = "Adam has some marbles. Bradley has " + k + " times as many as Adam. Chris has " + b + " more than Bradley. Their total is " + T + ". How many marbles does Chris have?";
+                let parts = [
+                    { label: "Chris has", answer: chris, type: 'num' }
+                ];
+                function draw(svg) { svg.innerHTML = ''; }
+                return { desc, parts, draw };
+            });
+
+            // ----- Q10: Triangle angles (updated, no diagram, tolerant parsing) -----
+            generators.push(function() {
+                let k = randBetween(2,4);
+                // Determine valid s range
+                let low = Math.floor(180 / (2*k+1)) + 1;
+                let high = Math.ceil(180 / (k+2)) - 1;
+                if (low > high) { // fallback
+                    k = 2;
+                    low = Math.floor(180 / 5) + 1; // 36+1=37
+                    high = Math.ceil(180/4) - 1; // 45-1=44
+                }
+                let s = randBetween(low, high);
+                let a = 180 - (k+2)*s; // other angle = s + a, but a is the extra
+                let middle = s + a;
+                let largest = k * s;
+                // Ensure increasing order: s, middle, largest
+                let angles = [s, middle, largest].sort((x,y)=>x-y);
+                let desc = "The largest angle in a triangle is " + k + " times the smallest. The other angle is " + a + "° more than the smallest. Work out the three angles in increasing order.";
+                let parts = [
+                    { label: "Angles (°):", answer: angles, type: 'angles' } // custom type
+                ];
+                function draw(svg) { svg.innerHTML = ''; } // no diagram
+                return { desc, parts, draw };
+            });
+
+            // ----- Q11: Ages (updated) -----
+            generators.push(function() {
+                let A = randBetween(5,15);
+                let multipliers = [2,3,4];
+                let m = randomFromArray(multipliers);
+                let b = randBetween(5,10);
+                let T = (1 + 2*m) * A - b;
+                let lucy = m * A;
+                let word = m === 2 ? 'twice' : (m === 3 ? 'three times' : 'four times');
+                let desc = "Lucy is " + word + " as old as Alex. Lucy is " + b + " years older than Megan. The sum of their ages is " + T + ". Find Lucy's age.";
+                let parts = [
+                    { label: "Lucy is", answer: lucy, type: 'num' }
+                ];
+                function draw(svg) { svg.innerHTML = ''; }
+                return { desc, parts, draw };
+            });
+
+            const totalLevels = generators.length; // 11
+
+            // ----- State management with auto-focus -----
+            let currentStage = 0;
+            let streak = 0;
+            let target = 3;
+            let locked = false;
+            let currentQuestion = null;
+
+            const stageDisplay = document.getElementById('stageDisplay');
+            const streakDisplay = document.getElementById('streakDisplay');
+            const targetDisplay = document.getElementById('targetDisplay');
+            const quizParts = document.getElementById('quizParts');
+            const submitBtn = document.getElementById('submitBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const newBtn = document.getElementById('newQuestionBtn');
+            const feedbackEl = document.getElementById('feedbackMessage');
+            const teacherIcon = document.getElementById('teacherIcon');
+            const teacherPanel = document.getElementById('teacherPanel');
+            const targetInput = document.getElementById('targetInput');
+            const setTargetBtn = document.getElementById('setTargetBtn');
+            const lessonBox = document.getElementById('lessonBox');
+            const lessonContent = document.getElementById('lessonContent');
+            const closeLessonBtn = document.getElementById('closeLessonBtn');
+            const diagramContainer = document.getElementById('shapeSVG');
+            const certificateModal = document.getElementById('certificateModal');
+            const certificateClose = document.getElementById('certificateClose');
+            const certStudentName = document.getElementById('certStudentName');
+            const certDate = document.getElementById('certDate');
+
+            function showLesson() {
+                lessonContent.innerHTML = "🔹 **Advanced equations**<br>Read each question carefully and enter your answers.";
+                lessonBox.style.display = 'block';
+            }
+            closeLessonBtn.addEventListener('click', () => lessonBox.style.display = 'none');
+
+            function setupAutoFocus() {
+                // Set up Enter key to move to next input or submit if last
+                const inputs = document.querySelectorAll('.answer-input:not(:disabled)');
+                inputs.forEach((input, index) => {
+                    input.removeEventListener('keydown', input._keydownHandler);
+                    let handler = function(e) {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            if (index + 1 < inputs.length) {
+                                inputs[index + 1].focus();
+                            } else {
+                                submitBtn.click();
+                            }
+                        }
+                    };
+                    input._keydownHandler = handler;
+                    input.addEventListener('keydown', handler);
+                });
+                // Focus first input
+                setTimeout(() => {
+                    if (inputs.length > 0) inputs[0].focus();
+                }, 100);
+            }
+
+            function updateDisplay() {
+                stageDisplay.textContent = `Level ${currentStage+1} · Q${currentStage+1}`;
+                streakDisplay.innerHTML = `🔥 ${streak} / ${target}`;
+                targetDisplay.textContent = target;
+                if (currentQuestion) {
+                    let html = `<div class="question-desc">${currentQuestion.desc}</div>`;
+                    currentQuestion.parts.forEach((part, idx) => {
+                        html += `<div class="part-container">`;
+                        html += `<span class="part-label">${part.label}</span>`;
+                        html += `<input type="text" class="answer-input" id="answer-${idx}" placeholder="Enter answer" autocomplete="off">`;
+                        html += `</div>`;
+                    });
+                    quizParts.innerHTML = html;
+                    currentQuestion.draw(diagramContainer);
+                    setupAutoFocus();
+                } else {
+                    quizParts.innerHTML = '<p>Loading question...</p>';
+                }
+            }
+
+            function loadNewQuestion() {
+                currentQuestion = generators[currentStage]();
+                locked = false;
+                submitBtn.disabled = false;
+                for (let i=0; i<currentQuestion.parts.length; i++) {
+                    let inp = document.getElementById(`answer-${i}`);
+                    if (inp) inp.disabled = false;
+                }
+                updateDisplay();
+                for (let i=0; i<currentQuestion.parts.length; i++) {
+                    let inp = document.getElementById(`answer-${i}`);
+                    if (inp) inp.value = '';
+                }
+                saveState();
+            }
+
+            function reloadSameLevel() {
+                currentQuestion = generators[currentStage]();
+                updateDisplay();
+                for (let i=0; i<currentQuestion.parts.length; i++) {
+                    let inp = document.getElementById(`answer-${i}`);
+                    if (inp) inp.value = '';
+                }
+                saveState();
+            }
+
+            function checkPartCorrect(part, userAns) {
+                if (part.type === 'expr') {
+                    return isExprCorrect(userAns, part.answer);
+                } else if (part.type === 'num') {
+                    return isNumCorrect(userAns, part.answer);
+                } else if (part.type === 'angles') {
+                    return isAngleListCorrect(userAns, part.answer);
+                } else {
+                    return userAns === part.answer;
+                }
+            }
+
+            function handleCorrect() {
+                streak++;
+                updateDisplay();
+                feedbackEl.className = 'feedback correct';
+                feedbackEl.innerHTML = `✅ Correct! ${streak} in a row.`;
+                if (streak >= target) {
+                    if (currentStage === totalLevels - 1) {
+                        locked = true;
+                        submitBtn.disabled = true;
+                        for (let i=0; i<currentQuestion.parts.length; i++) {
+                            let inp = document.getElementById(`answer-${i}`);
+                            if (inp) inp.disabled = true;
+                        }
+                        feedbackEl.innerHTML = '🎉 Congratulations! You have mastered all levels.';
+                        showCertificate();
+                    } else {
+                        currentStage++;
+                        streak = 0;
+                        loadNewQuestion();
+                    }
+                } else {
+                    reloadSameLevel();
+                }
+                saveState();
+            }
+
+            function handleIncorrect() {
+                streak = 0;
+                updateDisplay();
+                let corrects = currentQuestion.parts.map(p => {
+                    if (p.type === 'angles') return p.answer.join(', ');
+                    return p.answer;
+                }).join('; ');
+                feedbackEl.className = 'feedback incorrect';
+                feedbackEl.innerHTML = `❌ Incorrect.<br>Correct answers: <strong>${corrects}</strong>`;
+                saveState();
+            }
+
+            submitBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (locked) return;
+                let allCorrect = true;
+                for (let i=0; i<currentQuestion.parts.length; i++) {
+                    let inp = document.getElementById(`answer-${i}`);
+                    if (!inp) { allCorrect = false; break; }
+                    let userAns = inp.value.trim();
+                    let part = currentQuestion.parts[i];
+                    if (!checkPartCorrect(part, userAns)) allCorrect = false;
+                }
+                if (allCorrect) {
+                    handleCorrect();
+                } else {
+                    handleIncorrect();
+                }
+            });
+
+            resetBtn.addEventListener('click', function() {
+                currentStage = 0;
+                streak = 0;
+                locked = false;
+                loadNewQuestion();
+                saveState();
+            });
+
+            newBtn.addEventListener('click', function() {
+                if (locked) return;
+                reloadSameLevel();
+            });
+
+            function revealTeacherPanel() {
+                if (prompt("Enter teacher password:") === "teacher") {
+                    teacherPanel.style.display = "flex";
+                } else {
+                    alert("Incorrect password.");
+                }
+            }
+            teacherIcon.addEventListener('click', revealTeacherPanel);
+
+            function setTarget() {
+                let newTarget = parseInt(targetInput.value, 10);
+                if (isNaN(newTarget) || newTarget < 1) newTarget = 1;
+                if (newTarget > 10) newTarget = 10;
+                target = newTarget;
+                targetInput.value = target;
+                updateDisplay();
+                saveState();
+            }
+            setTargetBtn.addEventListener('click', setTarget);
+
+            function showCertificate() {
+                let student = prompt("Enter your name for the certificate:", "Student") || "Student";
+                certStudentName.textContent = student;
+                certDate.textContent = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+                certificateModal.style.display = 'flex';
+            }
+            certificateClose.addEventListener('click', () => certificateModal.style.display = 'none');
+            window.addEventListener('click', (e) => {
+                if (e.target === certificateModal) certificateModal.style.display = 'none';
+            });
+
+            function saveState() {
+                localStorage.setItem('advEqFullState', JSON.stringify({ version: VERSION, currentStage, streak, target, locked }));
+            }
+            function loadState() {
+                const saved = localStorage.getItem('advEqFullState');
+                if (saved) {
+                    try {
+                        const s = JSON.parse(saved);
+                        if (s.version !== VERSION) {
+                            fullReset();
+                            return;
+                        }
+                        if (s.currentStage >= 0 && s.currentStage < totalLevels) {
+                            currentStage = s.currentStage;
+                            streak = s.streak || 0;
+                            target = s.target || 3;
+                            locked = s.locked || false;
+                        } else {
+                            fullReset();
+                            return;
+                        }
+                        if (locked) {
+                            submitBtn.disabled = true;
+                            for (let i=0; i<10; i++) {
+                                let inp = document.getElementById(`answer-${i}`);
+                                if (inp) inp.disabled = true;
+                            }
+                        }
+                        currentQuestion = generators[currentStage]();
+                        updateDisplay();
+                    } catch(e) { fullReset(); }
+                } else fullReset();
+            }
+            function fullReset() {
+                currentStage = 0;
+                streak = 0;
+                locked = false;
+                submitBtn.disabled = false;
+                for (let i=0; i<10; i++) {
+                    let inp = document.getElementById(`answer-${i}`);
+                    if (inp) inp.disabled = false;
+                }
+                target = parseInt(targetInput.value, 10) || 3;
+                targetInput.value = target;
+                currentQuestion = generators[0]();
+                updateDisplay();
+                localStorage.removeItem('advEqFullState');
+            }
+
+            showLesson();
+            loadState();
+        })();
+    </script>
+</body>
+</html>

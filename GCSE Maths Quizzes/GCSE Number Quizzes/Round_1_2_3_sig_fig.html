@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCSE Foundation: Rounding to Significant Figures</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            line-height: 1.6;
+            font-size: 20px;
+            background-color: #f8f9fa;
+        }
+        h1 { font-size: 2.5em; color: #2c3e50; }
+        h2 { font-size: 2em; }
+        h3 { font-size: 1.6em; }
+        p, .question, label { font-size: 1.3em; }
+
+        #intro-container, #quiz-container, #result-container {
+            margin: 20px 0;
+            padding: 25px;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        /* STICKY TIMER */
+        #timer-container {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            text-align: center;
+            font-size: 1.4em;
+            margin: 0 0 20px 0;
+            padding: 15px;
+            background-color: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        #time-remaining { color: #e74c3c; font-size: 1.7em; }
+
+        /* TWO-COLUMN QUESTION LAYOUT */
+        #quiz-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .question {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-left: 5px solid #3498db;
+            border-radius: 5px;
+            break-inside: avoid;
+        }
+
+        /* SIGNIFICANT FIGURES EXPLANATION */
+        .sf-rules {
+            background-color: #e8f4fc;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 5px solid #2c3e50;
+        }
+        .sf-rules h3 { margin-top: 0; }
+        .sf-rules ul { padding-left: 20px; }
+        .sf-example {
+            background-color: #fff3cd;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* CERTIFICATE STYLING (Final View) */
+        .certificate-view {
+            font-family: 'Georgia', serif;
+            width: 500px;
+            margin: 40px auto;
+            padding: 30px;
+            border: 12px double #2c3e50;
+            border-radius: 3px;
+            background-color: #ffffff;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            font-size: 1.1em;
+        }
+        .certificate-view h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+        .certificate-view .student-name {
+            color: #c0392b;
+            font-size: 2em;
+            font-weight: bold;
+            margin: 15px 0;
+            padding: 8px 0;
+            border-bottom: 3px solid #3498db;
+            display: inline-block;
+        }
+        .certificate-view .quiz-title {
+            font-size: 1.5em;
+            color: #27ae60;
+            margin: 10px 0;
+            font-style: italic;
+        }
+        .certificate-view .date {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-top: 20px;
+            font-size: 1em;
+        }
+
+        input[type="text"], input[type="number"] {
+            padding: 12px;
+            font-size: 1.1em;
+            margin: 8px 5px;
+            border: 2px solid #bdc3c7;
+            border-radius: 5px;
+            width: 140px;
+            text-align: center;
+        }
+        input:focus { border-color: #3498db; outline: none; }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 10px 5px;
+        }
+        button:hover { background-color: #2980b9; }
+        #start-btn { background-color: #27ae60; }
+        #start-btn:hover { background-color: #219653; }
+        #retry-btn { background-color: #9b59b6; }
+        #retry-btn:hover { background-color: #8e44ad; }
+
+        .correct { color: #27ae60; font-weight: bold; }
+        .incorrect { color: #e74c3c; }
+        #feedback-area {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+        }
+        
+        /* TABS FOR DIFFERENT NUMBER TYPES */
+        .tab-container {
+            margin: 20px 0;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #3498db;
+        }
+        .tab {
+            padding: 10px 20px;
+            background-color: #f1f2f6;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+        .tab.active {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-top: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* SPECIAL FOR TRAILING ZEROS */
+        .trailing-zero-note {
+            background-color: #ffeaa7;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        /* DIFFICULTY LEVEL */
+        .difficulty-note {
+            background-color: #d4edda;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 4px solid #27ae60;
+        }
+        
+        /* WARNING FOR ZERO */
+        .zero-warning {
+            background-color: #f8d7da;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 4px solid #dc3545;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div id="intro-container">
+        <h1>GCSE Foundation: Rounding to Significant Figures</h1>
+        <p>Enter your full name to begin. You will have <strong>10 minutes</strong> to complete <strong>20 questions</strong>.</p>
+        <p><strong>Rules:</strong> No calculators or external help allowed. You need all 20 correct to pass.</p>
+        
+        <div class="difficulty-note">
+            <strong>Foundation Level Notes:</strong> This quiz contains appropriate questions for GCSE Foundation level.
+            All numbers have enough digits to round to the required significant figures.
+        </div>
+        
+        <div class="zero-warning">
+            <strong>Note about zero:</strong> The number 0 doesn't have significant figures. In GCSE exams, you won't be asked to round 0 to significant figures. This quiz avoids such questions.
+        </div>
+        
+        <div class="sf-rules">
+            <h3>📚 Understanding Significant Figures</h3>
+            <p><strong>Significant figures</strong> are the digits that carry meaning in a number:</p>
+            <ul>
+                <li><strong>All non-zero digits</strong> are significant (1, 2, 3, 4, 5, 6, 7, 8, 9)</li>
+                <li><strong>Zeros between non-zero digits</strong> are significant (e.g., 103 has 3 sf)</li>
+                <li><strong>Leading zeros</strong> are NOT significant (e.g., 0.0056 has 2 sf)</li>
+                <li><strong>Trailing zeros:</strong></li>
+                <ul>
+                    <li>Trailing zeros in a whole number <strong>without a decimal point</strong> are ambiguous (e.g., 1200 could be 2, 3, or 4 sf)</li>
+                    <li>Trailing zeros <strong>after a decimal point</strong> ARE significant (e.g., 12.00 has 4 sf)</li>
+                </ul>
+            </ul>
+            
+            <div class="trailing-zero-note">
+                <strong>Important:</strong> In GCSE, if a question says "round 1200 to 2 significant figures", 
+                you would write it as 1200. The trailing zeros are needed to show the place value.
+            </div>
+            
+            <div class="tab-container">
+                <div class="tabs">
+                    <div class="tab active" onclick="showTab('examples')">Examples</div>
+                    <div class="tab" onclick="showTab('practice')">Quick Practice</div>
+                </div>
+                <div id="examples" class="tab-content active">
+                    <h4>Appropriate Foundation Level Examples:</h4>
+                    <div class="sf-example">
+                        <strong>To 1 significant figure:</strong><br>
+                        4.7 → 5 (from 4.7)<br>
+                        0.063 → 0.06 (from 0.063)<br>
+                        567 → 600 (from 567)<br>
+                        0.0078 → 0.008 (from 0.0078)
+                    </div>
+                    <div class="sf-example">
+                        <strong>To 2 significant figures:</strong><br>
+                        4.78 → 4.8 (from 4.78)<br>
+                        0.0634 → 0.063 (from 0.0634)<br>
+                        567 → 570 (from 567)<br>
+                        235467 → 240000 (from 235467)
+                    </div>
+                    <div class="sf-example">
+                        <strong>To 3 significant figures:</strong><br>
+                        4.782 → 4.78 (from 4.782)<br>
+                        0.06345 → 0.0635 (from 0.06345)<br>
+                        567.3 → 567 (from 567.3)<br>
+                        235467 → 235000 (from 235467)
+                    </div>
+                </div>
+                <div id="practice" class="tab-content">
+                    <h4>Try These:</h4>
+                    <p>Round 3.45 to 2 sf: <input type="text" id="practice1" size="8"> (Answer: 3.5)</p>
+                    <p>Round 0.0789 to 1 sf: <input type="text" id="practice2" size="8"> (Answer: 0.08)</p>
+                    <p>Round 1234 to 2 sf: <input type="text" id="practice3" size="8"> (Answer: 1200)</p>
+                    <p>Round 235467 to 3 sf: <input type="text" id="practice4" size="8"> (Answer: 235000)</p>
+                    <button onclick="checkPractice()">Check Practice Answers</button>
+                </div>
+            </div>
+        </div>
+        
+        <br>
+        <label for="student-name">Your Full Name: </label>
+        <input type="text" id="student-name" placeholder="e.g., Alex Johnson" size="30">
+        <br><br>
+        <button id="start-btn" onclick="startQuiz()">Start the Timed Quiz</button>
+    </div>
+
+    <div id="timer-container" style="display:none;">
+        <h3>⏰ Time Remaining:</h3>
+        <div id="time-remaining">10:00</div>
+    </div>
+
+    <div id="quiz-container" style="display:none;">
+        <h2>Quiz Questions</h2>
+        <form id="quiz-form"></form>
+        <button type="button" onclick="checkAnswers()">Submit All Answers</button>
+        <button type="button" onclick="resetQuiz()">Restart Quiz</button>
+    </div>
+
+    <div id="result-container" style="display:none;">
+        <h2 id="result-title">Quiz Result</h2>
+        <p id="score-display"></p>
+        <div id="feedback-area"></div>
+    </div>
+
+    <script>
+        // ============== CONFIGURATION ==============
+        const totalQuestions = 20;
+        const quizTimeMinutes = 10;
+
+        let timeLeft = quizTimeMinutes * 60;
+        let timerInterval = null;
+        let studentName = '';
+        let questions = [];
+        let userAnswers = new Array(totalQuestions).fill('');
+
+        // ============== TAB FUNCTIONALITY ==============
+        function showTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.querySelector(`.tab[onclick="showTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        function checkPractice() {
+            const answers = {
+                practice1: '3.5',
+                practice2: '0.08',
+                practice3: '1200',
+                practice4: '235000'
+            };
+            
+            for (let id in answers) {
+                const input = document.getElementById(id);
+                const userAnswer = input.value.trim();
+                if (userAnswer === answers[id]) {
+                    input.style.backgroundColor = '#d4edda';
+                } else {
+                    input.style.backgroundColor = '#f8d7da';
+                    input.title = `Correct answer: ${answers[id]}`;
+                }
+            }
+        }
+
+        // ============== TIMER ==============
+        function startTimer() {
+            const timerDisplay = document.getElementById('time-remaining');
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "TIME'S UP!";
+                    checkAnswers();
+                    return;
+                }
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                timeLeft--;
+            }, 1000);
+        }
+
+        // ============== QUIZ FLOW ==============
+        function startQuiz() {
+            studentName = document.getElementById('student-name').value.trim();
+            if (!studentName) {
+                alert("Please enter your name to start the quiz.");
+                return;
+            }
+            document.getElementById('intro-container').style.display = 'none';
+            document.getElementById('timer-container').style.display = 'block';
+            document.getElementById('quiz-container').style.display = 'block';
+            generateQuiz();
+            startTimer();
+        }
+
+        function jumpToNextInput(currentIndex, event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const nextIndex = currentIndex + 1;
+                if (nextIndex < totalQuestions) {
+                    document.getElementById(`answer-${nextIndex}`).focus();
+                }
+            }
+        }
+
+        // ============== FOUNDATION-APPROPRIATE QUESTION GENERATOR ==============
+        // Predefined sets of appropriate numbers for each significant figure requirement
+        const numberSets = {
+            '1sf': [
+                // Numbers that actually need rounding to 1 sf
+                { value: 4.7, display: '4.7' },
+                { value: 0.063, display: '0.063' },
+                { value: 567, display: '567' },
+                { value: 0.0078, display: '0.0078' },
+                { value: 34.5, display: '34.5' },
+                { value: 0.89, display: '0.89' },
+                { value: 1234, display: '1234' },
+                { value: 0.0567, display: '0.0567' },
+                { value: 789, display: '789' },
+                { value: 0.0091, display: '0.0091' }
+            ],
+            '2sf': [
+                // Numbers that actually need rounding to 2 sf
+                { value: 4.78, display: '4.78' },
+                { value: 0.0634, display: '0.0634' },
+                { value: 567, display: '567' },
+                { value: 235467, display: '235467' },
+                { value: 3.456, display: '3.456' },
+                { value: 0.0789, display: '0.0789' },
+                { value: 12345, display: '12345' },
+                { value: 0.8912, display: '0.8912' },
+                { value: 678.9, display: '678.9' },
+                { value: 0.004567, display: '0.004567' }
+            ],
+            '3sf': [
+                // Numbers that actually need rounding to 3 sf
+                { value: 4.782, display: '4.782' },
+                { value: 0.06345, display: '0.06345' },
+                { value: 567.3, display: '567.3' },
+                { value: 235467, display: '235467' },
+                { value: 34.567, display: '34.567' },
+                { value: 0.78912, display: '0.78912' },
+                { value: 1234.5, display: '1234.5' },
+                { value: 0.045678, display: '0.045678' },
+                { value: 6789.1, display: '6789.1' },
+                { value: 0.0034567, display: '0.0034567' }
+            ]
+        };
+
+        function generateQuestion(index) {
+            // Randomly choose the target significant figures: 1, 2, or 3
+            const targetSf = Math.floor(Math.random() * 3) + 1; // 1, 2, or 3
+            
+            // Get the appropriate number set for this sf
+            const numberSet = numberSets[targetSf + 'sf'];
+            const randomIndex = Math.floor(Math.random() * numberSet.length);
+            const numberData = numberSet[randomIndex];
+            
+            // Calculate the correct answer
+            const correctAnswer = roundToSF(numberData.value, targetSf);
+            
+            // Check if rounding actually changes the number
+            // If not, try again (avoid questions like "Round 0.607 to 3sf")
+            if (Math.abs(numberData.value - correctAnswer) < 0.000001) {
+                // This number doesn't actually need rounding - try another one
+                return generateQuestion(index);
+            }
+            
+            // Store the question data
+            questions[index] = { 
+                questionText: `Round ${numberData.display} to ${targetSf} significant figure${targetSf !== 1 ? 's' : ''}.`,
+                correctAnswer: correctAnswer,
+                originalNumber: numberData.display,
+                targetSf: targetSf
+            };
+            
+            // Return the HTML for the question
+            return `
+                <div class="question">
+                    <strong>Q${index + 1}:</strong> ${questions[index].questionText}
+                    <input type="text" id="answer-${index}" 
+                           placeholder="?"
+                           onchange="userAnswers[${index}] = this.value"
+                           onkeydown="jumpToNextInput(${index}, event)"
+                           oninput="validateSFInput(this)">
+                </div>
+            `;
+        }
+
+        // Function to round to significant figures
+        function roundToSF(num, sf) {
+            if (num === 0) return 0;
+            
+            const magnitude = Math.floor(Math.log10(Math.abs(num)));
+            const scale = Math.pow(10, sf - magnitude - 1);
+            let rounded = Math.round(num * scale) / scale;
+            
+            // For whole numbers that need trailing zeros
+            if (Number.isInteger(rounded) && sf > rounded.toString().replace('-', '').length) {
+                // Add trailing zeros for place value
+                return rounded * Math.pow(10, sf - rounded.toString().replace('-', '').length);
+            }
+            
+            return rounded;
+        }
+
+        // Input validation for significant figures answers
+        function validateSFInput(input) {
+            let value = input.value;
+            
+            // Remove any non-numeric characters except decimal point and minus
+            value = value.replace(/[^0-9.\-]/g, '');
+            
+            // Ensure only one decimal point
+            const decimalCount = (value.match(/\./g) || []).length;
+            if (decimalCount > 1) {
+                value = value.substring(0, value.lastIndexOf('.'));
+            }
+            
+            // Ensure minus sign is at the beginning if present
+            if (value.includes('-') && value.indexOf('-') !== 0) {
+                value = value.replace(/-/g, '');
+                value = '-' + value;
+            }
+            
+            input.value = value;
+        }
+
+        function generateQuiz() {
+            const form = document.getElementById('quiz-form');
+            form.innerHTML = '';
+            questions = [];
+            
+            // Track used numbers to avoid repetition
+            const usedNumbers = new Set();
+            
+            for (let i = 0; i < totalQuestions; i++) {
+                // Try up to 5 times to get a unique, valid question
+                let questionHTML = '';
+                let attempts = 0;
+                while (attempts < 5) {
+                    questionHTML = generateQuestion(i);
+                    const questionText = questions[i].questionText;
+                    
+                    // Check if this exact question has been used before
+                    if (!usedNumbers.has(questionText)) {
+                        usedNumbers.add(questionText);
+                        break;
+                    }
+                    attempts++;
+                }
+                
+                form.innerHTML += questionHTML;
+            }
+            
+            userAnswers.fill('');
+            
+            // Focus on first question
+            setTimeout(() => {
+                const firstInput = document.getElementById('answer-0');
+                if (firstInput) firstInput.focus();
+            }, 100);
+        }
+
+        // ============== CHECK ANSWERS ==============
+        function checkAnswers() {
+            clearInterval(timerInterval);
+            document.getElementById('timer-container').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'none';
+
+            let score = 0;
+            let feedbackHtml = '<h3>Question Review:</h3>';
+            const oldCert = document.getElementById('certificate');
+            const oldRetry = document.querySelector('#result-container button[onclick="resetQuiz()"]');
+            if (oldCert) oldCert.remove();
+            if (oldRetry) oldRetry.remove();
+
+            for (let i = 0; i < totalQuestions; i++) {
+                const q = questions[i];
+                const inputElement = document.getElementById(`answer-${i}`);
+                const rawValue = inputElement ? inputElement.value.trim() : '';
+                
+                // Parse the answer
+                let userAnswer;
+                if (rawValue === '') {
+                    userAnswer = null;
+                } else {
+                    // Try to parse as number
+                    userAnswer = parseFloat(rawValue);
+                    
+                    // For answers like "1200" (whole numbers with trailing zeros)
+                    if (isNaN(userAnswer) && /^\d+$/.test(rawValue)) {
+                        userAnswer = parseInt(rawValue, 10);
+                    }
+                }
+                
+                // Get correct answer and format it properly
+                const correctAnswer = q.correctAnswer;
+                let isCorrect = false;
+                
+                if (userAnswer === null) {
+                    isCorrect = false;
+                } else {
+                    // Compare numbers (allow for small floating point errors)
+                    const diff = Math.abs(userAnswer - correctAnswer);
+                    const tolerance = Math.abs(correctAnswer * 0.00001);
+                    
+                    // For whole numbers, exact match is better
+                    if (Number.isInteger(correctAnswer) && Number.isInteger(userAnswer)) {
+                        isCorrect = userAnswer === correctAnswer;
+                    } else {
+                        isCorrect = diff < tolerance || diff < 0.000001;
+                    }
+                    
+                    // Also check string representations
+                    if (!isCorrect) {
+                        const userFormatted = formatSFDisplay(userAnswer, q.targetSf);
+                        const correctFormatted = formatSFDisplay(correctAnswer, q.targetSf);
+                        
+                        isCorrect = userFormatted === correctFormatted;
+                    }
+                }
+                
+                if (isCorrect) score++;
+                
+                const displayAnswer = rawValue === '' ? '[No answer]' : rawValue;
+                const correctDisplay = formatSFDisplay(correctAnswer, q.targetSf);
+                
+                feedbackHtml += `<p class="${isCorrect ? 'correct' : 'incorrect'}">
+                    <strong>Q${i + 1}:</strong> ${q.questionText}<br>
+                    Your answer: <strong>${displayAnswer}</strong>
+                    ${isCorrect ? '✅' : `❌ (Correct: ${correctDisplay})`}
+                </p>`;
+            }
+
+            const resultContainer = document.getElementById('result-container');
+            document.getElementById('score-display').innerHTML = `<strong>Score: ${score}/${totalQuestions}</strong>`;
+            document.getElementById('feedback-area').innerHTML = feedbackHtml;
+            resultContainer.style.display = 'block';
+
+            if (score === totalQuestions) {
+                document.getElementById('result-title').textContent = "Perfect Score! 🎉";
+                document.getElementById('result-title').style.color = '#27ae60';
+                showCertificateOnlyView();
+            } else {
+                document.getElementById('result-title').textContent = "Not Quite Perfect";
+                document.getElementById('result-title').style.color = '#e74c3c';
+                document.getElementById('result-title').innerHTML += `<br><small>You need all ${totalQuestions} correct to earn the certificate. Try again!</small>`;
+            }
+            const retryButton = `<br><br><button id="retry-btn" onclick="resetQuiz()">🔄 Retry This Quiz</button>`;
+            document.getElementById('result-container').insertAdjacentHTML('beforeend', retryButton);
+        }
+
+        // Helper function to format answers properly for display
+        function formatSFDisplay(num, sf) {
+            if (num === 0) return '0';
+            
+            // For whole numbers with trailing zeros (like 1200)
+            if (Number.isInteger(num)) {
+                const str = num.toString();
+                // If we need more digits than we have, add trailing zeros
+                if (str.replace('-', '').length < sf) {
+                    return num + '0'.repeat(sf - str.replace('-', '').length);
+                }
+                return str;
+            }
+            
+            // For decimals, use toPrecision
+            try {
+                let result = parseFloat(num.toPrecision(sf)).toString();
+                
+                // Clean up trailing zeros after decimal
+                if (result.includes('.')) {
+                    result = result.replace(/(\.\d*?)0+$/, '$1');
+                    if (result.endsWith('.')) {
+                        result = result.slice(0, -1);
+                    }
+                }
+                
+                // For very small decimals, ensure we have leading zero
+                if (result.startsWith('.')) {
+                    result = '0' + result;
+                }
+                
+                return result;
+            } catch (e) {
+                return num.toString();
+            }
+        }
+
+        // ============== CERTIFICATE-ONLY FINAL VIEW ==============
+        function showCertificateOnlyView() {
+            const today = new Date().toLocaleDateString('en-GB', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            const certificateHTML = `
+                <div class="certificate-view">
+                    <h1>CERTIFICATE OF ACHIEVEMENT</h1>
+                    <p>This certifies that</p>
+                    <div class="student-name">${studentName}</div>
+                    <p>has successfully completed with a perfect score</p>
+                    <div class="quiz-title">"GCSE Foundation: Rounding to Significant Figures"</div>
+                    <p>demonstrating mastery of rounding numbers to 1, 2, and 3 significant figures.</p>
+                    <p class="date">Awarded on: ${today}</p>
+                    <p><em>This certificate is awarded by the Maths Mastery Quizzes programme.</em></p>
+                    <hr>
+                    <p><strong>To save:</strong> Click the button below, or use your browser's Print function (Ctrl+P).</p>
+                    <button onclick="window.print()">🖨️ Print / Save as PDF</button>
+                    <p style="margin-top:20px; font-size:0.9em;">
+                        <a href="javascript:location.reload()">↩ Retake Quiz</a> |
+                        <a href="../">← Back to Topic List</a>
+                    </p>
+                </div>
+            `;
+            document.body.innerHTML = certificateHTML;
+        }
+
+        // ============== RESET QUIZ ==============
+        function resetQuiz() {
+            clearInterval(timerInterval);
+            timeLeft = quizTimeMinutes * 60;
+            document.getElementById('result-container').style.display = 'none';
+            document.getElementById('intro-container').style.display = 'block';
+            document.getElementById('timer-container').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('time-remaining').textContent = '10:00';
+            userAnswers.fill('');
+            
+            // Clear practice answers
+            ['practice1', 'practice2', 'practice3', 'practice4'].forEach(id => {
+                const input = document.getElementById(id);
+                if (input) {
+                    input.value = '';
+                    input.style.backgroundColor = '';
+                    input.title = '';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

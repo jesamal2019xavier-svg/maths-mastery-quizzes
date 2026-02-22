@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algebra: Index Laws Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Same styles as previous quizzes */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f9ff;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+        
+        .subtitle {
+            color: #2c3e50;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+        
+        .student-name-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 10px;
+            background-color: #f0f7ff;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #3498db;
+        }
+        
+        .student-name-label {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+        
+        #student-name {
+            padding: 10px 20px;
+            border: 2px solid #3498db;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            width: 280px;
+            max-width: 100%;
+            text-align: center;
+            font-weight: 600;
+            background-color: white;
+        }
+        
+        .question-container {
+            margin-bottom: 25px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid #eaeaea;
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #3498db;
+        }
+        
+        .question-number {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #3498db;
+            background-color: #f0f7ff;
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+        
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            line-height: 1.5;
+        }
+        
+        .part-container {
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            border-left: 3px solid #2ecc71;
+        }
+        
+        .part-label {
+            font-weight: 700;
+            color: #2c3e50;
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .answer-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e8ed;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            margin: 8px 0;
+            text-align: left;
+            transition: border-color 0.3s;
+        }
+        
+        .answer-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        .instruction {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .answer-feedback {
+            margin-top: 8px;
+            padding: 10px;
+            border-radius: 6px;
+            display: none;
+            font-size: 0.95rem;
+        }
+        
+        .correct-feedback {
+            background-color: rgba(39, 174, 96, 0.1);
+            border: 1px solid #27ae60;
+            color: #27ae60;
+        }
+        
+        .incorrect-feedback {
+            background-color: rgba(231, 76, 60, 0.1);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+        }
+        
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        
+        .correct-answer {
+            font-family: 'Cambria', 'Times New Roman', serif;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-top: 5px;
+        }
+        
+        .submit-section {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #eaeaea;
+        }
+        
+        button {
+            padding: 12px 30px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0 10px 10px 0;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        
+        button:disabled:hover {
+            background-color: #95a5a6;
+        }
+        
+        #retry-btn {
+            background-color: #2ecc71;
+        }
+        
+        #retry-btn:hover {
+            background-color: #27ae60;
+        }
+        
+        /* Certificate Modal */
+        .certificate-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .certificate-content {
+            background: linear-gradient(135deg, #f9f9ff 0%, #ffffff 100%);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 8px solid #3498db;
+            position: relative;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .certificate-header {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .certificate-divider {
+            height: 3px;
+            background: linear-gradient(to right, transparent, #3498db, transparent);
+            margin: 20px 0;
+        }
+        
+        .certificate-text {
+            color: #333;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .certificate-name {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: rgba(52, 152, 219, 0.1);
+            border-radius: 8px;
+            font-weight: 700;
+        }
+        
+        .certificate-score {
+            font-size: 1.5rem;
+            color: #27ae60;
+            margin: 15px 0;
+            font-weight: 700;
+        }
+        
+        .certificate-date {
+            color: #7f8c8d;
+            font-size: 1rem;
+            margin-top: 20px;
+        }
+        
+        .certificate-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #7f8c8d;
+            cursor: pointer;
+            padding: 5px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .certificate-close:hover {
+            color: #2c3e50;
+            background-color: rgba(0, 0, 0, 0.05);
+            border-radius: 50%;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .question-container {
+                padding: 12px;
+            }
+            
+            .certificate-content {
+                width: 95%;
+                padding: 20px;
+            }
+            
+            .certificate-header {
+                font-size: 1.5rem;
+            }
+            
+            .certificate-name {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="certificate-modal" class="certificate-modal">
+        <div class="certificate-content">
+            <button class="certificate-close" id="certificate-close">&times;</button>
+            <div class="certificate-header">
+                <i class="fas fa-award"></i> Certificate of Achievement
+            </div>
+            <div class="certificate-divider"></div>
+            <div class="certificate-text">Awarded to:</div>
+            <div class="certificate-name" id="certificate-name">Student Name</div>
+            <div class="certificate-text">For Perfect Score in<br>Algebra: Index Laws</div>
+            <div class="certificate-score" id="certificate-score">Score: 100%</div>
+            <div class="certificate-date" id="certificate-date"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-calculator"></i> Algebra: Index Laws</h1>
+            <p class="subtitle">Answer all 10 questions. Achieve 100% mastery to earn your certificate!</p>
+            <div class="student-name-container">
+                <div class="student-name-label">Student Name:</div>
+                <input type="text" id="student-name" placeholder="Enter your name" maxlength="30">
+            </div>
+        </header>
+        
+        <div id="quiz-container"></div>
+        
+        <div class="submit-section">
+            <button id="submit-btn"><i class="fas fa-check"></i> Submit Answers</button>
+            <button id="retry-btn"><i class="fas fa-redo"></i> Retry Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        // ==============================
+        // HELPER FUNCTIONS
+        // ==============================
+        function randBetween(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function randomFromArray(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        // Convert number to superscript string (e.g., 3 -> ³)
+        function getSuperscript(num) {
+            const superscripts = {
+                '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴',
+                '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹'
+            };
+            return num.toString().split('').map(d => superscripts[d]).join('');
+        }
+
+        // Normalize answer: remove spaces, lowercase, and replace ^ with nothing? But we need to handle superscripts.
+        // We'll create a canonical form: replace any superscript digits with ^digit and then remove spaces.
+        function normalizeAnswer(ans) {
+            // Map superscripts to ^digit
+            const supMap = { '⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9' };
+            let norm = '';
+            for (let ch of ans) {
+                if (ch in supMap) norm += '^' + supMap[ch];
+                else norm += ch;
+            }
+            // Remove spaces
+            norm = norm.replace(/\s+/g, '');
+            // Lowercase
+            norm = norm.toLowerCase();
+            return norm;
+        }
+
+        // Check if user answer matches any acceptable answer
+        function isAnswerCorrect(userAns, acceptableAnswers) {
+            const normUser = normalizeAnswer(userAns);
+            for (let ans of acceptableAnswers) {
+                if (normUser === normalizeAnswer(ans)) return true;
+            }
+            return false;
+        }
+
+        // Generate a set of acceptable strings from a base string (e.g., "x^5") and also with superscripts
+        function generateAcceptable(base) {
+            // base is like "x^5"
+            let variants = [base];
+            // Replace ^digit with superscript
+            let withSup = base.replace(/\^(\d+)/g, (m, d) => getSuperscript(parseInt(d)));
+            if (withSup !== base) variants.push(withSup);
+            // Also add with spaces
+            variants.push(base.replace(/\^/g, ' ^ ').replace(/\s+/g, ' ').trim());
+            variants.push(base.replace(/([a-z])(\d)/g, '$1 $2')); // e.g., x5 -> x 5
+            // For expressions like "2x^3", also "2x^3" without multiplication sign
+            return variants;
+        }
+
+        // For multi-term answers (e.g., "2m^3n^4") we need to consider order. We'll generate both orders.
+        function generateMultiTerm(base, letters) {
+            // base is like "2m^3n^4", letters is array like ['m','n']
+            let variants = [base];
+            // with superscripts
+            let withSup = base.replace(/\^(\d+)/g, (m, d) => getSuperscript(parseInt(d)));
+            variants.push(withSup);
+            // with spaces
+            variants.push(base.replace(/\^/g, ' ^ ').replace(/([a-z])(\d)/g, '$1 $2').replace(/\s+/g, ' ').trim());
+            // also try swapping order if two letters
+            if (letters.length === 2) {
+                // extract coefficient and exponents
+                let match = base.match(/^(\d*)([a-z])\^(\d+)([a-z])\^(\d+)$/);
+                if (match) {
+                    let coeff = match[1] || '1';
+                    let l1 = match[2];
+                    let e1 = match[3];
+                    let l2 = match[4];
+                    let e2 = match[5];
+                    let swapped = coeff + l2 + '^' + e2 + l1 + '^' + e1;
+                    variants.push(swapped);
+                    // with superscript
+                    let swappedSup = coeff + l2 + getSuperscript(parseInt(e2)) + l1 + getSuperscript(parseInt(e1));
+                    variants.push(swappedSup);
+                }
+            }
+            return variants;
+        }
+
+        // ==============================
+        // QUESTION GENERATORS
+        // ==============================
+
+        // Q1: x^a * x^b
+        function generateQ1() {
+            const letters = ['x','y','z','p','q','d','e'];
+            const a = randBetween(2,8);
+            const b = randBetween(2,8);
+            const letter = randomFromArray(letters);
+            const exp = a + b;
+            const baseAns = letter + '^' + exp;
+            const acceptable = generateAcceptable(baseAns);
+            return {
+                text: `Simplify: ${letter}<sup>${a}</sup> × ${letter}<sup>${b}</sup>`,
+                parts: [{
+                    label: "",
+                    answers: acceptable,
+                    working: `= ${letter}^${exp}`
+                }]
+            };
+        }
+
+        // Q2: w^a / w^b (a > b)
+        function generateQ2() {
+            const letters = ['w','y','z','p','q','d','e'];
+            let a, b;
+            do {
+                a = randBetween(2,8);
+                b = randBetween(2,8);
+            } while (a <= b);
+            const letter = randomFromArray(letters);
+            const exp = a - b;
+            const baseAns = letter + '^' + exp;
+            const acceptable = generateAcceptable(baseAns);
+            return {
+                text: `Simplify: ${letter}<sup>${a}</sup> / ${letter}<sup>${b}</sup>`,
+                parts: [{
+                    label: "",
+                    answers: acceptable,
+                    working: `= ${letter}^${exp}`
+                }]
+            };
+        }
+
+        // Q3: a m^c n^d × b m^e n^f
+        function generateQ3() {
+            const pairs = [['m','n'], ['u','v'], ['p','q']];
+            const [m, n] = randomFromArray(pairs);
+            const a = randBetween(2,5);
+            const b = randBetween(2,5);
+            const c = randBetween(2,5);
+            const d = randBetween(2,5);
+            const e = randBetween(2,5);
+            const f = randBetween(2,5);
+            const coeff = a * b;
+            const expM = c + e;
+            const expN = d + f;
+            // Build answer: coeff m^expM n^expN (alphabetical order m then n)
+            let baseAns = (coeff === 1 ? '' : coeff) + m + '^' + expM + n + '^' + expN;
+            let acceptable = generateMultiTerm(baseAns, [m, n]);
+            // Also add variant with explicit multiplication
+            acceptable.push((coeff === 1 ? '' : coeff) + m + '^' + expM + ' ' + n + '^' + expN);
+            return {
+                text: `Simplify: ${a}${m}<sup>${c}</sup>${n}<sup>${d}</sup> × ${b}${m}<sup>${e}</sup>${n}<sup>${f}</sup>`,
+                parts: [{
+                    label: "",
+                    answers: acceptable,
+                    working: `= ${coeff}${m}^${expM} ${n}^${expN}`
+                }]
+            };
+        }
+
+        // Q4: (a x)^b
+        function generateQ4() {
+            const letters = ['x','p','q','u','v'];
+            const a = randBetween(2,5);
+            const b = randBetween(2,5);
+            const letter = randomFromArray(letters);
+            const coeff = Math.pow(a, b);
+            const baseAns = coeff + letter + '^' + b;
+            const acceptable = generateAcceptable(baseAns);
+            // Also accept a^b x^b format
+            acceptable.push(a + '^' + b + ' ' + letter + '^' + b);
+            acceptable.push(a + '^' + b + letter + '^' + b);
+            return {
+                text: `Simplify: (${a}${letter})<sup>${b}</sup>`,
+                parts: [{
+                    label: "",
+                    answers: acceptable,
+                    working: `= ${coeff}${letter}^${b}`
+                }]
+            };
+        }
+
+        // Q5: (t^a)^b
+        function generateQ5() {
+            const letters = ['x','p','q','u','v'];
+            const a = randBetween(2,5);
+            const b = randBetween(2,5);
+            const letter = randomFromArray(letters);
+            const exp = a * b;
+            const baseAns = letter + '^' + exp;
+            const acceptable = generateAcceptable(baseAns);
+            return {
+                text: `Simplify: (${letter}<sup>${a}</sup>)<sup>${b}</sup>`,
+                parts: [{
+                    label: "",
+                    answers: acceptable,
+                    working: `= ${letter}^${exp}`
+                }]
+            };
+        }
+
+        // Q6: (a p^b q^c)^d
+        function generateQ6() {
+            const pairs = [['p','q'], ['m','n'], ['u','v']];
+            const [p, q] = randomFromArray(pairs);
+            const a = randBetween(2,5);
+            const b = randBetween(2,5);
+            const c = randBetween(2,5);
+            const d = randBetween(2,5);
+            const coeff = Math.pow(a, d);
+            const expP = b * d;
+            const expQ = c * d;
+            let baseAns = (coeff === 1 ? '' : coeff) + p + '^' + expP + q + '^' + expQ;
+            let acceptable = generateMultiTerm(baseAns, [p, q]);
+            return {
+                text: `Simplify: (${a}${p}<sup>${b}</sup>${q}<sup>${c}</sup>)<sup>${d}</sup>`,
+                parts: [{
+                    label: "",
+                    answers: acceptable,
+                    working: `= ${coeff}${p}^${expP} ${q}^${expQ}`
+                }]
+            };
+        }
+
+        // Q7: ((k) p^(c+e) q^(d+f))/(a p^c q^d) with k = a*b
+        function generateQ7() {
+            const pairs = [['p','q'], ['m','n'], ['u','v']];
+            const [p, q] = randomFromArray(pairs);
+            const a = randBetween(2,6);
+            const b = randBetween(2,6);
+            const c = randBetween(2,6);
+            const d = randBetween(2,6);
+            const e = randBetween(2,6);
+            const f = randBetween(2,6);
+            const k = a * b;
+            const resultCoeff = b;
+            const expP = e;
+            const expQ = f;
+            let baseAns = (resultCoeff === 1 ? '' : resultCoeff) + p + '^' + expP + q + '^' + expQ;
+            let acceptable = generateMultiTerm(baseAns, [p, q]);
+            return {
+                text: `Simplify: (${k} ${p}<sup>${c+e}</sup> ${q}<sup>${d+f}</sup>) / (${a} ${p}<sup>${c}</sup> ${q}<sup>${d}</sup>)`,
+                parts: [{
+                    label: "",
+                    answers: acceptable,
+                    working: `= ${b} ${p}^${e} ${q}^${f}`
+                }]
+            };
+        }
+
+        // Q8: (p^a)^b = p^k, find b (k given)
+        function generateQ8() {
+            const letters = ['p','q','m','n','u','v'];
+            const a = randBetween(2,6);
+            const b = randBetween(2,6);
+            const k = a * b;
+            const letter = randomFromArray(letters);
+            const baseAns = b.toString();
+            const acceptable = [b.toString(), ' ' + b, b + ' '];
+            return {
+                text: `Given that (${letter}<sup>${a}</sup>)<sup>b</sup> = ${letter}<sup>${k}</sup>, find the value of b.`,
+                parts: [{
+                    label: "",
+                    answers: acceptable,
+                    working: `b = ${k} ÷ ${a} = ${b}`
+                }]
+            };
+        }
+
+        // Q9: p^a × p^b = p^c × p^d, find d
+        function generateQ9() {
+            const letters = ['p','q','m','n','u','v'];
+            const a = randBetween(2,6);
+            const b = randBetween(2,6);
+            const c = randBetween(2,6);
+            // Ensure d positive and not zero
+            let d = a + b - c;
+            // If d <= 0, adjust by swapping or regenerating? We'll ensure by loop
+            while (d < 2 || d > 12) { // keep within reasonable range
+                a = randBetween(2,6);
+                b = randBetween(2,6);
+                c = randBetween(2,6);
+                d = a + b - c;
+            }
+            const letter = randomFromArray(letters);
+            const baseAns = d.toString();
+            const acceptable = [d.toString(), ' ' + d, d + ' '];
+            return {
+                text: `Given that ${letter}<sup>${a}</sup> × ${letter}<sup>${b}</sup> = ${letter}<sup>${c}</sup> × ${letter}<sup>d</sup>, find the value of d.`,
+                parts: [{
+                    label: "",
+                    answers: acceptable,
+                    working: `d = ${a} + ${b} - ${c} = ${d}`
+                }]
+            };
+        }
+
+        // Q10: p^a = 1
+        function generateQ10() {
+            const letters = ['p','q','m','n','u','v'];
+            const letter = randomFromArray(letters);
+            // a must be 0
+            const baseAns = '0';
+            const acceptable = ['0', ' 0', '0 '];
+            return {
+                text: `Find the value of a such that ${letter}<sup>a</sup> = 1.`,
+                parts: [{
+                    label: "",
+                    answers: acceptable,
+                    working: `a = 0`
+                }]
+            };
+        }
+
+        // ==============================
+        // QUIZ STATE
+        // ==============================
+        let currentQuestions = [];
+        let hasSubmitted = false;
+        let totalQuestions = 10;
+
+        function initializeQuiz() {
+            hasSubmitted = false;
+            currentQuestions = [
+                generateQ1(),
+                generateQ2(),
+                generateQ3(),
+                generateQ4(),
+                generateQ5(),
+                generateQ6(),
+                generateQ7(),
+                generateQ8(),
+                generateQ9(),
+                generateQ10()
+            ];
+            renderQuiz();
+            document.getElementById('submit-btn').disabled = false;
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+
+            currentQuestions.forEach((question, qIndex) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'question-container';
+                qDiv.id = `question-${qIndex+1}`;
+
+                // Header
+                const header = document.createElement('div');
+                header.className = 'question-header';
+                header.innerHTML = `<div class="question-number">Question ${qIndex+1}</div>`;
+                qDiv.appendChild(header);
+
+                // Question text
+                const textDiv = document.createElement('div');
+                textDiv.className = 'question-text';
+                textDiv.innerHTML = `<p>${question.text}</p>`;
+                qDiv.appendChild(textDiv);
+
+                // Parts (each question has exactly one part)
+                question.parts.forEach((part, pIndex) => {
+                    const partDiv = document.createElement('div');
+                    partDiv.className = 'part-container';
+
+                    const labelSpan = document.createElement('span');
+                    labelSpan.className = 'part-label';
+                    labelSpan.textContent = part.label ? part.label : '';
+                    partDiv.appendChild(labelSpan);
+
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'answer-input';
+                    input.id = `answer-${qIndex}-${pIndex}`;
+                    input.placeholder = 'Enter your answer';
+                    input.autocomplete = 'off';
+                    if (hasSubmitted) input.disabled = true;
+                    partDiv.appendChild(input);
+
+                    const feedback = document.createElement('div');
+                    feedback.className = 'answer-feedback';
+                    feedback.id = `feedback-${qIndex}-${pIndex}`;
+                    partDiv.appendChild(feedback);
+
+                    qDiv.appendChild(partDiv);
+                });
+
+                container.appendChild(qDiv);
+            });
+
+            setupAutoFocus();
+        }
+
+        function setupAutoFocus() {
+            const inputs = document.querySelectorAll('.answer-input:not(:disabled)');
+            if (inputs.length > 0) inputs[0].focus();
+            inputs.forEach((input, idx) => {
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        if (idx + 1 < inputs.length) {
+                            inputs[idx + 1].focus();
+                        } else {
+                            document.getElementById('submit-btn').focus();
+                        }
+                    }
+                });
+            });
+        }
+
+        function checkAnswers() {
+            if (hasSubmitted) return;
+            hasSubmitted = true;
+            document.getElementById('submit-btn').disabled = true;
+
+            let score = 0;
+            let allCorrect = true;
+
+            document.querySelectorAll('.answer-input').forEach(input => input.disabled = true);
+
+            currentQuestions.forEach((question, qIndex) => {
+                question.parts.forEach((part, pIndex) => {
+                    const input = document.getElementById(`answer-${qIndex}-${pIndex}`);
+                    const userAns = input.value.trim();
+                    const feedback = document.getElementById(`feedback-${qIndex}-${pIndex}`);
+                    const correct = isAnswerCorrect(userAns, part.answers);
+
+                    if (correct) {
+                        score++;
+                        input.style.borderColor = '#27ae60';
+                        input.style.backgroundColor = 'rgba(39, 174, 96, 0.1)';
+                        feedback.className = 'answer-feedback correct-feedback';
+                        feedback.innerHTML = `<div class="feedback-title">✓ Correct!</div><div>${part.working}</div>`;
+                    } else {
+                        allCorrect = false;
+                        input.style.borderColor = '#e74c3c';
+                        input.style.backgroundColor = 'rgba(231, 76, 60, 0.1)';
+                        feedback.className = 'answer-feedback incorrect-feedback';
+                        const acceptable = part.answers.slice(0, 3).join(' or '); // show a few
+                        feedback.innerHTML = `<div class="feedback-title">✗ Incorrect</div>
+                                              <div>${part.working}</div>
+                                              <div class="correct-answer">Correct answer: ${part.answers[0]}</div>`;
+                    }
+                    feedback.style.display = 'block';
+                });
+            });
+
+            const percentage = Math.round((score / totalQuestions) * 100);
+            if (allCorrect && score === totalQuestions) {
+                setTimeout(() => showCertificate(percentage), 500);
+            } else {
+                setTimeout(() => alert(`You got ${score} out of ${totalQuestions} correct (${percentage}%)\n\nClick "Retry Quiz" to try again!`), 300);
+            }
+        }
+
+        function showCertificate(score) {
+            const name = document.getElementById('student-name').value || 'Student';
+            document.getElementById('certificate-name').textContent = name;
+            document.getElementById('certificate-score').textContent = `Score: ${score}%`;
+            const now = new Date();
+            document.getElementById('certificate-date').textContent = `Date: ${now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`;
+            document.getElementById('certificate-modal').style.display = 'flex';
+        }
+
+        function closeCertificate() {
+            document.getElementById('certificate-modal').style.display = 'none';
+        }
+
+        function retryQuiz() {
+            document.querySelectorAll('.answer-input').forEach(input => {
+                input.value = '';
+                input.style.borderColor = '';
+                input.style.backgroundColor = '';
+                input.disabled = false;
+            });
+            document.querySelectorAll('.answer-feedback').forEach(fb => {
+                fb.innerHTML = '';
+                fb.style.display = 'none';
+            });
+            initializeQuiz();
+        }
+
+        // ==============================
+        // INIT
+        // ==============================
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeQuiz();
+
+            document.getElementById('submit-btn').addEventListener('click', checkAnswers);
+            document.getElementById('retry-btn').addEventListener('click', retryQuiz);
+            document.getElementById('certificate-close').addEventListener('click', closeCertificate);
+            document.getElementById('certificate-modal').addEventListener('click', (e) => {
+                if (e.target === e.currentTarget) closeCertificate();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeCertificate();
+            });
+
+            document.getElementById('student-name').focus();
+            document.getElementById('student-name').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const firstInput = document.querySelector('.answer-input:not(:disabled)');
+                    if (firstInput) firstInput.focus();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

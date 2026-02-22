@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mastery Quiz 2: Probability from Tables & Histograms</title>
     <style>
+        /* ---------- CSS (unchanged, exactly as in your original) ---------- */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -479,125 +480,115 @@
             document.getElementById('histTarget2').textContent = quizVars.q3_target2.toFixed(1);
         }
 
-        // ===== FUNCTION TO DRAW THE HISTOGRAM =====
+        // ===== FIXED HISTOGRAM DRAWING FUNCTION =====
         function drawHistogram(intervals, freqDensities, target1, target2) {
             const canvas = document.getElementById('histogramCanvas');
             const ctx = canvas.getContext('2d');
             const width = canvas.width;
             const height = canvas.height;
-            
+
             // Clear canvas
             ctx.clearRect(0, 0, width, height);
-            
+
             // Chart area margins
             const margin = { top: 50, right: 40, bottom: 70, left: 70 };
             const chartWidth = width - margin.left - margin.right;
             const chartHeight = height - margin.top - margin.bottom;
-            
+
             // Find max frequency density for scaling
             const maxFreqDensity = Math.max(...freqDensities);
             const scaleY = chartHeight / maxFreqDensity;
-            
-            // Calculate x-axis range starting from 0
-            const dataStart = 0; // Start from 0
-            const dataEnd = intervals[intervals.length-1].end;
+
+            // x‑axis range: start at 0 (gap stays), end at last interval end
+            const dataStart = 0;
+            const dataEnd = intervals[intervals.length - 1].end;
             const totalRange = dataEnd - dataStart;
-            
-            // Draw bars TOUCHING EACH OTHER (no gaps)
+
+            // ---------- Draw bars (touching each other) ----------
             ctx.fillStyle = '#9b59b6';
-            
+
             for (let i = 0; i < intervals.length; i++) {
-                // Calculate bar width proportional to class width
                 const barWidth = (intervals[i].end - intervals[i].start) / totalRange * chartWidth;
-                
-                // Calculate x position starting from 0
-                let xPosition = margin.left + ((intervals[i].start - dataStart) / totalRange * chartWidth);
-                
+                const xPosition = margin.left + ((intervals[i].start - dataStart) / totalRange * chartWidth);
                 const barHeight = freqDensities[i] * scaleY;
                 const y = height - margin.bottom - barHeight;
-                
-                // Draw bar (touching adjacent bars)
+
+                // Draw bar
                 ctx.fillRect(xPosition, y, barWidth, barHeight);
-                
-                // Draw black border to separate bars
+
+                // Black border
                 ctx.strokeStyle = '#2c3e50';
                 ctx.lineWidth = 1;
                 ctx.strokeRect(xPosition, y, barWidth, barHeight);
-                
-                // Draw frequency density value on top
+
+                // Frequency density value on top
                 ctx.fillStyle = '#2c3e50';
                 ctx.font = 'bold 16px Arial';
                 ctx.textAlign = 'center';
-                ctx.fillText(freqDensities[i], xPosition + barWidth/2, y - 10);
-                
-                // Draw bin boundary labels at bottom
+                ctx.fillText(freqDensities[i], xPosition + barWidth / 2, y - 10);
+
+                // ----- X‑axis labels (bin boundaries) -----
                 ctx.font = '15px Arial';
                 ctx.fillStyle = '#666';
-                
-                // Draw end value for all bars
+
+                // 1. Draw the END of every bar (right edge)
                 ctx.textAlign = 'center';
                 ctx.fillText(intervals[i].end.toFixed(1), xPosition + barWidth, height - margin.bottom + 20);
-                
-                // Draw start value for first bar
+
+                // 2. For the FIRST bar, draw the START value at its LEFT edge
                 if (i === 0) {
                     ctx.textAlign = 'left';
-                    ctx.fillText('0', margin.left, height - margin.bottom + 20);
+                    ctx.fillText(intervals[i].start.toFixed(1), xPosition, height - margin.bottom + 20);
                 }
-                
-                ctx.fillStyle = '#9b59b6'; // Reset color
+
+                ctx.fillStyle = '#9b59b6'; // reset colour
             }
-            
-            // Draw axes
+
+            // ---------- Draw axes ----------
             ctx.strokeStyle = '#000';
             ctx.lineWidth = 2;
-            
-            // Y-axis
+
+            // Y‑axis
             ctx.beginPath();
             ctx.moveTo(margin.left, height - margin.bottom);
             ctx.lineTo(margin.left, margin.top);
             ctx.stroke();
-            
-            // X-axis (starting at 0)
+
+            // X‑axis (starts at margin.left, goes to right margin)
             ctx.beginPath();
             ctx.moveTo(margin.left, height - margin.bottom);
             ctx.lineTo(width - margin.right, height - margin.bottom);
             ctx.stroke();
-            
-            // Y-axis scale markings
+
+            // ---------- Y‑axis scale ----------
             ctx.font = '14px Arial';
             ctx.fillStyle = '#666';
             ctx.textAlign = 'right';
-            
-            // Create nice round numbers for scale
+
             const maxScaleValue = Math.ceil(maxFreqDensity / 10) * 10;
             const scaleSteps = 5;
             const stepValue = maxScaleValue / scaleSteps;
-            
+
             for (let i = 0; i <= scaleSteps; i++) {
                 const freqValue = stepValue * i;
                 const yPos = height - margin.bottom - (freqValue / maxScaleValue * chartHeight);
-                
-                // Only draw if within chart area
                 if (yPos >= margin.top) {
-                    // Draw tick
                     ctx.beginPath();
                     ctx.moveTo(margin.left - 8, yPos);
                     ctx.lineTo(margin.left, yPos);
                     ctx.stroke();
-                    
-                    // Draw label
                     ctx.fillText(freqValue.toFixed(0), margin.left - 12, yPos + 5);
                 }
             }
-            
-            // X-axis label
+
+            // X‑axis label
             ctx.textAlign = 'center';
             ctx.fillStyle = '#2c3e50';
             ctx.font = 'bold 18px Arial';
-            ctx.fillText('Mass (kg)', width/2, height - 20);
-            
-            // Draw target lines for questions (no labels)
-            // Target 1 line (for part a: > 7.0 kg)
+            ctx.fillText('Mass (kg)', width / 2, height - 20);
+
+            // ---------- Target lines (dashed) ----------
+            // Target 1 ( > 7.0 kg )
             const target1X = margin.left + ((target1 - dataStart) / totalRange * chartWidth);
             ctx.strokeStyle = '#e74c3c';
             ctx.lineWidth = 2;
@@ -606,20 +597,20 @@
             ctx.moveTo(target1X, margin.top);
             ctx.lineTo(target1X, height - margin.bottom);
             ctx.stroke();
-            
-            // Target 2 line (for part b: < 7.2 kg)
+
+            // Target 2 ( < 7.2 kg )
             const target2X = margin.left + ((target2 - dataStart) / totalRange * chartWidth);
             ctx.strokeStyle = '#3498db';
             ctx.beginPath();
             ctx.moveTo(target2X, margin.top);
             ctx.lineTo(target2X, height - margin.bottom);
             ctx.stroke();
-            
-            ctx.setLineDash([]); // Reset line style
+
+            ctx.setLineDash([]); // reset
         }
 
         // ==================== ANSWER CALCULATION FUNCTIONS ====================
-        // Q1 Calculations
+        // (All calculation functions remain unchanged from your original)
         function calculateQ1a() {
             const total = quizVars.q1_freqs.reduce((a, b) => a + b, 0);
             let count = 0;
@@ -652,7 +643,6 @@
             return count / total;
         }
 
-        // Q2 Calculations
         function calculateQ2a() {
             const total = quizVars.q2_n;
             let count = 0;
@@ -691,9 +681,7 @@
             return count / total;
         }
 
-        // Q3 Calculations
         function calculateQ3a() {
-            // Calculate total frequency N
             let N = 0;
             let frequencies = [];
             for (let i = 0; i < 5; i++) {
@@ -702,7 +690,6 @@
                 N += freq;
             }
             
-            // Calculate frequency > 7.0 kg
             let count = 0;
             for (let i = 0; i < quizVars.q3_intervals.length; i++) {
                 if (quizVars.q3_intervals[i].start >= quizVars.q3_target1) {
@@ -718,7 +705,6 @@
         }
 
         function calculateQ3b() {
-            // Calculate total frequency N
             let N = 0;
             let frequencies = [];
             for (let i = 0; i < 5; i++) {
@@ -727,7 +713,6 @@
                 N += freq;
             }
             
-            // Calculate frequency < 7.2 kg
             let count = 0;
             for (let i = 0; i < quizVars.q3_intervals.length; i++) {
                 if (quizVars.q3_intervals[i].end <= quizVars.q3_target2) {

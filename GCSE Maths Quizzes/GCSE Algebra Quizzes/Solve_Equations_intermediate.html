@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algebra: Solving Equations · Intermediate</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        body {
+            background: linear-gradient(145deg, #f0f4fa 0%, #e6ecf5 100%);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+        .card {
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(8px);
+            border-radius: 30px;
+            box-shadow: 0 12px 30px rgba(0,10,30,0.2);
+            padding: 1.5rem 1.8rem;
+            width: 100%;
+            max-width: 750px;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        h1 {
+            margin: 0 0 0.2rem 0;
+            font-weight: 600;
+            font-size: 1.8rem;
+            color: #0b2b44;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 0.4rem;
+        }
+        h1 i {
+            color: #1e6f9f;
+        }
+        .header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin: 0.5rem 0 0.8rem 0;
+        }
+        .stage-box {
+            background: #0b2b44;
+            color: white;
+            border-radius: 40px;
+            padding: 0.3rem 1.2rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+            box-shadow: 0 3px 0 #041a2b;
+            display: inline-block;
+        }
+        .streak-box {
+            background: #1e6f9f;
+            color: white;
+            border-radius: 40px;
+            padding: 0.3rem 1.2rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+            box-shadow: 0 3px 0 #0f3b5e;
+        }
+        .teacher-icon {
+            cursor: pointer;
+            font-size: 1.4rem;
+            margin-left: 10px;
+            color: #475569;
+        }
+        .teacher-icon:hover {
+            color: #0b2b44;
+        }
+        .teacher-panel {
+            display: none;
+            margin-top: 10px;
+            background: #f0f4fa;
+            padding: 10px 15px;
+            border-radius: 30px;
+            align-items: center;
+            gap: 10px;
+        }
+        .teacher-panel label {
+            font-weight: 600;
+            color: #1e4b6e;
+        }
+        .teacher-panel input {
+            width: 80px;
+            padding: 0.3rem;
+            border: 2px solid #b9d3ec;
+            border-radius: 20px;
+            text-align: center;
+        }
+        .teacher-panel button {
+            background: #0b5e8e;
+            border: none;
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+        .lesson-box {
+            background: #e9f0f9;
+            border-left: 6px solid #1e6f9f;
+            border-radius: 20px;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0 1.5rem 0;
+            font-size: 1rem;
+            color: #0b2b44;
+            position: relative;
+        }
+        .lesson-box .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: #475569;
+        }
+        .lesson-box .close-btn:hover {
+            color: #0b2b44;
+        }
+        .question {
+            background: white;
+            border-radius: 24px;
+            padding: 1.2rem 1rem;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0f3b5e;
+            border: 2px solid #bdd3e8;
+            margin-bottom: 1rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            cursor: help;
+            position: relative;
+        }
+        .input-area {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        label {
+            font-weight: 600;
+            color: #1e4b6e;
+            font-size: 1rem;
+            margin-left: 0.3rem;
+        }
+        .answer-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        #answer {
+            flex: 1 1 200px;
+            padding: 0.8rem 1.2rem;
+            border: 2px solid #b9d3ec;
+            border-radius: 40px;
+            font-size: 1.2rem;
+            outline: none;
+            background: white;
+            font-family: 'Courier New', monospace;
+        }
+        #answer:focus {
+            border-color: #0b5e8e;
+            box-shadow: 0 0 0 3px rgba(17, 107, 175, 0.2);
+        }
+        button {
+            background: #0b5e8e;
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 0.8rem 1.8rem;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.15s;
+            border-bottom: 3px solid #073a57;
+            box-shadow: 0 4px 8px rgba(0,30,60,0.2);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+        button:hover {
+            background: #0f6fa8;
+            transform: translateY(-1px);
+        }
+        button:active {
+            transform: translateY(2px);
+            border-bottom-width: 2px;
+        }
+        button:disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .feedback {
+            margin: 1rem 0 1rem 0;
+            padding: 0.8rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 500;
+            background: #f8fafc;
+            border-left: 6px solid #94a3b8;
+            font-size: 0.95rem;
+        }
+        .feedback.correct {
+            background: #e6f7e6;
+            border-left-color: #2e7d32;
+            color: #1e4a2a;
+        }
+        .feedback.incorrect {
+            background: #ffebee;
+            border-left-color: #b71c1c;
+            color: #941212;
+        }
+        .reset-btn {
+            background: #475569;
+            border-bottom-color: #1e293b;
+        }
+        .reset-btn:hover {
+            background: #5f6b7f;
+        }
+        .note {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #4b5a6b;
+            background: #e9edf2;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+        }
+        .math-keyboard {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 6px;
+            margin: 10px 0 5px;
+        }
+        .math-keyboard button {
+            padding: 0.6rem 0.1rem;
+            font-size: 1.2rem;
+            border-radius: 18px;
+            border-bottom-width: 2px;
+            background: #eef2f6;
+            color: #0b2b44;
+            border-bottom-color: #b0c4d9;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            font-weight: 500;
+            min-width: 0;
+        }
+        .math-keyboard button.special {
+            background: #d9e2ef;
+            font-weight: 600;
+        }
+        .math-keyboard button.wide {
+            grid-column: span 2;
+            font-size: 1rem;
+        }
+        .math-keyboard button:active {
+            transform: translateY(2px);
+            border-bottom-width: 1px;
+        }
+        @media (max-width: 500px) {
+            .math-keyboard {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        /* certificate modal */
+        .certificate-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .certificate-content {
+            background: linear-gradient(135deg, #f9f9ff, #ffffff);
+            border-radius: 30px;
+            width: 90%;
+            max-width: 400px;
+            padding: 30px;
+            text-align: center;
+            border: 8px solid #3498db;
+            position: relative;
+        }
+        .certificate-header {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        .certificate-divider {
+            height: 3px;
+            background: linear-gradient(to right, transparent, #3498db, transparent);
+            margin: 20px 0;
+        }
+        .certificate-name {
+            font-size: 2rem;
+            color: #2c3e50;
+            background: #f0f7ff;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        .certificate-close {
+            position: absolute;
+            top: 10px; right: 10px;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div id="certificateModal" class="certificate-modal">
+        <div class="certificate-content">
+            <button class="certificate-close" id="certificateClose">&times;</button>
+            <div class="certificate-header">🎓 Certificate of Mastery</div>
+            <div class="certificate-divider"></div>
+            <div class="certificate-text">Awarded to</div>
+            <div class="certificate-name" id="certStudentName">Student</div>
+            <div>for completing all 11 levels of</div>
+            <div style="font-weight:700; margin:10px 0;">Solving Intermediate Equations</div>
+            <div id="certDate"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h1>
+            <i>📐</i> Solving Equations · Intermediate
+            <span class="teacher-icon" id="teacherIcon" title="Teacher settings">⚙️</span>
+        </h1>
+        <p style="color: #1f4b73; margin: 0 0 0.3rem 0;">
+            Get <strong><span id="targetDisplay">3</span> consecutive correct</strong> per level to advance.
+        </p>
+        
+        <div class="header-row">
+            <div class="stage-box" id="stageDisplay">Level 1 · Q1</div>
+            <div class="streak-box" id="streakDisplay">🔥 0 / 3</div>
+            <div id="teacherPanel" class="teacher-panel">
+                <label for="targetInput">Target per level:</label>
+                <input type="number" id="targetInput" min="1" max="10" value="3" step="1">
+                <button id="setTargetBtn">Set</button>
+                <span style="color:#666; font-size:0.9rem;">(teacher)</span>
+            </div>
+        </div>
+
+        <!-- Lesson box -->
+        <div id="lessonBox" class="lesson-box" style="display: none;">
+            <span class="close-btn" id="closeLessonBtn">&times;</span>
+            <div id="lessonContent">Lesson content will appear here.</div>
+        </div>
+
+        <div class="question" id="questionDisplay">
+            4(a-3)=22
+        </div>
+
+        <div class="input-area">
+            <label for="answer">Your answer (value of the variable):</label>
+            <div class="answer-row">
+                <input type="text" id="answer" placeholder="e.g., 8.5" autocomplete="off">
+                <button id="submitBtn">✓ Check</button>
+            </div>
+        </div>
+
+        <!-- on‑screen numeric keyboard -->
+        <div class="math-keyboard" id="mathKeyboard">
+            <button type="button" class="digit" data-value="7">7</button>
+            <button type="button" class="digit" data-value="8">8</button>
+            <button type="button" class="digit" data-value="9">9</button>
+            <button type="button" class="special" data-value="/">/</button>
+            <button type="button" class="special" data-value=".">.</button>
+            <button type="button" class="special" data-value="-">−</button>
+            <button type="button" class="special wide" data-value="Backspace">⌫</button>
+            
+            <button type="button" class="digit" data-value="4">4</button>
+            <button type="button" class="digit" data-value="5">5</button>
+            <button type="button" class="digit" data-value="6">6</button>
+            <button type="button" class="special" data-value="*">×</button>
+            <button type="button" class="special" data-value="0">0</button>
+            <button type="button" class="special" data-value="Clear">C</button>
+            <button type="button" class="special wide" data-value="Enter">⏎</button>
+            
+            <button type="button" class="digit" data-value="1">1</button>
+            <button type="button" class="digit" data-value="2">2</button>
+            <button type="button" class="digit" data-value="3">3</button>
+            <button type="button" class="special" data-value="+">+</button>
+            <button type="button" class="special" data-value=" ">␣</button>
+            <button type="button" class="special wide" data-value="0">0</button>
+        </div>
+
+        <div class="feedback" id="feedbackMessage">
+            Enter an answer and click Check.
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 0.5rem;">
+            <button id="resetBtn" class="reset-btn">⟲ Reset all levels</button>
+        </div>
+
+        <div class="note">
+            ✅ Solve for the variable. Answers are integers or half‑integers (e.g., 4.5). Decimals are exact.<br>
+            ⭐ After a wrong answer, the correct value and explanation are shown.<br>
+            💾 Progress is saved automatically. Click Reset to start over.
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const VERSION = 4; // updated: variable letters fixed, Q3 corrected
+
+            function randBetween(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+            function randomFromArray(arr) {
+                return arr[Math.floor(Math.random() * arr.length)];
+            }
+
+            // Allowed variable letters (from user guidelines)
+            const varLetters = ['x','p','q','m','n'];
+
+            // Normalize answer: trim, convert to number
+            function normalizeAnswer(s) {
+                s = s.trim();
+                if (s === '') return NaN;
+                let num = Number(s);
+                return num;
+            }
+
+            function isCorrect(userAns, correctValue) {
+                let userNum = normalizeAnswer(userAns);
+                if (isNaN(userNum)) return false;
+                return Math.abs(userNum - correctValue) < 0.0001;
+            }
+
+            // Format number for display: integer if integer, else half-integer as .5
+            function fmtNum(n) {
+                if (Number.isInteger(n)) return n.toString();
+                // check if it's a half-integer
+                if (Math.abs(n - Math.round(n)) < 0.0001) return Math.round(n).toString();
+                // otherwise show with one decimal
+                return n.toFixed(1);
+            }
+
+            // Lesson texts for 11 levels
+            const lessonTexts = [
+                "🔹 **Level 1: a(x ± b) = c**<br>First divide both sides by a, then add/subtract b. Example: 4(a-3)=22 → a-3=5.5 → a=8.5",
+                "🔹 **Level 2: a x ± b = c**<br>Undo the constant then divide. Example: 3h-5=12 → 3h=17 → h≈5.667",
+                "🔹 **Level 3: a x / b = c**<br>Multiply both sides by b then divide by a. Example: 2x/3=6 → 2x=18 → x=9",
+                "🔹 **Level 4: x/a ± b = c**<br>Isolate x/a then multiply by a. Example: y/3-5=4 → y/3=9 → y=27",
+                "🔹 **Level 5: (x ± a)/b = c**<br>Multiply by b then undo the constant. Example: (d+3)/4=5 → d+3=20 → d=17",
+                "🔹 **Level 6: a x = b x ± c**<br>Bring x terms together. Example: 6w = 4w + 9 → 2w = 9 → w = 4.5",
+                "🔹 **Level 7: a x ± c = b x**<br>Example: 2p + 24 = 5p → 24 = 3p → p = 8",
+                "🔹 **Level 8: a = b(c x ± d)**<br>Divide by b, then solve. Example: 24=4(2x-5) → 2x-5=6 → 2x=11 → x=5.5",
+                "🔹 **Level 9: a x ± b = c x ± d**<br>Collect x terms and constants. Example: 3x+12=5x+4 → 12-4=5x-3x → 8=2x → x=4",
+                "🔹 **Level 10: a ± b x = c x ± d**<br>Example: 10-2x=x-8 → 10+8 = x+2x → 18=3x → x=6",
+                "🔹 **Level 11: a ± b x = c x ± d** (different form)<br>Example: similar to level 10."
+            ];
+
+            const explanationTexts = [
+                "Divide by the number outside, then add/subtract the constant.",
+                "Add/subtract the constant first, then divide by the coefficient.",
+                "Multiply both sides by denominator, then divide by numerator.",
+                "Add/subtract the constant, then multiply by denominator.",
+                "Multiply by denominator, then add/subtract the constant.",
+                "Bring x terms to one side: (a-b)x = c, then divide.",
+                "Bring x terms together: a x - b x = -c? Actually rearrange.",
+                "Divide both sides by the outside number, then solve the inner equation.",
+                "Collect x terms on one side, constants on the other.",
+                "Collect x terms on one side, constants on the other.",
+                "Similar to level 10."
+            ];
+
+            // Generator functions for each level (0 to 10)
+            const generators = [];
+
+            // Level 0: a(x ± b) = c
+            generators.push(function() {
+                const a = randBetween(2,10);
+                const b = randBetween(2,10);
+                const op = Math.random() < 0.5 ? '+' : '-';
+                const k = randBetween(2,20) / 2; // half-integer
+                const c = a * k;
+                const varLetter = randomFromArray(varLetters);
+                let expr, correct;
+                if (op === '+') {
+                    expr = `${a}(${varLetter} + ${b}) = ${fmtNum(c)}`;
+                    correct = k - b;
+                } else {
+                    expr = `${a}(${varLetter} - ${b}) = ${fmtNum(c)}`;
+                    correct = k + b;
+                }
+                return {
+                    text: expr,
+                    correct: correct,
+                    working: `${varLetter} = ${fmtNum(correct)}`
+                };
+            });
+
+            // Level 1: a x ± b = c
+            generators.push(function() {
+                const a = randBetween(2,10);
+                const b = randBetween(2,10);
+                const op = Math.random() < 0.5 ? '+' : '-';
+                const k = randBetween(2,20) / 2;
+                let c;
+                if (op === '+') {
+                    c = a * k + b;
+                } else {
+                    c = a * k - b;
+                }
+                const varLetter = randomFromArray(varLetters);
+                const expr = `${a}${varLetter} ${op} ${b} = ${fmtNum(c)}`;
+                return {
+                    text: expr,
+                    correct: k,
+                    working: `${varLetter} = ${fmtNum(k)}`
+                };
+            });
+
+            // Level 2: a x / b = c  (corrected according to user)
+            generators.push(function() {
+                const a = randBetween(2,10);
+                const b = randBetween(2,10);
+                const t = randBetween(2,10); // integer t
+                const c = a * t;               // c is integer
+                const varLetter = randomFromArray(varLetters);
+                const expr = `${a}${varLetter} / ${b} = ${c}`;
+                return {
+                    text: expr,
+                    correct: b * t,  // answer = b * t
+                    working: `${varLetter} = ${b * t}`
+                };
+            });
+
+            // Level 3: x / a ± b = c
+            generators.push(function() {
+                const a = randBetween(2,10);
+                const b = randBetween(2,10);
+                const c = randBetween(2,10);
+                const op = Math.random() < 0.5 ? '+' : '-';
+                let correct;
+                if (op === '+') {
+                    correct = a * (c - b);
+                } else {
+                    correct = a * (c + b);
+                }
+                const varLetter = randomFromArray(varLetters);
+                const expr = `${varLetter} / ${a} ${op} ${b} = ${c}`;
+                return {
+                    text: expr,
+                    correct: correct,
+                    working: `${varLetter} = ${correct}`
+                };
+            });
+
+            // Level 4: (x ± a)/b = c
+            generators.push(function() {
+                const a = randBetween(2,10);
+                const b = randBetween(2,10);
+                const c = randBetween(2,10);
+                const op = Math.random() < 0.5 ? '+' : '-';
+                let correct;
+                if (op === '+') {
+                    correct = b * c - a;
+                } else {
+                    correct = b * c + a;
+                }
+                const varLetter = randomFromArray(varLetters);
+                const expr = `(${varLetter} ${op} ${a}) / ${b} = ${c}`;
+                return {
+                    text: expr,
+                    correct: correct,
+                    working: `${varLetter} = ${correct}`
+                };
+            });
+
+            // Level 5: a x = b x ± c  (ensure positive c)
+            generators.push(function() {
+                let a, b;
+                const op = Math.random() < 0.5 ? '+' : '-';
+                if (op === '+') {
+                    // a > b so that (a-b) > 0
+                    do {
+                        a = randBetween(2,10);
+                        b = randBetween(2, a-1);
+                    } while (a <= b);
+                } else {
+                    // a < b so that (a-b) negative, but c positive: c = k*(b-a)
+                    do {
+                        a = randBetween(2,10);
+                        b = randBetween(a+1, 10);
+                    } while (a >= b);
+                }
+                const k = randBetween(2,20) / 2; // half-integer
+                let c;
+                if (op === '+') {
+                    c = k * (a - b);
+                } else {
+                    c = k * (b - a);
+                }
+                const varLetter = randomFromArray(varLetters);
+                const sign = op === '+' ? '+' : '-';
+                const expr = `${a}${varLetter} = ${b}${varLetter} ${sign} ${fmtNum(c)}`;
+                return {
+                    text: expr,
+                    correct: k,
+                    working: `${varLetter} = ${fmtNum(k)}`
+                };
+            });
+
+            // Level 6: a x ± c = b x  (ensure positive c)
+            generators.push(function() {
+                let a, b;
+                const op = Math.random() < 0.5 ? '+' : '-';
+                if (op === '+') {
+                    // a x + c = b x  => need a < b so that (a-b) negative and c positive
+                    do {
+                        a = randBetween(2,10);
+                        b = randBetween(a+1, 10);
+                    } while (a >= b);
+                } else {
+                    // a x - c = b x  => need a > b so that (a-b) positive and c positive
+                    do {
+                        a = randBetween(2,10);
+                        b = randBetween(2, a-1);
+                    } while (a <= b);
+                }
+                const k = randBetween(2,20) / 2; // half-integer
+                let c;
+                if (op === '+') {
+                    // c = k*(b-a)
+                    c = k * (b - a);
+                } else {
+                    // c = k*(a-b)
+                    c = k * (a - b);
+                }
+                const varLetter = randomFromArray(varLetters);
+                const sign = op === '+' ? '+' : '-';
+                const expr = `${a}${varLetter} ${sign} ${fmtNum(c)} = ${b}${varLetter}`;
+                return {
+                    text: expr,
+                    correct: k,
+                    working: `${varLetter} = ${fmtNum(k)}`
+                };
+            });
+
+            // Level 7: a = b(c x ± d)
+            generators.push(function() {
+                const b = randBetween(2,10);
+                const c = randBetween(2,10);
+                const d = randBetween(2,10);
+                const op = Math.random() < 0.5 ? '+' : '-';
+                const k = randBetween(2,20) / 2; // half-integer
+                let a;
+                if (op === '+') {
+                    a = b * (c * k + d);
+                } else {
+                    a = b * (c * k - d);
+                }
+                const varLetter = randomFromArray(varLetters);
+                const expr = `${fmtNum(a)} = ${b}(${c}${varLetter} ${op} ${d})`;
+                return {
+                    text: expr,
+                    correct: k,
+                    working: `${varLetter} = ${fmtNum(k)}`
+                };
+            });
+
+            // Level 8: a x ± b = c x ± d
+            generators.push(function() {
+                const a = randBetween(2,10);
+                const b = randBetween(2,10);
+                const c = randBetween(2,10);
+                const e = randBetween(2,10); // solution (integer)
+                const op1 = Math.random() < 0.5 ? '+' : '-';
+                const op2 = Math.random() < 0.5 ? '+' : '-';
+                const s1 = op1 === '+' ? 1 : -1;
+                const s2 = op2 === '+' ? 1 : -1;
+                let d = s2 * ( e * (a - c) + s1 * b );
+                let attempts = 0;
+                while (d <= 0 || d > 100) {
+                    // regenerate
+                    a = randBetween(2,10);
+                    b = randBetween(2,10);
+                    c = randBetween(2,10);
+                    e = randBetween(2,10);
+                    op1 = Math.random() < 0.5 ? '+' : '-';
+                    op2 = Math.random() < 0.5 ? '+' : '-';
+                    s1 = op1 === '+' ? 1 : -1;
+                    s2 = op2 === '+' ? 1 : -1;
+                    d = s2 * ( e * (a - c) + s1 * b );
+                    attempts++;
+                    if (attempts > 20) break;
+                }
+                if (d <= 0) d = 1;
+                const varLetter = randomFromArray(varLetters);
+                const left = `${a}${varLetter} ${op1} ${b}`;
+                const right = `${c}${varLetter} ${op2} ${fmtNum(d)}`;
+                const expr = `${left} = ${right}`;
+                return {
+                    text: expr,
+                    correct: e,
+                    working: `${varLetter} = ${e}`
+                };
+            });
+
+            // Level 9: a ± b x = c x ± d
+            generators.push(function() {
+                const a = randBetween(2,10);
+                const b = randBetween(2,10);
+                const c = randBetween(2,10);
+                const e = randBetween(2,10); // solution
+                const opLeft = Math.random() < 0.5 ? '+' : '-';
+                const opRight = Math.random() < 0.5 ? '+' : '-';
+                let sL = opLeft === '+' ? 1 : -1;
+                let sR = opRight === '+' ? 1 : -1;
+                let d;
+                if (opRight === '+') {
+                    d = a + sL * b * e - c * e;
+                } else {
+                    d = c * e - a - sL * b * e;
+                }
+                let attempts = 0;
+                while (d <= 0 || d > 100) {
+                    a = randBetween(2,10);
+                    b = randBetween(2,10);
+                    c = randBetween(2,10);
+                    e = randBetween(2,10);
+                    opLeft = Math.random() < 0.5 ? '+' : '-';
+                    opRight = Math.random() < 0.5 ? '+' : '-';
+                    sL = opLeft === '+' ? 1 : -1;
+                    sR = opRight === '+' ? 1 : -1;
+                    if (opRight === '+') {
+                        d = a + sL * b * e - c * e;
+                    } else {
+                        d = c * e - a - sL * b * e;
+                    }
+                    attempts++;
+                    if (attempts > 20) break;
+                }
+                if (d <= 0) d = 1;
+                const varLetter = randomFromArray(varLetters);
+                const left = `${a} ${opLeft} ${b}${varLetter}`;
+                const right = `${c}${varLetter} ${opRight} ${fmtNum(d)}`;
+                const expr = `${left} = ${right}`;
+                return {
+                    text: expr,
+                    correct: e,
+                    working: `${varLetter} = ${e}`
+                };
+            });
+
+            // Level 10: a ± b x = c x ± d (different form, a given from b,c,d,k)
+            generators.push(function() {
+                const b = randBetween(2,10);
+                const c = randBetween(2,10);
+                const d = randBetween(2,10);
+                const k = randBetween(2,10); // integer solution
+                const op1 = Math.random() < 0.5 ? '+' : '-';
+                const op2 = Math.random() < 0.5 ? '+' : '-';
+                const s1 = op1 === '+' ? 1 : -1;
+                const s2 = op2 === '+' ? 1 : -1;
+                let a = c * k + s2 * d - s1 * b * k;
+                let attempts = 0;
+                while (a <= 0 || a > 100) {
+                    b = randBetween(2,10);
+                    c = randBetween(2,10);
+                    d = randBetween(2,10);
+                    k = randBetween(2,10);
+                    op1 = Math.random() < 0.5 ? '+' : '-';
+                    op2 = Math.random() < 0.5 ? '+' : '-';
+                    s1 = op1 === '+' ? 1 : -1;
+                    s2 = op2 === '+' ? 1 : -1;
+                    a = c * k + s2 * d - s1 * b * k;
+                    attempts++;
+                    if (attempts > 20) break;
+                }
+                if (a <= 0) a = 1;
+                const varLetter = randomFromArray(varLetters);
+                const left = `${fmtNum(a)} ${op1} ${b}${varLetter}`;
+                const right = `${c}${varLetter} ${op2} ${d}`;
+                const expr = `${left} = ${right}`;
+                return {
+                    text: expr,
+                    correct: k,
+                    working: `${varLetter} = ${k}`
+                };
+            });
+
+            const totalLevels = generators.length; // 11
+
+            // ----- State -----
+            let currentStage = 0, streak = 0, target = 3, hoverEnabled = false, currentQuestion = null, locked = false, levelQuestionCount = 1;
+            const stageDisplay = document.getElementById('stageDisplay');
+            const streakDisplay = document.getElementById('streakDisplay');
+            const targetDisplay = document.getElementById('targetDisplay');
+            const questionEl = document.getElementById('questionDisplay');
+            const answerInput = document.getElementById('answer');
+            const submitBtn = document.getElementById('submitBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const feedbackEl = document.getElementById('feedbackMessage');
+            const teacherIcon = document.getElementById('teacherIcon');
+            const teacherPanel = document.getElementById('teacherPanel');
+            const targetInput = document.getElementById('targetInput');
+            const setTargetBtn = document.getElementById('setTargetBtn');
+            const certificateModal = document.getElementById('certificateModal');
+            const certificateClose = document.getElementById('certificateClose');
+            const certStudentName = document.getElementById('certStudentName');
+            const certDate = document.getElementById('certDate');
+            const lessonBox = document.getElementById('lessonBox');
+            const lessonContent = document.getElementById('lessonContent');
+            const closeLessonBtn = document.getElementById('closeLessonBtn');
+
+            function showLesson() {
+                lessonContent.innerHTML = lessonTexts[currentStage];
+                lessonBox.style.display = 'block';
+            }
+            closeLessonBtn.addEventListener('click', () => lessonBox.style.display = 'none');
+
+            function updateDisplay() {
+                stageDisplay.textContent = `Level ${currentStage+1} · Q${currentStage+1}`;
+                streakDisplay.innerHTML = `🔥 ${streak} / ${target}`;
+                targetDisplay.textContent = target;
+                if (currentQuestion) questionEl.innerHTML = currentQuestion.text;
+                updateHover();
+            }
+            function updateHover() {
+                questionEl.title = (hoverEnabled && currentQuestion) ? `Answer: ${currentQuestion.correct}` : '';
+            }
+
+            function loadNewQuestion() {
+                currentQuestion = generators[currentStage]();
+                hoverEnabled = false;
+                answerInput.value = '';
+                feedbackEl.className = 'feedback';
+                feedbackEl.innerHTML = 'Enter your answer.';
+                levelQuestionCount++;
+                updateDisplay();
+                answerInput.focus();
+            }
+            function setQuestion(q) {
+                currentQuestion = q;
+                hoverEnabled = false;
+                answerInput.value = '';
+                questionEl.innerHTML = currentQuestion.text;
+                updateHover();
+            }
+
+            function handleCorrect() {
+                streak++;
+                updateDisplay();
+                feedbackEl.className = 'feedback correct';
+                feedbackEl.innerHTML = `✅ Correct! ${streak} in a row.`;
+                if (streak >= target) {
+                    if (currentStage === totalLevels - 1) {
+                        locked = true; submitBtn.disabled = true; answerInput.disabled = true;
+                        feedbackEl.innerHTML = '🎉 Congratulations! You have mastered all levels.';
+                        showCertificate();
+                    } else {
+                        currentStage++; streak = 0; levelQuestionCount = 1;
+                        showLesson();
+                        currentQuestion = generators[currentStage]();
+                        setQuestion(currentQuestion);
+                        updateDisplay();
+                    }
+                } else {
+                    loadNewQuestion();
+                }
+                saveState();
+            }
+            function handleIncorrect() {
+                streak = 0; hoverEnabled = true;
+                updateDisplay();
+                const correctAns = fmtNum(currentQuestion.correct);
+                const explanation = explanationTexts[currentStage] || "Check your working.";
+                feedbackEl.className = 'feedback incorrect';
+                feedbackEl.innerHTML = `❌ Incorrect. Correct answer: <strong>${correctAns}</strong><br>${explanation}`;
+                updateHover();
+                answerInput.value = '';
+                answerInput.focus();
+                saveState();
+            }
+
+            function showCertificate() {
+                let student = prompt("Enter your name for the certificate:", "Student") || "Student";
+                certStudentName.textContent = student;
+                certDate.textContent = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+                certificateModal.style.display = 'flex';
+            }
+            function saveState() {
+                const state = {
+                    version: VERSION,
+                    currentStage,
+                    streak,
+                    target,
+                    levelQuestionCount,
+                    locked
+                };
+                localStorage.setItem('solveEqIntermediateState', JSON.stringify(state));
+            }
+            function loadState() {
+                const saved = localStorage.getItem('solveEqIntermediateState');
+                if (saved) {
+                    try {
+                        const s = JSON.parse(saved);
+                        if (s.version !== VERSION) {
+                            fullReset();
+                            return;
+                        }
+                        if (s.currentStage >= 0 && s.currentStage < totalLevels) {
+                            currentStage = s.currentStage;
+                            streak = s.streak || 0;
+                            target = s.target || 3;
+                            levelQuestionCount = s.levelQuestionCount || 1;
+                            locked = s.locked || false;
+                        } else {
+                            fullReset();
+                            return;
+                        }
+                        if (locked) { submitBtn.disabled = true; answerInput.disabled = true; }
+                        currentQuestion = generators[currentStage]();
+                        setQuestion(currentQuestion);
+                        updateDisplay();
+                        showLesson();
+                    } catch { fullReset(); }
+                } else fullReset();
+            }
+            function fullReset() {
+                currentStage = 0; streak = 0; locked = false; submitBtn.disabled = false; answerInput.disabled = false;
+                hoverEnabled = false; levelQuestionCount = 1;
+                target = parseInt(targetInput.value, 10) || 3;
+                targetInput.value = target;
+                currentQuestion = generators[0]();
+                setQuestion(currentQuestion);
+                updateDisplay();
+                showLesson();
+                localStorage.removeItem('solveEqIntermediateState');
+            }
+            function revealTeacherPanel() {
+                if (prompt("Enter teacher password:") === "teacher") teacherPanel.style.display = "flex";
+                else alert("Incorrect password.");
+            }
+            function setTarget() {
+                let newTarget = parseInt(targetInput.value, 10);
+                if (isNaN(newTarget) || newTarget < 1) newTarget = 1;
+                if (newTarget > 10) newTarget = 10;
+                target = newTarget; targetInput.value = target;
+                updateDisplay(); saveState();
+            }
+
+            // Event listeners
+            submitBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (locked) return;
+                const userAns = answerInput.value.trim();
+                if (!userAns) {
+                    feedbackEl.className = 'feedback incorrect';
+                    feedbackEl.innerHTML = '⚠️ Please enter an answer.';
+                    return;
+                }
+                if (currentQuestion && isCorrect(userAns, currentQuestion.correct)) {
+                    handleCorrect();
+                } else {
+                    handleIncorrect();
+                }
+            });
+            answerInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    submitBtn.click();
+                }
+            });
+            resetBtn.addEventListener('click', fullReset);
+            teacherIcon.addEventListener('click', revealTeacherPanel);
+            setTargetBtn.addEventListener('click', setTarget);
+            certificateClose.addEventListener('click', function() {
+                certificateModal.style.display = 'none';
+            });
+            window.addEventListener('click', function(e) {
+                if (e.target === certificateModal) certificateModal.style.display = 'none';
+            });
+
+            // on‑screen keyboard
+            const keyboard = document.getElementById('mathKeyboard');
+            keyboard.addEventListener('click', function(e) {
+                const btn = e.target;
+                if (btn.tagName !== 'BUTTON') return;
+                e.preventDefault();
+                const val = btn.getAttribute('data-value');
+                if (!val) return;
+                if (val === 'Backspace') {
+                    const start = answerInput.selectionStart, end = answerInput.selectionEnd;
+                    if (start === 0 && end === 0) return;
+                    const newVal = answerInput.value.substring(0, start-1) + answerInput.value.substring(end);
+                    answerInput.value = newVal;
+                    answerInput.setSelectionRange(start-1, start-1);
+                } else if (val === 'Clear') {
+                    answerInput.value = '';
+                } else if (val === 'Enter') {
+                    submitBtn.click();
+                } else {
+                    const ins = val;
+                    const start = answerInput.selectionStart, end = answerInput.selectionEnd;
+                    answerInput.value = answerInput.value.substring(0, start) + ins + answerInput.value.substring(end);
+                    answerInput.setSelectionRange(start + ins.length, start + ins.length);
+                }
+                answerInput.focus();
+            });
+
+            // Start
+            loadState();
+        })();
+    </script>
+</body>
+</html>

@@ -26,7 +26,7 @@
             border-radius: 20px;
             padding: 40px;
             width: 90%;
-            max-width: 900px;
+            max-width: 1000px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             text-align: center;
             margin-top: 20px;
@@ -50,7 +50,7 @@
         
         .quiz-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 25px;
             margin-top: 30px;
         }
@@ -64,6 +64,8 @@
             transition: all 0.3s ease;
             border: 2px solid transparent;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
         }
         
         .quiz-card:hover {
@@ -83,6 +85,7 @@
             color: #666;
             font-size: 0.95rem;
             line-height: 1.5;
+            margin-top: auto;
         }
         
         .icon {
@@ -118,80 +121,80 @@
         <p class="subtitle">Test your skills across different maths topics</p>
         
         <div class="quiz-grid">
-            <!-- 1st Quiz -->
-            <a href="Mixed operation neg and pos.html" class="quiz-card">
-                <div class="icon">➕➖</div>
-                <h2>Mixed Operations with Positives & Negatives</h2>
-                <p>Practice addition, subtraction, multiplication, and division with positive and negative numbers.</p>
+            <!-- Rounding to Nearest 10, 100, 1000 -->
+            <a href="Rounding_10_100_1000.html" class="quiz-card">
+                <div class="icon">🔟</div>
+                <h2>Rounding to Nearest 10, 100, 1000</h2>
+                <p>Practice rounding numbers to the nearest ten, hundred, or thousand.</p>
             </a>
             
-            <!-- 2nd Quiz -->
-            <a href="Pos and neg mult and div.html" class="quiz-card">
-                <div class="icon">✖️➗</div>
-                <h2>Multiplication & Division with Positives & Negatives</h2>
-                <p>Focus on multiplying and dividing positive and negative numbers.</p>
+            <!-- Rounding to 1, 2, or 3 Decimal Places -->
+            <a href="Round_1_2_3_dp.html" class="quiz-card">
+                <div class="icon">🔢</div>
+                <h2>Rounding to 1, 2, or 3 Decimal Places</h2>
+                <p>Test your ability to round numbers to specific decimal places.</p>
             </a>
             
-            <!-- 3rd Quiz -->
-            <a href="Pos and neg number add and sub.html" class="quiz-card">
+            <!-- Rounding to 1, 2, or 3 Significant Figures -->
+            <a href="Round_1_2_3_sig_fig.html" class="quiz-card">
+                <div class="icon">📐</div>
+                <h2>Rounding to 1, 2, or 3 Significant Figures</h2>
+                <p>Practice rounding numbers to 1, 2, or 3 significant figures.</p>
+            </a>
+            
+            <!-- Addition & Subtraction with Positives & Negatives -->
+            <a href="Pos_Neg_Num_Add_Sub.html" class="quiz-card">
                 <div class="icon">➕➖</div>
                 <h2>Addition & Subtraction with Positives & Negatives</h2>
                 <p>Practice adding and subtracting positive and negative numbers.</p>
             </a>
             
-            <!-- 4th Quiz -->
-            <a href="Three integer two op.html" class="quiz-card">
+            <!-- Multiplication & Division with Positives & Negatives -->
+            <a href="Pos_Neg_Mult_Div.html" class="quiz-card">
+                <div class="icon">✖️➗</div>
+                <h2>Multiplication & Division with Positives & Negatives</h2>
+                <p>Focus on multiplying and dividing positive and negative numbers.</p>
+            </a>
+            
+            <!-- Mixed Operations with Positives & Negatives -->
+            <a href="Mixed_Operation_Neg_Pos.html" class="quiz-card">
+                <div class="icon">➕➖✖️➗</div>
+                <h2>Mixed Operations with Positives & Negatives</h2>
+                <p>Practice addition, subtraction, multiplication, and division with positive and negative numbers.</p>
+            </a>
+            
+            <!-- Three Integers with Two Operations -->
+            <a href="Three_integer_two_Op.html" class="quiz-card">
                 <div class="icon">🧮</div>
-                <h2>Three Integers with Two Operations</h2>
+                <h2>Three Integers – Two Operations</h2>
                 <p>Solve problems with three integers and two different operations.</p>
             </a>
             
-            <!-- 5th Quiz -->
+            <!-- Order of Operations (BIDMAS/PEMDAS) -->
             <a href="Order_of_Operation.html" class="quiz-card">
                 <div class="icon">🔢</div>
                 <h2>Order of Operations (BIDMAS/PEMDAS)</h2>
                 <p>Master the correct sequence for mathematical operations.</p>
             </a>
             
-            <!-- 6th Quiz -->
+            <!-- Indices, Powers & Roots -->
             <a href="Indices_Power_Root.html" class="quiz-card">
                 <div class="icon">⚡</div>
                 <h2>Indices, Powers & Roots</h2>
                 <p>Test your knowledge of powers, indices, square roots, and cube roots.</p>
             </a>
             
-            <!-- 7th Quiz -->
+            <!-- Factors, Multiples & Primes -->
             <a href="Factors_Multiples_Primes.html" class="quiz-card">
                 <div class="icon">🔢</div>
                 <h2>Factors, Multiples & Primes</h2>
                 <p>Identify factors, multiples, prime numbers, HCF, and LCM.</p>
             </a>
-            
-            <!-- 8th Quiz -->
-            <a href="Round 1 2 3 dp.html" class="quiz-card">
-                <div class="icon">🔢</div>
-                <h2>Rounding to 1, 2, or 3 Decimal Places</h2>
-                <p>Test your ability to round numbers to specific decimal places.</p>
-            </a>
-            
-            <!-- 9th Quiz -->
-            <a href="Round 1 2 3 sig fig.html" class="quiz-card">
-                <div class="icon">📐</div>
-                <h2>Rounding to 1, 2, or 3 Significant Figures</h2>
-                <p>Practice rounding numbers to 1, 2, or 3 significant figures.</p>
-            </a>
-            
-            <!-- 10th Quiz -->
-            <a href="Rounding 10 100 1000.html" class="quiz-card">
-                <div class="icon">🔟</div>
-                <h2>Rounding to Nearest 10, 100, or 1000</h2>
-                <p>Test rounding numbers to the nearest ten, hundred, or thousand.</p>
-            </a>
         </div>
         
         <div class="footer">
             <p>Complete all 10 quizzes to master these fundamental maths skills!</p>
-            <p style="margin-top: 10px; color: #2ecc71;">✅ All quiz files are now linked!</p>
+            <p style="margin-top: 10px; color: #2ecc71;">✅ All quiz files are now correctly linked!</p>
         </div>
     </div>
 </body>

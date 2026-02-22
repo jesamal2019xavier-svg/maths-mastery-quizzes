@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tree Diagram Mastery Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f9ff;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        
+        .student-name-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+        
+        .student-name-label {
+            font-size: 1rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        #student-name {
+            padding: 8px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 6px;
+            font-size: 1rem;
+            width: 250px;
+            max-width: 100%;
+            text-align: center;
+        }
+        
+        .question-container {
+            margin-bottom: 40px;
+            padding: 25px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eaeaea;
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .question-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #3498db;
+            background-color: #f0f7ff;
+            padding: 8px 16px;
+            border-radius: 6px;
+        }
+        
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            line-height: 1.6;
+        }
+        
+        /* Tree containers - let them expand as needed */
+        .tree-container {
+            background-color: #f8fafc;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #e1e8ed;
+            overflow: auto;
+            min-height: 400px;
+        }
+        
+        .tree-wrapper {
+            position: relative;
+            width: 100%;
+            min-height: 350px;
+        }
+        
+        .tree-svg {
+            width: 100%;
+            height: auto;
+        }
+        
+        .tree-link {
+            fill: none;
+            stroke: #3498db;
+            stroke-width: 2px;
+        }
+        
+        .tree-node circle {
+            fill: #3498db;
+            r: 8;
+        }
+        
+        .tree-node text {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            fill: #2c3e50;
+        }
+        
+        /* Input boxes placed directly in SVG using foreignObject */
+        .branch-input {
+            width: 70px;
+            height: 32px;
+            border: 2px solid #e1e8ed;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            background-color: white;
+            padding: 0 5px;
+        }
+        
+        .combined-input {
+            width: 90px;
+            height: 32px;
+            border: 2px solid #e1e8ed;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            background-color: white;
+            padding: 0 5px;
+        }
+        
+        .answer-part {
+            padding: 15px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e1e8ed;
+            margin-bottom: 15px;
+        }
+        
+        .answer-part h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .question-answer-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e1e8ed;
+            border-radius: 6px;
+            font-size: 15px;
+            margin-bottom: 10px;
+            background-color: white;
+        }
+        
+        .submit-section {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #eaeaea;
+        }
+        
+        button {
+            padding: 12px 30px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0 10px 10px 0;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        #retry-btn {
+            background-color: #2ecc71;
+        }
+        
+        #retry-btn:hover {
+            background-color: #27ae60;
+        }
+        
+        /* Certificate Modal */
+        .certificate-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .certificate-content {
+            background: linear-gradient(135deg, #f9f9ff 0%, #ffffff 100%);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 8px solid #3498db;
+            position: relative;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .certificate-header {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .certificate-divider {
+            height: 3px;
+            background: linear-gradient(to right, transparent, #3498db, transparent);
+            margin: 20px 0;
+        }
+        
+        .certificate-text {
+            color: #333;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .certificate-name {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: rgba(52, 152, 219, 0.1);
+            border-radius: 8px;
+            font-weight: 700;
+        }
+        
+        .certificate-score {
+            font-size: 1.5rem;
+            color: #27ae60;
+            margin: 15px 0;
+            font-weight: 700;
+        }
+        
+        .certificate-date {
+            color: #7f8c8d;
+            font-size: 1rem;
+            margin-top: 20px;
+        }
+        
+        .certificate-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #7f8c8d;
+            cursor: pointer;
+            padding: 5px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .certificate-close:hover {
+            color: #2c3e50;
+            background-color: rgba(0, 0, 0, 0.05);
+            border-radius: 50%;
+        }
+        
+        @media (max-width: 768px) {
+            .certificate-content {
+                width: 95%;
+                padding: 20px;
+                margin: 20px;
+            }
+            
+            .certificate-header {
+                font-size: 1.5rem;
+            }
+            
+            .certificate-name {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Certificate Modal -->
+    <div id="certificate-modal" class="certificate-modal">
+        <div class="certificate-content">
+            <button class="certificate-close" id="certificate-close">&times;</button>
+            <div class="certificate-header">
+                <i class="fas fa-award"></i> Certificate of Achievement
+            </div>
+            <div class="certificate-divider"></div>
+            <div class="certificate-text">
+                Awarded to:
+            </div>
+            <div class="certificate-name" id="certificate-name">Student Name</div>
+            <div class="certificate-text">
+                For Perfect Score in<br>Tree Diagram Mastery Quiz
+            </div>
+            <div class="certificate-score" id="certificate-score">Score: 100%</div>
+            <div class="certificate-date" id="certificate-date">Date: </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-project-diagram"></i> Tree Diagram Quiz</h1>
+            <p class="subtitle">Complete all 5 questions. Fill in probabilities on branches and combined probabilities at ends.</p>
+            
+            <div class="student-name-container">
+                <div class="student-name-label">Student Name:</div>
+                <input type="text" id="student-name" placeholder="Enter your name" maxlength="30">
+            </div>
+        </header>
+        
+        <div id="quiz-container">
+            <!-- Questions will be generated here -->
+        </div>
+        
+        <div class="submit-section">
+            <button id="submit-btn"><i class="fas fa-check"></i> Submit</button>
+            <button id="retry-btn"><i class="fas fa-redo"></i> Retry</button>
+        </div>
+    </div>
+
+    <script>
+        // ==============================
+        // SIMPLIFIED TREE GENERATION
+        // ==============================
+        
+        class TreeDiagram {
+            constructor(containerId, treeData, questionNum) {
+                this.containerId = containerId;
+                this.treeData = treeData;
+                this.questionNum = questionNum;
+                this.inputs = {};
+                this.render();
+            }
+            
+            render() {
+                const container = d3.select(`#${this.containerId}`);
+                container.html('');
+                
+                const width = this.getTreeWidth();
+                const height = this.getTreeHeight();
+                const margin = {top: 40, right: 200, bottom: 40, left: 50};
+                
+                const svg = container.append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform", `translate(${margin.left},${margin.top})`);
+                
+                // Build the tree structure
+                const root = this.buildTreeStructure();
+                const treeLayout = d3.tree()
+                    .size([height, width])
+                    .separation((a, b) => (a.parent === b.parent ? 1 : 2));
+                
+                const rootNode = d3.hierarchy(root);
+                treeLayout(rootNode);
+                
+                // Draw links
+                svg.selectAll(".link")
+                    .data(rootNode.links())
+                    .enter().append("path")
+                    .attr("class", "tree-link")
+                    .attr("d", d3.linkHorizontal()
+                        .x(d => d.y)
+                        .y(d => d.x));
+                
+                // Draw nodes
+                const nodes = svg.selectAll(".node")
+                    .data(rootNode.descendants())
+                    .enter().append("g")
+                    .attr("class", "tree-node")
+                    .attr("transform", d => `translate(${d.y},${d.x})`);
+                
+                nodes.append("circle")
+                    .attr("r", 8);
+                
+                nodes.append("text")
+                    .attr("dy", ".31em")
+                    .attr("x", d => d.children ? -12 : 12)
+                    .attr("text-anchor", d => d.children ? "end" : "start")
+                    .text(d => d.data.name);
+                
+                // Add input boxes for branch probabilities
+                rootNode.links().forEach(link => {
+                    const midX = (link.source.y + link.target.y) / 2;
+                    const midY = (link.source.x + link.target.x) / 2;
+                    
+                    // Create a group for the input
+                    const inputGroup = svg.append("g")
+                        .attr("transform", `translate(${midX - 35},${midY - 16})`);
+                    
+                    // Add background rectangle
+                    inputGroup.append("rect")
+                        .attr("width", 70)
+                        .attr("height", 32)
+                        .attr("rx", 6)
+                        .attr("ry", 6)
+                        .attr("fill", "white")
+                        .attr("stroke", "#e1e8ed")
+                        .attr("stroke-width", 2);
+                    
+                    // Add foreignObject for HTML input
+                    const foreignObject = inputGroup.append("foreignObject")
+                        .attr("width", 70)
+                        .attr("height", 32);
+                    
+                    const inputDiv = foreignObject.append("xhtml:div")
+                        .style("width", "100%")
+                        .style("height", "100%")
+                        .style("display", "flex")
+                        .style("align-items", "center")
+                        .style("justify-content", "center");
+                    
+                    const input = inputDiv.append("xhtml:input")
+                        .attr("type", "text")
+                        .attr("class", "branch-input")
+                        .style("width", "60px")
+                        .style("height", "28px")
+                        .style("border", "none")
+                        .style("text-align", "center")
+                        .style("font-size", "14px")
+                        .style("font-weight", "600");
+                    
+                    // Store reference to input
+                    const inputId = `q${this.questionNum}-${link.source.data.id || 'start'}-${link.target.data.id}`;
+                    input.attr("id", inputId);
+                    this.inputs[inputId] = input.node();
+                });
+                
+                // Add input boxes for combined probabilities (leaf nodes)
+                rootNode.descendants().forEach(node => {
+                    if (!node.children && node.data.name !== "Start") {
+                        const x = node.y + 40;
+                        const y = node.x - 16;
+                        
+                        // Create a group for the input
+                        const inputGroup = svg.append("g")
+                            .attr("transform", `translate(${x},${y})`);
+                        
+                        // Add background rectangle
+                        inputGroup.append("rect")
+                            .attr("width", 90)
+                            .attr("height", 32)
+                            .attr("rx", 6)
+                            .attr("ry", 6)
+                            .attr("fill", "white")
+                            .attr("stroke", "#e1e8ed")
+                            .attr("stroke-width", 2);
+                        
+                        // Add foreignObject for HTML input
+                        const foreignObject = inputGroup.append("foreignObject")
+                            .attr("width", 90)
+                            .attr("height", 32);
+                        
+                        const inputDiv = foreignObject.append("xhtml:div")
+                            .style("width", "100%")
+                            .style("height", "100%")
+                            .style("display", "flex")
+                            .style("align-items", "center")
+                            .style("justify-content", "center");
+                        
+                        const input = inputDiv.append("xhtml:input")
+                            .attr("type", "text")
+                            .attr("class", "combined-input")
+                            .style("width", "80px")
+                            .style("height", "28px")
+                            .style("border", "none")
+                            .style("text-align", "center")
+                            .style("font-size", "14px")
+                            .style("font-weight", "600");
+                        
+                        // Store reference to input
+                        const inputId = `q${this.questionNum}-combined-${node.data.id}`;
+                        input.attr("id", inputId);
+                        this.inputs[inputId] = input.node();
+                    }
+                });
+            }
+            
+            getTreeWidth() {
+                switch(this.treeData.type) {
+                    case 'three-stage': return 1200;
+                    case 'two-stage-three-options': return 1000;
+                    default: return 800;
+                }
+            }
+            
+            getTreeHeight() {
+                switch(this.treeData.type) {
+                    case 'three-stage': return 500;
+                    case 'two-stage-three-options': return 400;
+                    default: return 300;
+                }
+            }
+            
+            buildTreeStructure() {
+                if (this.treeData.type === 'three-stage') {
+                    return this.buildThreeStageTree();
+                } else if (this.treeData.type === 'two-stage-three-options') {
+                    return this.buildTwoStageThreeOptionsTree();
+                } else {
+                    return this.buildTwoStageTree();
+                }
+            }
+            
+            buildTwoStageTree() {
+                const root = { name: "Start", id: "start" };
+                root.children = this.treeData.firstStage.map(first => ({
+                    name: first.name,
+                    id: first.name.toLowerCase(),
+                    children: this.treeData.secondStage[first.name].map(second => ({
+                        name: second.name,
+                        id: `${first.name.toLowerCase()}-${second.name.toLowerCase()}`
+                    }))
+                }));
+                return root;
+            }
+            
+            buildTwoStageThreeOptionsTree() {
+                const root = { name: "Start", id: "start" };
+                root.children = this.treeData.firstStage.map(first => ({
+                    name: first.name,
+                    id: first.name.toLowerCase(),
+                    children: this.treeData.firstStage.map(second => ({
+                        name: second.name,
+                        id: `${first.name.toLowerCase()}-${second.name.toLowerCase()}`
+                    }))
+                }));
+                return root;
+            }
+            
+            buildThreeStageTree() {
+                const root = { name: "Start", id: "start" };
+                root.children = [
+                    {
+                        name: "H",
+                        id: "h1",
+                        children: [
+                            {
+                                name: "H",
+                                id: "h1-h2",
+                                children: [
+                                    { name: "H", id: "h1-h2-h3" },
+                                    { name: "T", id: "h1-h2-t3" }
+                                ]
+                            },
+                            {
+                                name: "T",
+                                id: "h1-t2",
+                                children: [
+                                    { name: "H", id: "h1-t2-h3" },
+                                    { name: "T", id: "h1-t2-t3" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        name: "T",
+                        id: "t1",
+                        children: [
+                            {
+                                name: "H",
+                                id: "t1-h2",
+                                children: [
+                                    { name: "H", id: "t1-h2-h3" },
+                                    { name: "T", id: "t1-h2-t3" }
+                                ]
+                            },
+                            {
+                                name: "T",
+                                id: "t1-t2",
+                                children: [
+                                    { name: "H", id: "t1-t2-h3" },
+                                    { name: "T", id: "t1-t2-t3" }
+                                ]
+                            }
+                        ]
+                    }
+                ];
+                return root;
+            }
+            
+            getInputValues() {
+                const values = {};
+                Object.keys(this.inputs).forEach(key => {
+                    values[key] = this.inputs[key].value;
+                });
+                return values;
+            }
+        }
+        
+        // ==============================
+        // QUIZ DATA GENERATION
+        // ==============================
+        
+        function generateQuestion1() {
+            const r = Math.floor(Math.random() * 5) + 3; // 3-7
+            const b = Math.floor(Math.random() * 5) + 3; // 3-7
+            const total = r + b;
+            
+            return {
+                id: 1,
+                text: `A bag contains ${r} red beads and ${b} blue beads. A bead is chosen at random from the bag, the colour is recorded and the bead is replaced. A second bead is chosen and the colour is recorded.`,
+                tree: {
+                    type: 'two-stage',
+                    firstStage: [
+                        {name: 'Red', probability: `${r}/${total}`},
+                        {name: 'Blue', probability: `${b}/${total}`}
+                    ],
+                    secondStage: {
+                        'Red': [
+                            {name: 'Red', probability: `${r}/${total}`},
+                            {name: 'Blue', probability: `${b}/${total}`}
+                        ],
+                        'Blue': [
+                            {name: 'Red', probability: `${r}/${total}`},
+                            {name: 'Blue', probability: `${b}/${total}`}
+                        ]
+                    }
+                },
+                answers: {
+                    b: `${b*b}/${total*total}`,
+                    c: `${b}/${total}`
+                }
+            };
+        }
+        
+        function generateQuestion2() {
+            const n = Math.floor(Math.random() * 5) + 8; // 8-12
+            const odd = n - Math.floor(n/2);
+            const even = Math.floor(n/2);
+            
+            return {
+                id: 2,
+                text: `A box contains ${n} cards numbered 1 to ${n}. A card is drawn at random and not replaced. It is noted whether the number is odd or even. A second card is drawn and it is also noted whether this number is odd or even.`,
+                tree: {
+                    type: 'two-stage',
+                    firstStage: [
+                        {name: 'Odd', probability: `${odd}/${n}`},
+                        {name: 'Even', probability: `${even}/${n}`}
+                    ],
+                    secondStage: {
+                        'Odd': [
+                            {name: 'Odd', probability: `${odd-1}/${n-1}`},
+                            {name: 'Even', probability: `${even}/${n-1}`}
+                        ],
+                        'Even': [
+                            {name: 'Odd', probability: `${odd}/${n-1}`},
+                            {name: 'Even', probability: `${even-1}/${n-1}`}
+                        ]
+                    }
+                },
+                answers: {
+                    b: `${even*(even-1)}/${n*(n-1)}`,
+                    c: `${2*odd*even}/${n*(n-1)}`
+                }
+            };
+        }
+        
+        function generateQuestion3() {
+            const a = [0.6, 0.7, 0.8][Math.floor(Math.random() * 3)];
+            const b = a + 0.10;
+            const c = [0.3, 0.4, 0.5][Math.floor(Math.random() * 3)];
+            
+            return {
+                id: 3,
+                text: `Mr Dixon plays golf. The probability that he scores par or under on the 1st hole is ${a.toFixed(1)}. If he scores par or under on the 1st hole, the probability that he scores par or under on the second hole is ${b.toFixed(1)}. If he doesn't score par or under on the first hole, the probability that he scores par or under on the 2nd hole is ${c.toFixed(1)}.`,
+                tree: {
+                    type: 'two-stage',
+                    firstStage: [
+                        {name: 'Par', probability: a.toFixed(1)},
+                        {name: 'Over', probability: (1-a).toFixed(1)}
+                    ],
+                    secondStage: {
+                        'Par': [
+                            {name: 'Par', probability: b.toFixed(1)},
+                            {name: 'Over', probability: (1-b).toFixed(1)}
+                        ],
+                        'Over': [
+                            {name: 'Par', probability: c.toFixed(1)},
+                            {name: 'Over', probability: (1-c).toFixed(1)}
+                        ]
+                    }
+                },
+                answers: {
+                    b: 'dependent',
+                    c: (a*(1-b) + (1-a)*c).toFixed(2)
+                }
+            };
+        }
+        
+        function generateQuestion4() {
+            const probabilities = [
+                {value: 1/3, str: '1/3'},
+                {value: 2/5, str: '2/5'},
+                {value: 3/8, str: '3/8'},
+                {value: 3/7, str: '3/7'},
+                {value: 4/11, str: '4/11'}
+            ];
+            const prob = probabilities[Math.floor(Math.random() * probabilities.length)];
+            
+            return {
+                id: 4,
+                text: `A biased coin is tossed 3 times and is recorded whether it falls head or tails. P(heads) = ${prob.str}.`,
+                tree: {
+                    type: 'three-stage',
+                    pHead: prob.value,
+                    pTail: 1 - prob.value
+                },
+                answers: {
+                    b: Math.pow(prob.value, 3),
+                    c: 3 * prob.value * Math.pow(1-prob.value, 2),
+                    d: Math.pow(Math.pow(prob.value, 3) + Math.pow(1-prob.value, 3), 2)
+                }
+            };
+        }
+        
+        function generateQuestion5() {
+            const b = Math.floor(Math.random() * 6) + 3; // 3-8
+            const r = Math.floor(Math.random() * 6) + 3; // 3-8
+            const y = Math.floor(Math.random() * 6) + 5; // 5-10
+            const total = b + r + y;
+            
+            return {
+                id: 5,
+                text: `A bag contains ${total} tokens: ${b} blue, ${r} red and ${y} yellow. Two tokens are drawn from the bag without replacement.`,
+                tree: {
+                    type: 'two-stage-three-options',
+                    firstStage: [
+                        {name: 'Blue', probability: `${b}/${total}`},
+                        {name: 'Red', probability: `${r}/${total}`},
+                        {name: 'Yellow', probability: `${y}/${total}`}
+                    ]
+                },
+                answers: {
+                    b: `${y*(y-1)}/${total*(total-1)}`,
+                    c: `${y-2}/${total-2}`,
+                    d: `${6*b*r*y}/${total*(total-1)*(total-2)}`
+                }
+            };
+        }
+        
+        // ==============================
+        // QUIZ RENDERING
+        // ==============================
+        
+        let currentQuestions = [];
+        let treeInstances = [];
+        
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+            treeInstances = [];
+            
+            currentQuestions.forEach((question, index) => {
+                const questionNum = index + 1;
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-container';
+                questionDiv.id = `question-${questionNum}`;
+                
+                questionDiv.innerHTML = `
+                    <div class="question-header">
+                        <div class="question-number">Question ${questionNum}</div>
+                    </div>
+                    <div class="question-text">
+                        <p>${question.text}</p>
+                        <p>a) Complete the tree diagram below:</p>
+                    </div>
+                    <div class="tree-container">
+                        <div class="tree-wrapper" id="tree-${questionNum}"></div>
+                    </div>
+                    <div class="answer-part">
+                        <h4>b) ${getPartBText(questionNum)}</h4>
+                        <input type="text" class="question-answer-input" id="answer-${questionNum}b" placeholder="Enter answer">
+                    </div>
+                    <div class="answer-part">
+                        <h4>c) ${getPartCText(questionNum)}</h4>
+                        <input type="text" class="question-answer-input" id="answer-${questionNum}c" placeholder="Enter answer">
+                        ${questionNum >= 4 ? `
+                        <div class="answer-part">
+                            <h4>d) ${getPartDText(questionNum)}</h4>
+                            <input type="text" class="question-answer-input" id="answer-${questionNum}d" placeholder="Enter answer">
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+                
+                container.appendChild(questionDiv);
+                
+                // Create tree diagram
+                setTimeout(() => {
+                    const tree = new TreeDiagram(`tree-${questionNum}`, question.tree, questionNum);
+                    treeInstances.push(tree);
+                }, 100);
+            });
+        }
+        
+        function getPartBText(qNum) {
+            switch(qNum) {
+                case 1: return 'Find the probability that both beads are blue.';
+                case 2: return 'Find the probability that both cards are even.';
+                case 3: return 'State whether the events are independent or dependent.';
+                case 4: return 'Find the probability that the coin lands on heads all three times.';
+                case 5: return 'Find the probability that both tokens are yellow.';
+                default: return '';
+            }
+        }
+        
+        function getPartCText(qNum) {
+            switch(qNum) {
+                case 1: return 'Find the probability that the second bead is blue.';
+                case 2: return 'Find the probability that one card is odd and the other card is even.';
+                case 3: return 'Find the probability that Mr Dixon scores par or under on only one hole.';
+                case 4: return 'Find the probability that the coin lands on heads only once.';
+                case 5: return 'Write down the probability that the third token is yellow, given that the first two are yellow.';
+                default: return '';
+            }
+        }
+        
+        function getPartDText(qNum) {
+            switch(qNum) {
+                case 4: return 'The whole experiment is repeated for a second trial. Find the probability of obtaining either 3 heads or three tails in both trials.';
+                case 5: return 'Find the probability that all three tokens are different colours.';
+                default: return '';
+            }
+        }
+        
+        // ==============================
+        // QUIZ CONTROLS
+        // ==============================
+        
+        function initializeQuiz() {
+            currentQuestions = [
+                generateQuestion1(),
+                generateQuestion2(),
+                generateQuestion3(),
+                generateQuestion4(),
+                generateQuestion5()
+            ];
+            renderQuiz();
+        }
+        
+        function checkAnswers() {
+            let score = 0;
+            let total = 0;
+            let allCorrect = true;
+            
+            // Check tree diagram inputs
+            treeInstances.forEach((tree, index) => {
+                const values = tree.getInputValues();
+                Object.keys(values).forEach(key => {
+                    total++;
+                    if (values[key] && values[key].trim() !== '') {
+                        score++;
+                    } else {
+                        allCorrect = false;
+                    }
+                });
+            });
+            
+            // Check answer inputs
+            currentQuestions.forEach((question, index) => {
+                const qNum = index + 1;
+                
+                // Part b
+                const inputB = document.getElementById(`answer-${qNum}b`);
+                if (inputB) {
+                    total++;
+                    const userAnswer = inputB.value.trim().toLowerCase();
+                    const correctAnswer = question.answers.b.toString().toLowerCase();
+                    if (userAnswer === correctAnswer) {
+                        score++;
+                        inputB.style.borderColor = '#27ae60';
+                        inputB.style.backgroundColor = 'rgba(39, 174, 96, 0.1)';
+                    } else {
+                        allCorrect = false;
+                        inputB.style.borderColor = '#e74c3c';
+                        inputB.style.backgroundColor = 'rgba(231, 76, 60, 0.1)';
+                    }
+                }
+                
+                // Part c
+                const inputC = document.getElementById(`answer-${qNum}c`);
+                if (inputC) {
+                    total++;
+                    const userAnswer = inputC.value.trim().toLowerCase();
+                    const correctAnswer = question.answers.c.toString().toLowerCase();
+                    if (userAnswer === correctAnswer) {
+                        score++;
+                        inputC.style.borderColor = '#27ae60';
+                        inputC.style.backgroundColor = 'rgba(39, 174, 96, 0.1)';
+                    } else {
+                        allCorrect = false;
+                        inputC.style.borderColor = '#e74c3c';
+                        inputC.style.backgroundColor = 'rgba(231, 76, 60, 0.1)';
+                    }
+                }
+                
+                // Part d (for Q4 and Q5)
+                if (qNum >= 4) {
+                    const inputD = document.getElementById(`answer-${qNum}d`);
+                    if (inputD && question.answers.d) {
+                        total++;
+                        const userAnswer = inputD.value.trim().toLowerCase();
+                        const correctAnswer = question.answers.d.toString().toLowerCase();
+                        if (userAnswer === correctAnswer) {
+                            score++;
+                            inputD.style.borderColor = '#27ae60';
+                            inputD.style.backgroundColor = 'rgba(39, 174, 96, 0.1)';
+                        } else {
+                            allCorrect = false;
+                            inputD.style.borderColor = '#e74c3c';
+                            inputD.style.backgroundColor = 'rgba(231, 76, 60, 0.1)';
+                        }
+                    }
+                }
+            });
+            
+            const percentage = Math.round((score/total)*100);
+            
+            // Show certificate if perfect score, otherwise show alert
+            if (allCorrect && score === total) {
+                showCertificate(percentage);
+            } else {
+                alert(`You got ${score} out of ${total} correct!\nScore: ${percentage}%`);
+            }
+        }
+        
+        function showCertificate(score) {
+            const studentName = document.getElementById('student-name').value || 'Student';
+            const certificateName = document.getElementById('certificate-name');
+            const certificateScore = document.getElementById('certificate-score');
+            const certificateDate = document.getElementById('certificate-date');
+            
+            // Update certificate content
+            certificateName.textContent = studentName;
+            certificateScore.textContent = `Score: ${score}%`;
+            
+            // Format current date
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            certificateDate.textContent = `Date: ${now.toLocaleDateString('en-US', options)}`;
+            
+            // Show the certificate modal
+            document.getElementById('certificate-modal').style.display = 'flex';
+        }
+        
+        function closeCertificate() {
+            document.getElementById('certificate-modal').style.display = 'none';
+        }
+        
+        function retryQuiz() {
+            // Clear all inputs
+            document.querySelectorAll('input').forEach(input => {
+                input.value = '';
+                input.style.borderColor = '';
+                input.style.backgroundColor = '';
+            });
+            
+            // Generate new questions
+            initializeQuiz();
+        }
+        
+        // ==============================
+        // INITIALIZATION
+        // ==============================
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeQuiz();
+            
+            // Set up event listeners
+            document.getElementById('submit-btn').addEventListener('click', checkAnswers);
+            document.getElementById('retry-btn').addEventListener('click', retryQuiz);
+            document.getElementById('certificate-close').addEventListener('click', closeCertificate);
+            
+            // Close certificate when clicking outside of it
+            document.getElementById('certificate-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeCertificate();
+                }
+            });
+            
+            // Close certificate with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeCertificate();
+                }
+            });
+            
+            // Focus on name input when page loads
+            document.getElementById('student-name').focus();
+        });
+    </script>
+</body>
+</html>

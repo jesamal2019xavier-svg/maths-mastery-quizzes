@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algebra: Writing expressions Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ... (styles unchanged) ... */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f9ff;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+        
+        .subtitle {
+            color: #2c3e50;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+        
+        .student-name-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 10px;
+            background-color: #f0f7ff;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #3498db;
+        }
+        
+        .student-name-label {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+        
+        #student-name {
+            padding: 10px 20px;
+            border: 2px solid #3498db;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            width: 280px;
+            max-width: 100%;
+            text-align: center;
+            font-weight: 600;
+            background-color: white;
+        }
+        
+        .question-container {
+            margin-bottom: 25px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid #eaeaea;
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #3498db;
+        }
+        
+        .question-number {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #3498db;
+            background-color: #f0f7ff;
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+        
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            line-height: 1.5;
+        }
+        
+        .part-container {
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            border-left: 3px solid #2ecc71;
+        }
+        
+        .part-label {
+            font-weight: 700;
+            color: #2c3e50;
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .answer-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e8ed;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            margin: 8px 0;
+            text-align: left;
+            transition: border-color 0.3s;
+        }
+        
+        .answer-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        .instruction {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .answer-feedback {
+            margin-top: 8px;
+            padding: 10px;
+            border-radius: 6px;
+            display: none;
+            font-size: 0.95rem;
+        }
+        
+        .correct-feedback {
+            background-color: rgba(39, 174, 96, 0.1);
+            border: 1px solid #27ae60;
+            color: #27ae60;
+        }
+        
+        .incorrect-feedback {
+            background-color: rgba(231, 76, 60, 0.1);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+        }
+        
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        
+        .correct-answer {
+            font-family: 'Cambria', 'Times New Roman', serif;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-top: 5px;
+        }
+        
+        .submit-section {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #eaeaea;
+        }
+        
+        button {
+            padding: 12px 30px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0 10px 10px 0;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        
+        button:disabled:hover {
+            background-color: #95a5a6;
+        }
+        
+        #retry-btn {
+            background-color: #2ecc71;
+        }
+        
+        #retry-btn:hover {
+            background-color: #27ae60;
+        }
+        
+        /* Certificate Modal */
+        .certificate-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .certificate-content {
+            background: linear-gradient(135deg, #f9f9ff 0%, #ffffff 100%);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 8px solid #3498db;
+            position: relative;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .certificate-header {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .certificate-divider {
+            height: 3px;
+            background: linear-gradient(to right, transparent, #3498db, transparent);
+            margin: 20px 0;
+        }
+        
+        .certificate-text {
+            color: #333;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .certificate-name {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: rgba(52, 152, 219, 0.1);
+            border-radius: 8px;
+            font-weight: 700;
+        }
+        
+        .certificate-score {
+            font-size: 1.5rem;
+            color: #27ae60;
+            margin: 15px 0;
+            font-weight: 700;
+        }
+        
+        .certificate-date {
+            color: #7f8c8d;
+            font-size: 1rem;
+            margin-top: 20px;
+        }
+        
+        .certificate-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #7f8c8d;
+            cursor: pointer;
+            padding: 5px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .certificate-close:hover {
+            color: #2c3e50;
+            background-color: rgba(0, 0, 0, 0.05);
+            border-radius: 50%;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .question-container {
+                padding: 12px;
+            }
+            
+            .certificate-content {
+                width: 95%;
+                padding: 20px;
+            }
+            
+            .certificate-header {
+                font-size: 1.5rem;
+            }
+            
+            .certificate-name {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="certificate-modal" class="certificate-modal">
+        <div class="certificate-content">
+            <button class="certificate-close" id="certificate-close">&times;</button>
+            <div class="certificate-header">
+                <i class="fas fa-award"></i> Certificate of Achievement
+            </div>
+            <div class="certificate-divider"></div>
+            <div class="certificate-text">Awarded to:</div>
+            <div class="certificate-name" id="certificate-name">Student Name</div>
+            <div class="certificate-text">For Perfect Score in<br>Algebra: Writing expressions</div>
+            <div class="certificate-score" id="certificate-score">Score: 100%</div>
+            <div class="certificate-date" id="certificate-date"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-calculator"></i> Algebra: Writing expressions</h1>
+            <p class="subtitle">Answer all parts of each question. There are 19 parts in total.</p>
+            <div class="student-name-container">
+                <div class="student-name-label">Student Name:</div>
+                <input type="text" id="student-name" placeholder="Enter your name" maxlength="30">
+            </div>
+        </header>
+        
+        <div id="quiz-container"></div>
+        
+        <div class="submit-section">
+            <button id="submit-btn"><i class="fas fa-check"></i> Submit Answers</button>
+            <button id="retry-btn"><i class="fas fa-redo"></i> Retry Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        // ==============================
+        // HELPER FUNCTIONS
+        // ==============================
+        function randBetween(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function randomFromArray(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        // Normalize answer: remove all whitespace and convert to lowercase
+        function normalize(str) {
+            return str.replace(/\s+/g, '').toLowerCase();
+        }
+
+        // Check if user answer matches any acceptable answer
+        function isAnswerCorrect(userAns, acceptableAnswers) {
+            const normUser = normalize(userAns);
+            for (let ans of acceptableAnswers) {
+                if (normUser === normalize(ans)) return true;
+            }
+            return false;
+        }
+
+        // ==============================
+        // QUESTION GENERATORS
+        // ==============================
+
+        // Q1
+        function generateQ1() {
+            const fractions = [
+                { word: "a quarter", value: 1/4, expr: ["x/4", "1/4 x"] },
+                { word: "a third", value: 1/3, expr: ["x/3", "1/3 x"] },
+                { word: "two thirds", value: 2/3, expr: ["2x/3", "2/3 x"] },
+                { word: "three quarters", value: 3/4, expr: ["3x/4", "3/4 x"] }
+            ];
+            const choice = randomFromArray(fractions);
+            return {
+                text: `An adult cinema ticket costs £x. The price of a child’s ticket is ${choice.word} of an adult ticket. Write an expression for the price, in pounds, of a child’s ticket.`,
+                parts: [{
+                    label: "",
+                    answers: choice.expr,
+                    working: `Child ticket = ${choice.expr[0]} or ${choice.expr[1]}`
+                }]
+            };
+        }
+
+        // Q2
+        function generateQ2() {
+            const n = randomFromArray([5,6,7,8,9,10]);
+            return {
+                text: `Charles has m marbles. Rosalind has ${n} more marbles than Charles. Write an expression for the number of marbles Rosalind has.`,
+                parts: [{
+                    label: "",
+                    answers: [`m+${n}`, `m + ${n}`],
+                    working: `Rosalind = m + ${n}`
+                }]
+            };
+        }
+
+        // Q3
+        function generateQ3() {
+            const m = randomFromArray([3,5,7,9,11]);
+            const n = randomFromArray([2,4,6,8,10,12]);
+            return {
+                text: `A cup of tea costs £t, a cup of coffee costs £c. Write an expression for the cost of ${m} cups of tea and ${n} cups of coffee.`,
+                parts: [{
+                    label: "",
+                    answers: [`${m}t+${n}c`, `${m}t + ${n}c`],
+                    working: `Cost = ${m}t + ${n}c`
+                }]
+            };
+        }
+
+        // Q4
+        function generateQ4() {
+            const a = randomFromArray([3,4,5,6,7,8]);
+            return {
+                text: `Albert is given n sweets. He eats ${a} of the sweets. Write an expression for the number of sweets Albert now has.`,
+                parts: [{
+                    label: "",
+                    answers: [`n-${a}`, `n - ${a}`],
+                    working: `Remaining = n - ${a}`
+                }]
+            };
+        }
+
+        // Q5
+        function generateQ5() {
+            const h = randomFromArray([10,11,12,13,14,15,16,17,18,19,20]);
+            return {
+                text: `Michael is paid £x for each hour he works. One week Michael works for ${h} hours. Write an expression for the total amount, in pounds, Michael is paid for this week.`,
+                parts: [{
+                    label: "",
+                    answers: [`${h}x`, `${h} x`],
+                    working: `Total = ${h}x`
+                }]
+            };
+        }
+
+        // Q6
+        function generateQ6() {
+            const bagLetters = ['a','c','e','p','u','x'];
+            const marbleLetters = ['b','d','f','q','r','y'];
+            const b = randomFromArray(bagLetters);
+            const m = randomFromArray(marbleLetters);
+            return {
+                text: `Alex has ${b} bags of marbles. Each bag contains ${m} marbles. Write an expression for the total number of marbles Alex has.`,
+                parts: [{
+                    label: "",
+                    answers: [`${b}${m}`],
+                    working: `Total = ${b} × ${m} = ${b}${m}`
+                }]
+            };
+        }
+
+        // Q7
+        function generateQ7() {
+            const m = randomFromArray([20,25,30,35,40,45,50]);
+            return {
+                text: `A train takes t minutes to get from London to Canterbury. The same journey by car takes ${m} minutes longer. Write an expression for the time by car.`,
+                parts: [{
+                    label: "",
+                    answers: [`t+${m}`, `t + ${m}`],
+                    working: `Car time = t + ${m}`
+                }]
+            };
+        }
+
+        // Q8
+        function generateQ8() {
+            const k = randomFromArray([4,5,6,7]);
+            return {
+                text: `A school charges £${k} for tickets to a show. The school raises £x in total from ticket sales. Write an expression for the total number of tickets sold.`,
+                parts: [{
+                    label: "",
+                    answers: [`x/${k}`, `x/${k} `],
+                    working: `Number of tickets = x / ${k}`
+                }]
+            };
+        }
+
+        // Q9
+        function generateQ9() {
+            const factor = randomFromArray(['twice', 'three times']);
+            const mult = factor === 'twice' ? 2 : 3;
+            return {
+                text: `Isaac is n years old. Marie is ${factor} as old as Isaac. Write an expression for Marie’s age.`,
+                parts: [{
+                    label: "",
+                    answers: [`${mult}n`, `${mult} n`],
+                    working: `Marie = ${mult}n`
+                }]
+            };
+        }
+
+        // Q10
+        function generateQ10() {
+            const m = randBetween(25, 35);
+            return {
+                text: `Apples cost ${m}p each. Write an expression for the cost of n apples.`,
+                parts: [{
+                    label: "",
+                    answers: [`${m}n`, `${m} n`],
+                    working: `Cost = ${m}n pence`
+                }]
+            };
+        }
+
+        // Q11 (three parts) – fixed to produce simplified expressions
+        function generateQ11() {
+            const r = randomFromArray([8,10,12,14,16]);
+            const t = randomFromArray([7,9,11,13,15]);
+            const stephen = 'n';
+            const rachel = `n+${r}`;
+            const tim = `n-${t}`;
+            // Total = n + (n+r) + (n-t) = 3n + (r - t)
+            let totalExpr, workingTotal;
+            if (r >= t) {
+                totalExpr = `3n+${r-t}`;
+                workingTotal = `n + (n+${r}) + (n-${t}) = 3n + ${r-t}`;
+            } else {
+                totalExpr = `3n-${t-r}`;
+                workingTotal = `n + (n+${r}) + (n-${t}) = 3n - ${t-r}`;
+            }
+            return {
+                text: `Stephen is n years old. Rachel is ${r} years older than Stephen. Tim is ${t} years younger than Stephen.`,
+                parts: [
+                    { label: "a) Rachel's age", answers: [rachel, rachel.replace('+', ' + ')], working: `Rachel = n + ${r}` },
+                    { label: "b) Tim's age", answers: [tim, tim.replace('-', ' - ')], working: `Tim = n - ${t}` },
+                    { label: "c) Total age of Stephen, Rachel and Tim", answers: [totalExpr, totalExpr.replace('+', ' + ').replace('-', ' - ')], working: workingTotal }
+                ]
+            };
+        }
+
+        // Q12
+        function generateQ12() {
+            const small = randomFromArray([80,90,100,110,120]);
+            const large = randomFromArray([160,180,200,220,240]);
+            return {
+                text: `Tea bags are sold in small boxes and large boxes. There are ${small} tea bags in a small box. There are ${large} tea bags in a large box. Mae buys x small boxes and y large boxes. Write an expression for the total number of tea bags.`,
+                parts: [{
+                    label: "",
+                    answers: [`${small}x+${large}y`, `${small}x + ${large}y`],
+                    working: `Total = ${small}x + ${large}y`
+                }]
+            };
+        }
+
+        // Q13
+        function generateQ13() {
+            const applePrices = [20,25,30,35,40];
+            const bananaPrices = [15,20,25,30];
+            let apple = randomFromArray(applePrices);
+            let banana;
+            do {
+                banana = randomFromArray(bananaPrices);
+            } while (banana === apple);
+            return {
+                text: `Apples cost ${apple}p each. Bananas cost ${banana}p each. The total cost of a apples and b bananas is C. Write a formula for C.`,
+                parts: [{
+                    label: "C =",
+                    answers: [`${apple}a+${banana}b`, `${apple}a + ${banana}b`],
+                    working: `C = ${apple}a + ${banana}b`
+                }]
+            };
+        }
+
+        // Q14 (two parts)
+        function generateQ14() {
+            const k = randomFromArray([5,6,7,8,9,10]);
+            const adultNum = randomFromArray([1,2]);
+            const childNum = randomFromArray([2,3,4]);
+            const adultExpr = `x+${k}`;
+            // total cost: adultNum*(x+k) + childNum*x = (adultNum+childNum)x + adultNum*k
+            const coef = adultNum + childNum;
+            const constTerm = adultNum * k;
+            const totalExpr = `${coef}x+${constTerm}`;
+            return {
+                text: `A child’s ticket to see a show costs £x. An adult’s ticket costs £${k} more than a child’s ticket.`,
+                parts: [
+                    { label: "a) Price of an adult ticket", answers: [adultExpr, adultExpr.replace('+', ' + ')], working: `Adult = x + ${k}` },
+                    { label: `b) Cost of ${adultNum} adult ticket${adultNum>1?'s':''} and ${childNum} child ticket${childNum>1?'s':''}`, answers: [totalExpr, totalExpr.replace('+', ' + ')], working: `Total = ${adultNum}(x+${k}) + ${childNum}x = ${totalExpr}` }
+                ]
+            };
+        }
+
+        // Q15 (two parts)
+        function generateQ15() {
+            const smallRolls = randomFromArray([4,5]);
+            const bigRolls = randomFromArray([8,9,10]);
+            return {
+                text: `A shop sells toilet rolls in small packs and big packs. There are ${smallRolls} toilet rolls in a small pack. There are ${bigRolls} toilet rolls in a big pack. The shop has s small packs and b big packs.`,
+                parts: [
+                    { label: "a) Total number of packs", answers: ['s+b', 's + b'], working: `Packs = s + b` },
+                    { label: "b) Total number of toilet rolls", answers: [`${smallRolls}s+${bigRolls}b`, `${smallRolls}s + ${bigRolls}b`], working: `Rolls = ${smallRolls}s + ${bigRolls}b` }
+                ]
+            };
+        }
+
+        // ==============================
+        // QUIZ STATE
+        // ==============================
+        let currentQuestions = [];
+        let hasSubmitted = false;
+        let totalParts = 0;
+
+        function initializeQuiz() {
+            hasSubmitted = false;
+            currentQuestions = [
+                generateQ1(),
+                generateQ2(),
+                generateQ3(),
+                generateQ4(),
+                generateQ5(),
+                generateQ6(),
+                generateQ7(),
+                generateQ8(),
+                generateQ9(),
+                generateQ10(),
+                generateQ11(),
+                generateQ12(),
+                generateQ13(),
+                generateQ14(),
+                generateQ15()
+            ];
+            // Count total parts
+            totalParts = currentQuestions.reduce((sum, q) => sum + q.parts.length, 0);
+            renderQuiz();
+            document.getElementById('submit-btn').disabled = false;
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+
+            currentQuestions.forEach((question, qIndex) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'question-container';
+                qDiv.id = `question-${qIndex+1}`;
+
+                // Header
+                const header = document.createElement('div');
+                header.className = 'question-header';
+                header.innerHTML = `<div class="question-number">Question ${qIndex+1}</div>`;
+                qDiv.appendChild(header);
+
+                // Question text
+                const textDiv = document.createElement('div');
+                textDiv.className = 'question-text';
+                textDiv.innerHTML = `<p>${question.text}</p>`;
+                qDiv.appendChild(textDiv);
+
+                // Parts
+                question.parts.forEach((part, pIndex) => {
+                    const partDiv = document.createElement('div');
+                    partDiv.className = 'part-container';
+
+                    const labelSpan = document.createElement('span');
+                    labelSpan.className = 'part-label';
+                    labelSpan.textContent = part.label ? part.label : '';
+                    partDiv.appendChild(labelSpan);
+
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'answer-input';
+                    input.id = `answer-${qIndex}-${pIndex}`;
+                    input.placeholder = 'Enter your expression';
+                    input.autocomplete = 'off';
+                    if (hasSubmitted) input.disabled = true;
+                    partDiv.appendChild(input);
+
+                    const feedback = document.createElement('div');
+                    feedback.className = 'answer-feedback';
+                    feedback.id = `feedback-${qIndex}-${pIndex}`;
+                    partDiv.appendChild(feedback);
+
+                    qDiv.appendChild(partDiv);
+                });
+
+                container.appendChild(qDiv);
+            });
+
+            setupAutoFocus();
+        }
+
+        function setupAutoFocus() {
+            const inputs = document.querySelectorAll('.answer-input:not(:disabled)');
+            if (inputs.length > 0) inputs[0].focus();
+            // Enter key navigation
+            inputs.forEach((input, idx) => {
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        if (idx + 1 < inputs.length) {
+                            inputs[idx + 1].focus();
+                        } else {
+                            document.getElementById('submit-btn').focus();
+                        }
+                    }
+                });
+            });
+        }
+
+        function checkAnswers() {
+            if (hasSubmitted) return;
+            hasSubmitted = true;
+            document.getElementById('submit-btn').disabled = true;
+
+            let score = 0;
+            let allCorrect = true;
+
+            // Disable all inputs
+            document.querySelectorAll('.answer-input').forEach(input => input.disabled = true);
+
+            currentQuestions.forEach((question, qIndex) => {
+                question.parts.forEach((part, pIndex) => {
+                    const input = document.getElementById(`answer-${qIndex}-${pIndex}`);
+                    const userAns = input.value.trim();
+                    const feedback = document.getElementById(`feedback-${qIndex}-${pIndex}`);
+                    const correct = isAnswerCorrect(userAns, part.answers);
+
+                    if (correct) {
+                        score++;
+                        input.style.borderColor = '#27ae60';
+                        input.style.backgroundColor = 'rgba(39, 174, 96, 0.1)';
+                        feedback.className = 'answer-feedback correct-feedback';
+                        feedback.innerHTML = `<div class="feedback-title">✓ Correct!</div><div>${part.working}</div>`;
+                    } else {
+                        allCorrect = false;
+                        input.style.borderColor = '#e74c3c';
+                        input.style.backgroundColor = 'rgba(231, 76, 60, 0.1)';
+                        feedback.className = 'answer-feedback incorrect-feedback';
+                        const acceptable = part.answers.join(' or ');
+                        feedback.innerHTML = `<div class="feedback-title">✗ Incorrect</div>
+                                              <div>${part.working}</div>
+                                              <div class="correct-answer">Correct answer: ${acceptable}</div>`;
+                    }
+                    feedback.style.display = 'block';
+                });
+            });
+
+            const percentage = Math.round((score / totalParts) * 100);
+            if (allCorrect && score === totalParts) {
+                setTimeout(() => showCertificate(percentage), 500);
+            } else {
+                setTimeout(() => alert(`You got ${score} out of ${totalParts} correct (${percentage}%)\n\nClick "Retry Quiz" to try again!`), 300);
+            }
+        }
+
+        function showCertificate(score) {
+            const name = document.getElementById('student-name').value || 'Student';
+            document.getElementById('certificate-name').textContent = name;
+            document.getElementById('certificate-score').textContent = `Score: ${score}%`;
+            const now = new Date();
+            document.getElementById('certificate-date').textContent = `Date: ${now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`;
+            document.getElementById('certificate-modal').style.display = 'flex';
+        }
+
+        function closeCertificate() {
+            document.getElementById('certificate-modal').style.display = 'none';
+        }
+
+        function retryQuiz() {
+            document.querySelectorAll('.answer-input').forEach(input => {
+                input.value = '';
+                input.style.borderColor = '';
+                input.style.backgroundColor = '';
+                input.disabled = false;
+            });
+            document.querySelectorAll('.answer-feedback').forEach(fb => {
+                fb.innerHTML = '';
+                fb.style.display = 'none';
+            });
+            initializeQuiz();
+        }
+
+        // ==============================
+        // INIT
+        // ==============================
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeQuiz();
+
+            document.getElementById('submit-btn').addEventListener('click', checkAnswers);
+            document.getElementById('retry-btn').addEventListener('click', retryQuiz);
+            document.getElementById('certificate-close').addEventListener('click', closeCertificate);
+            document.getElementById('certificate-modal').addEventListener('click', (e) => {
+                if (e.target === e.currentTarget) closeCertificate();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeCertificate();
+            });
+
+            document.getElementById('student-name').focus();
+            document.getElementById('student-name').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const firstInput = document.querySelector('.answer-input:not(:disabled)');
+                    if (firstInput) firstInput.focus();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

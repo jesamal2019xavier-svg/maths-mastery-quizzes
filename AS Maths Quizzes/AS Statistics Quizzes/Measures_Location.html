@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Factors, Multiples and Primes Mastery Quiz</title>
+    <title>AS Statistics: Measures of Location Quiz</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ---------- CSS – unchanged, exactly as in your previous version ---------- */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -119,6 +120,28 @@
             line-height: 1.5;
         }
         
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-family: 'Cambria', 'Times New Roman', serif;
+        }
+        
+        .data-table th, .data-table td {
+            border: 1px solid #e1e8ed;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .data-table th {
+            background-color: #f0f7ff;
+            font-weight: bold;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        
         .expression {
             font-family: 'Cambria', 'Times New Roman', serif;
             font-size: 1.3rem;
@@ -130,7 +153,6 @@
             border-radius: 6px;
             text-align: center;
             border: 1px solid #e1e8ed;
-            line-height: 1.8;
         }
         
         .list-container {
@@ -432,7 +454,7 @@
         <div class="certificate-content">
             <button class="certificate-close" id="certificate-close">&times;</button>
             <div class="certificate-header">
-                <i class="fas fa-award"></i> Certificate of Achievement
+                <i class="fas fa-chart-bar"></i> Certificate of Achievement
             </div>
             <div class="certificate-divider"></div>
             <div class="certificate-text">
@@ -440,7 +462,7 @@
             </div>
             <div class="certificate-name" id="certificate-name">Student Name</div>
             <div class="certificate-text">
-                For Perfect Score in<br>Factors, Multiples and Primes Quiz
+                For Perfect Score in<br>AS Statistics: Measures of Location Quiz
             </div>
             <div class="certificate-score" id="certificate-score">Score: 100%</div>
             <div class="certificate-date" id="certificate-date">Date: </div>
@@ -449,8 +471,8 @@
 
     <div class="container">
         <header>
-            <h1><i class="fas fa-calculator"></i> Factors, Multiples and Primes Quiz</h1>
-            <p class="subtitle">Complete all 12 questions. Achieve 100% mastery to earn your certificate!</p>
+            <h1><i class="fas fa-chart-bar"></i> AS Statistics: Measures of Location</h1>
+            <p class="subtitle">Calculate Mean, Median, and Mode for different data types. Achieve 100% mastery to earn your certificate!</p>
             
             <div class="student-name-container">
                 <div class="student-name-label">Student Name:</div>
@@ -477,396 +499,418 @@
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
         
-        function getSuperscript(num) {
-            const superscripts = {
-                '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', 
-                '7': '⁷', '8': '⁸', '9': '⁹'
-            };
-            return num.toString().split('').map(digit => superscripts[digit]).join('');
+        function getRandomOdd() {
+            const options = [7, 9, 11];
+            return options[Math.floor(Math.random() * options.length)];
         }
         
-        function isPrime(num) {
-            if (num <= 1) return false;
-            if (num <= 3) return true;
-            if (num % 2 === 0 || num % 3 === 0) return false;
-            let i = 5;
-            while (i * i <= num) {
-                if (num % i === 0 || num % (i + 2) === 0) return false;
-                i += 6;
-            }
-            return true;
+        function calculateMeanSingleValues(values) {
+            const sum = values.reduce((a, b) => a + b, 0);
+            return sum / values.length;
         }
         
-        function getFactors(num) {
-            const factors = [];
-            for (let i = 1; i <= Math.sqrt(num); i++) {
-                if (num % i === 0) {
-                    factors.push(i);
-                    if (i !== num / i) {
-                        factors.push(num / i);
-                    }
-                }
-            }
-            return factors.sort((a, b) => a - b);
-        }
-        
-        function getPrimeFactors(num) {
-            let n = num;
-            const factors = {};
-            let divisor = 2;
+        function calculateMeanFrequencyTable(values, frequencies) {
+            let totalSum = 0;
+            let totalFreq = 0;
             
-            while (n >= 2) {
-                if (n % divisor === 0) {
-                    factors[divisor] = (factors[divisor] || 0) + 1;
-                    n = n / divisor;
-                } else {
-                    divisor++;
+            for (let i = 0; i < values.length; i++) {
+                totalSum += values[i] * frequencies[i];
+                totalFreq += frequencies[i];
+            }
+            
+            return totalSum / totalFreq;
+        }
+        
+        function calculateMedianSingleValues(values) {
+            const sorted = [...values].sort((a, b) => a - b);
+            const n = sorted.length;
+            
+            if (n % 2 === 1) {
+                // Odd number of values
+                return sorted[Math.floor(n / 2)];
+            } else {
+                // Even number of values
+                const mid1 = sorted[n / 2 - 1];
+                const mid2 = sorted[n / 2];
+                return (mid1 + mid2) / 2;
+            }
+        }
+        
+        function calculateMedianFrequencyTable(values, frequencies) {
+            // Create cumulative frequencies
+            const cumFreq = [];
+            let runningTotal = 0;
+            
+            for (let i = 0; i < frequencies.length; i++) {
+                runningTotal += frequencies[i];
+                cumFreq.push(runningTotal);
+            }
+            
+            const totalFreq = runningTotal;
+            const medianPosition = (totalFreq + 1) / 2;
+            
+            // Find which value contains the median
+            for (let i = 0; i < cumFreq.length; i++) {
+                if (cumFreq[i] >= medianPosition) {
+                    return values[i];
                 }
             }
-            return factors;
-        }
-        
-        function formatPrimeFactors(factors) {
-            const parts = [];
-            for (const [prime, power] of Object.entries(factors)) {
-                if (power === 1) {
-                    parts.push(prime);
-                } else {
-                    parts.push(`${prime}${getSuperscript(power)}`);
+            
+            // If median falls between two values (even total frequency)
+            // Find the two middle values
+            let lowerValue, upperValue;
+            for (let i = 0; i < cumFreq.length; i++) {
+                if (cumFreq[i] >= Math.floor(medianPosition)) {
+                    lowerValue = values[i];
+                    break;
                 }
             }
-            return parts.join(' × ');
-        }
-        
-        function getHCF(a, b) {
-            while (b !== 0) {
-                let temp = b;
-                b = a % b;
-                a = temp;
+            
+            for (let i = 0; i < cumFreq.length; i++) {
+                if (cumFreq[i] >= Math.ceil(medianPosition)) {
+                    upperValue = values[i];
+                    break;
+                }
             }
-            return a;
+            
+            return (lowerValue + upperValue) / 2;
         }
         
-        function getLCM(a, b) {
-            return (a * b) / getHCF(a, b);
+        function calculateModeSingleValues(values) {
+            const freqMap = {};
+            let maxFreq = 0;
+            let mode = values[0];
+            
+            for (const value of values) {
+                freqMap[value] = (freqMap[value] || 0) + 1;
+                if (freqMap[value] > maxFreq) {
+                    maxFreq = freqMap[value];
+                    mode = value;
+                }
+            }
+            
+            return mode;
+        }
+        
+        function calculateModeFrequencyTable(values, frequencies) {
+            let maxFreq = 0;
+            let mode = values[0];
+            
+            for (let i = 0; i < frequencies.length; i++) {
+                if (frequencies[i] > maxFreq) {
+                    maxFreq = frequencies[i];
+                    mode = values[i];
+                }
+            }
+            
+            return mode;
         }
         
         // ==============================
-        // QUESTION GENERATORS (12 Questions)
+        // QUESTION GENERATORS (10 Questions)
         // ==============================
         
-        // Question 1: Multiple of a between 10b and 10(b+1)
+        // ---------- Question 1 (Mean, single values, to 1 dp) ----------
         function generateQuestion1() {
-            const a = randBetween(2, 9);
-            const b = randBetween(1, 9);
-            const lower = 10 * b;
-            const upper = 10 * (b + 1);
+            const n = randBetween(6, 9);
+            const values = [];
             
-            // Find multiples of a between lower and upper
-            const multiples = [];
-            let current = Math.ceil(lower / a) * a;
-            while (current <= upper) {
-                if (current > lower && current < upper) {
-                    multiples.push(current);
-                }
-                current += a;
+            for (let i = 0; i < n; i++) {
+                values.push(100 * randBetween(1, 9));
             }
             
-            // Pick a random multiple from the list
-            const answer = multiples[Math.floor(Math.random() * multiples.length)];
+            const mean = calculateMeanSingleValues(values);
+            const sum = values.reduce((a, b) => a + b, 0);
             
             return {
                 id: 1,
-                text: `Write down a multiple of ${a} that is between ${lower} and ${upper}.`,
-                answer: answer.toString(),
-                working: `Multiples of ${a} between ${lower} and ${upper}: ${multiples.join(', ')}`
+                text: `Meryll collected wild mushrooms every day for ${n} days. When she got home each day, she weighed them to the nearest 50g. The weights are shown below:<br><br><div class="number-list">${values.map(v => `<span class="number-item">${v}</span>`).join('')}</div><br>Calculate the mean for this data. <strong>Give your answer to 1 decimal place.</strong>`,
+                answer: mean.toFixed(1),
+                working: `Mean = (∑x)/n = (${values.join(' + ')})/${n} = ${sum}/${n} = ${mean.toFixed(2)} ≈ ${mean.toFixed(1)} g`
             };
         }
         
-        // Question 2: First even multiple of 2a + 1
+        // ---------- Question 2 (Mean, frequency table) ----------
         function generateQuestion2() {
-            const a = randBetween(2, 9);
-            const base = 2 * a + 1;
-            // The first even multiple is base * 2
-            const answer = base * 2;
+            const values = [0, 1, 2, 3, 4, 5];
+            const frequencies = [
+                6 + randBetween(1, 3),
+                10 + randBetween(1, 3),
+                15 + randBetween(1, 3),
+                15 + randBetween(1, 3),
+                9 + randBetween(1, 3),
+                5 + randBetween(1, 3)
+            ];
+            
+            const mean = calculateMeanFrequencyTable(values, frequencies);
+            
+            let tableHTML = '<table class="data-table"><tr><th>Breakdowns (b)</th>';
+            values.forEach(v => tableHTML += `<td>${v}</td>`);
+            tableHTML += '</tr><tr><th>Frequency (f)</th>';
+            frequencies.forEach(f => tableHTML += `<td>${f}</td>`);
+            tableHTML += '</tr></table>';
             
             return {
                 id: 2,
-                text: `Write down the first even multiple of ${base}.`,
-                answer: answer.toString(),
-                working: `The first even multiple of ${base} is ${base} × 2 = ${answer}`
+                text: `The frequency table shows the number of breakdowns, b, per month recorded by a road haulage firm over a certain period of time.${tableHTML}<br>Calculate the mean number of breakdowns (to 2 decimal places).`,
+                answer: mean.toFixed(2),
+                working: `Mean = (∑xf)/(∑f) = ${mean.toFixed(2)} breakdowns per month`
             };
         }
         
-        // Question 3: Prime number between 10a-5 and 10a+5
+        // ---------- Question 3 (Mean, grouped data) ----------
         function generateQuestion3() {
-            const a = randBetween(1, 9);
-            const lower = 10 * a - 5;
-            const upper = 10 * a + 5;
+            const classes = ["30 - 31", "32 - 33", "34 - 36", "37 - 39"];
+            const midpoints = [30.5, 32.5, 35, 38];
+            const frequencies = [
+                2 + randBetween(1, 3),
+                20 + randBetween(1, 5),
+                25 + randBetween(1, 5),
+                10 + randBetween(1, 3)
+            ];
             
-            const primes = [];
-            for (let i = lower; i <= upper; i++) {
-                if (isPrime(i) && i > 1) {
-                    primes.push(i);
-                }
+            let totalSum = 0;
+            let totalFreq = 0;
+            
+            for (let i = 0; i < midpoints.length; i++) {
+                totalSum += midpoints[i] * frequencies[i];
+                totalFreq += frequencies[i];
             }
             
-            const answer = primes[Math.floor(Math.random() * primes.length)];
+            const mean = totalSum / totalFreq;
+            
+            let tableHTML = '<table class="data-table"><tr><th>Length of pine cone (mm)</th>';
+            classes.forEach(c => tableHTML += `<td>${c}</td>`);
+            tableHTML += '</tr><tr><th>Frequency</th>';
+            frequencies.forEach(f => tableHTML += `<td>${f}</td>`);
+            tableHTML += '</tr></table>';
             
             return {
                 id: 3,
-                text: `Write down a prime number between ${lower} and ${upper}.`,
-                answer: answer.toString(),
-                working: `Prime numbers between ${lower} and ${upper}: ${primes.join(', ')}`
+                text: `The length x mm, to the nearest mm, of a random sample of pine-cones is measured. The data is shown in the table below:${tableHTML}<br>Estimate the mean length (to 2 decimal places).`,
+                answer: mean.toFixed(2),
+                working: `Mean ≈ (∑xf)/(∑f) = ${totalSum.toFixed(1)}/${totalFreq} = ${mean.toFixed(2)} mm`
             };
         }
         
-        // Question 4: Two factors of n where n = a × b × c
+        // ---------- Question 4 (Median, single values – odd count) ----------
         function generateQuestion4() {
-            const a = randBetween(2, 5);
-            const b = randBetween(2, 5);
-            const c = randBetween(2, 5);
-            const n = a * b * c;
-            const factors = getFactors(n);
+            const n = getRandomOdd(); // 7, 9, or 11
+            const values = [];
             
-            // Remove 1 and n itself
-            const usableFactors = factors.filter(f => f !== 1 && f !== n);
+            for (let i = 0; i < n; i++) {
+                values.push(100 * randBetween(1, 9));
+            }
             
-            // Pick two random factors
-            const factor1 = usableFactors[Math.floor(Math.random() * usableFactors.length)];
-            let factor2;
-            do {
-                factor2 = usableFactors[Math.floor(Math.random() * usableFactors.length)];
-            } while (factor2 === factor1);
-            
-            const sortedFactors = [factor1, factor2].sort((x, y) => x - y);
-            const answer = sortedFactors.join(', ');
+            const median = calculateMedianSingleValues(values);
+            const sortedValues = [...values].sort((a, b) => a - b);
             
             return {
                 id: 4,
-                text: `Write down two factors of ${n}.`,
-                answer: answer,
-                working: `Factors of ${n}: ${factors.join(', ')}. Two factors are ${factor1} and ${factor2}.`
+                text: `Meryll collected wild mushrooms every day for ${n} days. When she got home each day, she weighed them to the nearest 50g. The weights are shown below:<br><br><div class="number-list">${values.map(v => `<span class="number-item">${v}</span>`).join('')}</div><br>Calculate the median for this data.`,
+                answer: median.toFixed(0),
+                working: `Sorted data: ${sortedValues.join(', ')}<br>Position of median = (${n}+1)/2 = ${(n+1)/2}<br>Median = ${(n+1)/2}th value = ${median}g`
             };
         }
         
-        // Question 5: All prime numbers between 10a and 10(a+1)
+        // ---------- Question 5 (Median, single values – even count) ----------
         function generateQuestion5() {
-            const a = randBetween(1, 9);
-            const lower = 10 * a;
-            const upper = 10 * (a + 1);
+            const n = 10; // Fixed even number as per guidelines
+            const values = [];
             
-            const primes = [];
-            for (let i = lower; i <= upper; i++) {
-                if (isPrime(i) && i > 1) {
-                    primes.push(i);
-                }
+            for (let i = 0; i < n; i++) {
+                values.push(100 * randBetween(1, 9));
             }
             
-            const answer = primes.join(', ');
+            const median = calculateMedianSingleValues(values);
+            const sortedValues = [...values].sort((a, b) => a - b);
             
             return {
                 id: 5,
-                text: `Write down all the prime numbers between ${lower} and ${upper}.`,
-                answer: answer,
-                working: `Prime numbers between ${lower} and ${upper}: ${answer}`
+                text: `David collected wild mushrooms every day for ${n} days. When he got home each day, he weighed them to the nearest 50g. The weights are shown below:<br><br><div class="number-list">${values.map(v => `<span class="number-item">${v}</span>`).join('')}</div><br>Calculate the median for this data.`,
+                answer: median.toFixed(0),
+                working: `Sorted data: ${sortedValues.join(', ')}<br>Position of median = (${n}+1)/2 = ${(n+1)/2} (between ${n/2}th and ${n/2 + 1}th values)<br>Median = (${sortedValues[n/2 - 1]} + ${sortedValues[n/2]})/2 = ${median}g`
             };
         }
         
-        // Question 6: Two multiples of a
+        // ---------- Question 6 (Median, frequency table) ----------
         function generateQuestion6() {
-            const a = randBetween(1, 9);
-            // Generate two different multiples (not 0 or a itself)
-            const multiple1 = a * randBetween(2, 5);
-            let multiple2;
-            do {
-                multiple2 = a * randBetween(2, 5);
-            } while (multiple2 === multiple1);
+            const values = [0, 1, 2, 3, 4, 5];
+            const frequencies = [
+                6 + randBetween(1, 3),
+                10 + randBetween(1, 3),
+                15 + randBetween(1, 3),
+                15 + randBetween(1, 3),
+                9 + randBetween(1, 3),
+                5 + randBetween(1, 3)
+            ];
             
-            const sortedMultiples = [multiple1, multiple2].sort((x, y) => x - y);
-            const answer = sortedMultiples.join(', ');
+            const median = calculateMedianFrequencyTable(values, frequencies);
+            
+            let tableHTML = '<table class="data-table"><tr><th>Breakdowns (b)</th>';
+            values.forEach(v => tableHTML += `<td>${v}</td>`);
+            tableHTML += '</tr><tr><th>Frequency (f)</th>';
+            frequencies.forEach(f => tableHTML += `<td>${f}</td>`);
+            tableHTML += '</tr></table>';
             
             return {
                 id: 6,
-                text: `Write down two multiples of ${a}.`,
-                answer: answer,
-                working: `Some multiples of ${a}: ${a}, ${a*2}, ${a*3}, ${a*4}, ${a*5}, etc. Two examples are ${multiple1} and ${multiple2}.`
+                text: `The frequency table shows the number of breakdowns, b, per month recorded by a road haulage firm over a certain period of time.${tableHTML}<br>Calculate the median number of breakdowns.`,
+                answer: median.toString(),
+                working: `Median = ${median} breakdowns per month`
             };
         }
         
-        // ================== UPDATED QUESTION 7 ==================
-        // Question 7: From fixed list, pick a factor of n (numeric value only)
+        // ---------- Question 7 (Median, grouped data) ----------
         function generateQuestion7() {
-            // Fixed list as given
-            const numberList = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-            let a, b, c, n, factorsInList;
+            const classes = ["30 - 31", "32 - 33", "34 - 36", "37 - 39"];
+            const frequencies = [
+                2 + randBetween(1, 3),
+                20 + randBetween(1, 5),
+                25 + randBetween(1, 5),
+                10 + randBetween(1, 3)
+            ];
             
-            // Keep generating until at least one factor from the list exists
-            do {
-                a = randBetween(0, 3);
-                b = randBetween(0, 3);
-                c = randBetween(0, 3);
-                n = Math.pow(2, a) * Math.pow(3, b) * Math.pow(5, c);
-                
-                // Find numbers in the list that divide n
-                factorsInList = numberList.filter(num => n % num === 0);
-            } while (factorsInList.length === 0);
+            const totalFreq = frequencies.reduce((a, b) => a + b, 0);
+            const medianPosition = totalFreq / 2;
             
-            // Pick a random factor as the "correct" answer
-            const answer = factorsInList[Math.floor(Math.random() * factorsInList.length)];
+            // Calculate cumulative frequencies
+            const cumFreq = [];
+            let runningTotal = 0;
+            for (let i = 0; i < frequencies.length; i++) {
+                runningTotal += frequencies[i];
+                cumFreq.push(runningTotal);
+            }
             
-            // Format n in index form for the working (not shown in question)
-            const factors = {};
-            if (a > 0) factors[2] = a;
-            if (b > 0) factors[3] = b;
-            if (c > 0) factors[5] = c;
-            const nIndex = formatPrimeFactors(factors);
+            // Find median class (34-36 based on guidelines)
+            const medianClassIndex = 2; // "34 - 36" is at index 2
+            const lowerBoundary = 33.5;
+            const classWidth = 3.0;
+            
+            const freqBeforeMedianClass = medianClassIndex > 0 ? cumFreq[medianClassIndex - 1] : 0;
+            const positionInClass = medianPosition - freqBeforeMedianClass;
+            const fraction = positionInClass / frequencies[medianClassIndex];
+            
+            const median = lowerBoundary + fraction * classWidth;
+            
+            let tableHTML = '<table class="data-table"><tr><th>Length of pine cone (mm)</th>';
+            classes.forEach(c => tableHTML += `<td>${c}</td>`);
+            tableHTML += '</tr><tr><th>Frequency</th>';
+            frequencies.forEach(f => tableHTML += `<td>${f}</td>`);
+            tableHTML += '</tr></table>';
             
             return {
                 id: 7,
-                text: `Here is a list of numbers: ${numberList.join(', ')}. Write down a factor of ${n} from the list.`,
-                answer: answer.toString(),
-                working: `n = ${nIndex} = ${n}. Factors of n from the list: ${factorsInList.join(', ')}.`
+                text: `The length x mm, to the nearest mm, of a random sample of pine-cones is measured. The data is shown in the table below:${tableHTML}<br>Estimate the median length (to 1 decimal place).`,
+                answer: median.toFixed(1),
+                working: `Total frequency = ${totalFreq}, Median position = ${totalFreq}/2 = ${medianPosition}<br>Median class = "34 - 36"<br>Median ≈ lower boundary + (position in class/class frequency) × class width = 33.5 + (${positionInClass.toFixed(1)}/${frequencies[medianClassIndex]}) × 3.0 = ${median.toFixed(1)} mm`
             };
         }
         
-        // Question 8: From list a to a+9: multiple of 6
+        // ---------- Question 8 (Mode, single values – guaranteed unique mode) ----------
         function generateQuestion8() {
-            const a = randBetween(1, 9);
-            const numbers = Array.from({length: 10}, (_, i) => a + i);
+            const values = [300, 400, 500, 700, 900];
             
-            const multiplesOf6 = numbers.filter(n => n % 6 === 0);
+            // Step 1: randomly select which value will be the unique mode
+            const modeIndex = randBetween(0, 4);
+            const modeValue = values[modeIndex];
             
-            const answer = multiplesOf6[Math.floor(Math.random() * multiplesOf6.length)];
+            // Step 2: assign frequencies: mode gets highest (at least 3), others get lower (1 or 2)
+            const frequencies = [];
+            for (let i = 0; i < values.length; i++) {
+                if (i === modeIndex) {
+                    frequencies.push(randBetween(3, 5)); // mode appears 3–5 times
+                } else {
+                    frequencies.push(randBetween(1, 2)); // others appear 1 or 2 times (never tie with mode)
+                }
+            }
+            
+            // Create the data list
+            const dataList = [];
+            for (let i = 0; i < values.length; i++) {
+                for (let j = 0; j < frequencies[i]; j++) {
+                    dataList.push(values[i]);
+                }
+            }
+            
+            // Shuffle the list for realistic display
+            for (let i = dataList.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [dataList[i], dataList[j]] = [dataList[j], dataList[i]];
+            }
+            
+            const mode = calculateModeSingleValues(dataList);
             
             return {
                 id: 8,
-                text: `Here is a list of numbers: ${numbers.join(', ')}. Write down a multiple of 6 from the list.`,
-                answer: answer.toString(),
-                working: `Multiples of 6 in the list: ${multiplesOf6.join(', ')}`
+                text: `Meryll collected wild mushrooms over several days. When she got home each day, she weighed them to the nearest 50g. The weights are shown below:<br><br><div class="number-list">${dataList.map(v => `<span class="number-item">${v}</span>`).join('')}</div><br>Calculate the mode for this data.`,
+                answer: mode.toString(),
+                working: `Mode = most frequent value = ${mode}g (appears ${frequencies[modeIndex]} times)`
             };
         }
         
-        // Question 9: From list a to a+9: square number
+        // ---------- Question 9 (Mode, frequency table) ----------
         function generateQuestion9() {
-            const a = randBetween(1, 9);
-            const numbers = Array.from({length: 10}, (_, i) => a + i);
+            const values = [0, 1, 2, 3, 4, 5];
+            const frequencies = [
+                6 + randBetween(1, 3),
+                10 + randBetween(1, 3),
+                15 + randBetween(1, 3),
+                15 + randBetween(1, 3),
+                9 + randBetween(1, 3),
+                5 + randBetween(1, 3)
+            ];
             
-            const squares = numbers.filter(n => {
-                const sqrt = Math.sqrt(n);
-                return Math.floor(sqrt) === sqrt;
-            });
+            const mode = calculateModeFrequencyTable(values, frequencies);
             
-            const answer = squares[Math.floor(Math.random() * squares.length)];
+            let tableHTML = '<table class="data-table"><tr><th>Breakdowns (b)</th>';
+            values.forEach(v => tableHTML += `<td>${v}</td>`);
+            tableHTML += '</tr><tr><th>Frequency (f)</th>';
+            frequencies.forEach(f => tableHTML += `<td>${f}</td>`);
+            tableHTML += '</tr></table>';
             
             return {
                 id: 9,
-                text: `Here is a list of numbers: ${numbers.join(', ')}. Write down a square number from the list.`,
-                answer: answer.toString(),
-                working: `Square numbers in the list: ${squares.join(', ')}`
+                text: `The frequency table shows the number of breakdowns, b, per month recorded by a road haulage firm over a certain period of time.${tableHTML}<br>Find the mode number of breakdowns.`,
+                answer: mode.toString(),
+                working: `Mode = value with highest frequency = ${mode} breakdowns (frequency = ${frequencies[values.indexOf(mode)]})`
             };
         }
         
-        // Question 10: Prime factors of n = 3^a × 5^b × 7^c × 11^d
+        // ---------- Question 10 (Modal class) ----------
         function generateQuestion10() {
-            const a = randBetween(0, 3);
-            const b = randBetween(0, 3);
-            const c = randBetween(0, 2);
-            const d = randBetween(0, 1);
+            const classes = ["30 - 31", "32 - 33", "34 - 36", "37 - 39"];
+            const frequencies = [
+                2 + randBetween(1, 3),
+                20 + randBetween(1, 5),
+                25 + randBetween(1, 5),
+                10 + randBetween(1, 3)
+            ];
             
-            const n = Math.pow(3, a) * Math.pow(5, b) * Math.pow(7, c) * Math.pow(11, d);
+            // Find class with highest frequency
+            let maxFreq = 0;
+            let modalClassIndex = 0;
             
-            const primeFactors = {};
-            if (a > 0) primeFactors[3] = a;
-            if (b > 0) primeFactors[5] = b;
-            if (c > 0) primeFactors[7] = c;
-            if (d > 0) primeFactors[11] = d;
+            for (let i = 0; i < frequencies.length; i++) {
+                if (frequencies[i] > maxFreq) {
+                    maxFreq = frequencies[i];
+                    modalClassIndex = i;
+                }
+            }
             
-            const answer = formatPrimeFactors(primeFactors);
+            const modalClass = classes[modalClassIndex];
+            
+            let tableHTML = '<table class="data-table"><tr><th>Length of pine cone (mm)</th>';
+            classes.forEach(c => tableHTML += `<td>${c}</td>`);
+            tableHTML += '</tr><tr><th>Frequency</th>';
+            frequencies.forEach(f => tableHTML += `<td>${f}</td>`);
+            tableHTML += '</tr></table>';
             
             return {
                 id: 10,
-                text: `Write ${n} as a product of prime factors (in index form).`,
-                answer: answer,
-                working: `${n} = ${answer}`
-            };
-        }
-        
-        // Question 11: HCF of m and n (index form expected)
-        function generateQuestion11() {
-            // Generate exponents for primes 5, 7, 11
-            const exp5_n = randBetween(1, 3);
-            const exp7_n = randBetween(1, 3);
-            const exp11_n = randBetween(1, 2);
-            
-            const exp5_m = randBetween(1, 3);
-            const exp7_m = randBetween(1, 3);
-            const exp11_m = randBetween(1, 2);
-            
-            const formatExpression = (exp5, exp7, exp11) => {
-                const parts = [];
-                if (exp5 > 0) parts.push(`5${getSuperscript(exp5)}`);
-                if (exp7 > 0) parts.push(`7${getSuperscript(exp7)}`);
-                if (exp11 > 0) parts.push(`11`);
-                return parts.join(' × ');
-            };
-            
-            const nExpression = formatExpression(exp5_n, exp7_n, exp11_n);
-            const mExpression = formatExpression(exp5_m, exp7_m, exp11_m);
-            
-            const hcfExp5 = Math.min(exp5_n, exp5_m);
-            const hcfExp7 = Math.min(exp7_n, exp7_m);
-            const hcfExp11 = Math.min(exp11_n, exp11_m);
-            
-            const hcf = Math.pow(5, hcfExp5) * Math.pow(7, hcfExp7) * Math.pow(11, hcfExp11);
-            const hcfExpression = formatExpression(hcfExp5, hcfExp7, hcfExp11);
-            
-            return {
-                id: 11,
-                text: `Find the highest common factor [HCF] of two numbers m and n. Give your answer in index form.`,
-                expression: `n = ${nExpression}<br>m = ${mExpression}`,
-                instruction: "Enter your answer in index form (e.g., 5² × 7² × 11)",
-                answer: hcfExpression,
-                working: `HCF = ${hcfExpression} = ${hcf}`
-            };
-        }
-        
-        // Question 12: LCM of m and n (index form expected)
-        function generateQuestion12() {
-            // Generate exponents for primes 5, 7, 11
-            const exp5_n = randBetween(1, 3);
-            const exp7_n = randBetween(1, 3);
-            const exp11_n = randBetween(1, 2);
-            
-            const exp5_m = randBetween(1, 3);
-            const exp7_m = randBetween(1, 3);
-            const exp11_m = randBetween(1, 2);
-            
-            const formatExpression = (exp5, exp7, exp11) => {
-                const parts = [];
-                if (exp5 > 0) parts.push(`5${getSuperscript(exp5)}`);
-                if (exp7 > 0) parts.push(`7${getSuperscript(exp7)}`);
-                if (exp11 > 0) parts.push(`11`);
-                return parts.join(' × ');
-            };
-            
-            const nExpression = formatExpression(exp5_n, exp7_n, exp11_n);
-            const mExpression = formatExpression(exp5_m, exp7_m, exp11_m);
-            
-            const lcmExp5 = Math.max(exp5_n, exp5_m);
-            const lcmExp7 = Math.max(exp7_n, exp7_m);
-            const lcmExp11 = Math.max(exp11_n, exp11_m);
-            
-            const lcm = Math.pow(5, lcmExp5) * Math.pow(7, lcmExp7) * Math.pow(11, lcmExp11);
-            const lcmExpression = formatExpression(lcmExp5, lcmExp7, lcmExp11);
-            
-            return {
-                id: 12,
-                text: `Find the lowest common multiple [LCM] of two numbers m and n. Give your answer in index form.`,
-                expression: `n = ${nExpression}<br>m = ${mExpression}`,
-                instruction: "Enter your answer in index form (e.g., 5² × 7² × 11)",
-                answer: lcmExpression,
-                working: `LCM = ${lcmExpression} = ${lcm}`
+                text: `The length x mm, to the nearest mm, of a random sample of pine-cones is measured. The data is shown in the table below:${tableHTML}<br>Find the modal class.`,
+                answer: modalClass,
+                working: `Modal class = class with highest frequency = "${modalClass}" (frequency = ${maxFreq})`
             };
         }
         
@@ -968,9 +1012,7 @@
                 generateQuestion7(),
                 generateQuestion8(),
                 generateQuestion9(),
-                generateQuestion10(),
-                generateQuestion11(),
-                generateQuestion12()
+                generateQuestion10()
             ];
             
             renderQuiz();
@@ -986,14 +1028,17 @@
             userAnswer = normalizeAnswer(userAnswer);
             correctAnswer = normalizeAnswer(correctAnswer);
             
-            // For comma-separated answers, sort both and compare
-            if (userAnswer.includes(',') && correctAnswer.includes(',')) {
-                const userParts = userAnswer.split(',').map(s => s.trim()).sort();
-                const correctParts = correctAnswer.split(',').map(s => s.trim()).sort();
-                return JSON.stringify(userParts) === JSON.stringify(correctParts);
+            // For answers that might have different representations
+            if (userAnswer === correctAnswer) return true;
+            
+            // Allow slight variations in decimal answers
+            if (!isNaN(parseFloat(userAnswer)) && !isNaN(parseFloat(correctAnswer))) {
+                const userNum = parseFloat(userAnswer);
+                const correctNum = parseFloat(correctAnswer);
+                return Math.abs(userNum - correctNum) < 0.01;
             }
             
-            return userAnswer === correctAnswer;
+            return false;
         }
         
         function checkAnswers() {

@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algebra: Simplifying Expressions Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ... styles exactly as before ... */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f9ff;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+        
+        .subtitle {
+            color: #2c3e50;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+        
+        .student-name-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 10px;
+            background-color: #f0f7ff;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #3498db;
+        }
+        
+        .student-name-label {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+        
+        #student-name {
+            padding: 10px 20px;
+            border: 2px solid #3498db;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            width: 280px;
+            max-width: 100%;
+            text-align: center;
+            font-weight: 600;
+            background-color: white;
+        }
+        
+        .question-container {
+            margin-bottom: 25px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid #eaeaea;
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #3498db;
+        }
+        
+        .question-number {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #3498db;
+            background-color: #f0f7ff;
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+        
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            line-height: 1.5;
+        }
+        
+        .part-container {
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            border-left: 3px solid #2ecc71;
+        }
+        
+        .part-label {
+            font-weight: 700;
+            color: #2c3e50;
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .answer-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e8ed;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            margin: 8px 0;
+            text-align: left;
+            transition: border-color 0.3s;
+        }
+        
+        .answer-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        .instruction {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .answer-feedback {
+            margin-top: 8px;
+            padding: 10px;
+            border-radius: 6px;
+            display: none;
+            font-size: 0.95rem;
+        }
+        
+        .correct-feedback {
+            background-color: rgba(39, 174, 96, 0.1);
+            border: 1px solid #27ae60;
+            color: #27ae60;
+        }
+        
+        .incorrect-feedback {
+            background-color: rgba(231, 76, 60, 0.1);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+        }
+        
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        
+        .correct-answer {
+            font-family: 'Cambria', 'Times New Roman', serif;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-top: 5px;
+        }
+        
+        .submit-section {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #eaeaea;
+        }
+        
+        button {
+            padding: 12px 30px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0 10px 10px 0;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        
+        button:disabled:hover {
+            background-color: #95a5a6;
+        }
+        
+        #retry-btn {
+            background-color: #2ecc71;
+        }
+        
+        #retry-btn:hover {
+            background-color: #27ae60;
+        }
+        
+        /* Certificate Modal */
+        .certificate-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .certificate-content {
+            background: linear-gradient(135deg, #f9f9ff 0%, #ffffff 100%);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 8px solid #3498db;
+            position: relative;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .certificate-header {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .certificate-divider {
+            height: 3px;
+            background: linear-gradient(to right, transparent, #3498db, transparent);
+            margin: 20px 0;
+        }
+        
+        .certificate-text {
+            color: #333;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .certificate-name {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: rgba(52, 152, 219, 0.1);
+            border-radius: 8px;
+            font-weight: 700;
+        }
+        
+        .certificate-score {
+            font-size: 1.5rem;
+            color: #27ae60;
+            margin: 15px 0;
+            font-weight: 700;
+        }
+        
+        .certificate-date {
+            color: #7f8c8d;
+            font-size: 1rem;
+            margin-top: 20px;
+        }
+        
+        .certificate-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #7f8c8d;
+            cursor: pointer;
+            padding: 5px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .certificate-close:hover {
+            color: #2c3e50;
+            background-color: rgba(0, 0, 0, 0.05);
+            border-radius: 50%;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .question-container {
+                padding: 12px;
+            }
+            
+            .certificate-content {
+                width: 95%;
+                padding: 20px;
+            }
+            
+            .certificate-header {
+                font-size: 1.5rem;
+            }
+            
+            .certificate-name {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="certificate-modal" class="certificate-modal">
+        <div class="certificate-content">
+            <button class="certificate-close" id="certificate-close">&times;</button>
+            <div class="certificate-header">
+                <i class="fas fa-award"></i> Certificate of Achievement
+            </div>
+            <div class="certificate-divider"></div>
+            <div class="certificate-text">Awarded to:</div>
+            <div class="certificate-name" id="certificate-name">Student Name</div>
+            <div class="certificate-text">For Perfect Score in<br>Algebra: Simplifying Expressions</div>
+            <div class="certificate-score" id="certificate-score">Score: 100%</div>
+            <div class="certificate-date" id="certificate-date"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-calculator"></i> Algebra: Simplifying Expressions</h1>
+            <p class="subtitle">Answer all 19 questions. Achieve 100% mastery to earn your certificate!</p>
+            <div class="student-name-container">
+                <div class="student-name-label">Student Name:</div>
+                <input type="text" id="student-name" placeholder="Enter your name" maxlength="30">
+            </div>
+        </header>
+        
+        <div id="quiz-container"></div>
+        
+        <div class="submit-section">
+            <button id="submit-btn"><i class="fas fa-check"></i> Submit Answers</button>
+            <button id="retry-btn"><i class="fas fa-redo"></i> Retry Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        // ==============================
+        // HELPER FUNCTIONS
+        // ==============================
+        function randBetween(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function randomFromArray(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        // Normalize an expression by splitting into terms, sorting them, and rebuilding
+        function normalizeExpression(expr) {
+            // Remove all spaces
+            let s = expr.replace(/\s+/g, '');
+            if (s === '') return '';
+            
+            // Handle leading sign
+            if (!s.startsWith('+') && !s.startsWith('-')) s = '+' + s;
+            
+            // Split into terms at '+' or '-' that are not part of exponent notation (^)
+            // We'll use a regex that splits on + or - but not when inside ^? Actually exponents are ^2, so the sign is outside.
+            const termRegex = /[+-][^+-]+/g;
+            let terms = s.match(termRegex) || [];
+            
+            // Parse each term into coefficient and variable part
+            let parsedTerms = [];
+            for (let term of terms) {
+                let sign = term[0] === '+' ? 1 : -1;
+                let rest = term.slice(1);
+                
+                // Extract coefficient and variable
+                let match = rest.match(/^(\d*)(.*)$/);
+                let coeffStr = match[1];
+                let variable = match[2];
+                
+                let coeff = coeffStr === '' ? 1 : parseInt(coeffStr, 10);
+                coeff *= sign;
+                
+                // Normalize variable: for sorting, we treat constant as empty string
+                if (variable === '') {
+                    parsedTerms.push({ var: '', coeff: coeff, display: coeff.toString() });
+                } else {
+                    // Ensure powers are normalized: e.g., 'x^2' vs 'x²' – we'll keep as given, but sorting on var string works.
+                    parsedTerms.push({ var: variable, coeff: coeff, display: term });
+                }
+            }
+            
+            // Sort: constants first (var=''), then by variable string
+            parsedTerms.sort((a, b) => {
+                if (a.var === '' && b.var === '') return 0;
+                if (a.var === '') return -1;
+                if (b.var === '') return 1;
+                return a.var.localeCompare(b.var);
+            });
+            
+            // Rebuild expression without spaces
+            let result = '';
+            for (let t of parsedTerms) {
+                if (t.var === '') {
+                    // constant
+                    if (t.coeff > 0) result += '+' + t.coeff;
+                    else result += t.coeff;
+                } else {
+                    // variable term: format with coefficient
+                    let coeff = t.coeff;
+                    let varPart = t.var;
+                    if (coeff === 1) {
+                        result += '+' + varPart;
+                    } else if (coeff === -1) {
+                        result += '-' + varPart;
+                    } else if (coeff > 0) {
+                        result += '+' + coeff + varPart;
+                    } else {
+                        result += coeff + varPart;
+                    }
+                }
+            }
+            // Remove leading '+'
+            if (result.startsWith('+')) result = result.slice(1);
+            return result;
+        }
+
+        // Enhanced answer checking: normalize both user and acceptable answers
+        function isAnswerCorrect(userAns, acceptableAnswers) {
+            const normUser = normalizeExpression(userAns);
+            for (let ans of acceptableAnswers) {
+                if (normUser === normalizeExpression(ans)) return true;
+            }
+            return false;
+        }
+
+        // Shuffle array (for random order)
+        function shuffle(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Format a term: e.g., (coeff, var) -> if coeff==1 and var exists -> var, if coeff==-1 -> '-'+var, else coeff+var
+        function formatTerm(coeff, varName) {
+            if (varName === '') return coeff.toString(); // constant
+            if (coeff === 1) return varName;
+            if (coeff === -1) return '-' + varName;
+            return coeff + varName;
+        }
+
+        // Format a term with exponent (e.g., p^2)
+        function formatPowerTerm(coeff, varName, exponent) {
+            if (coeff === 0) return '';
+            const powerStr = varName + (exponent > 1 ? '^' + exponent : '');
+            if (coeff === 1) return powerStr;
+            if (coeff === -1) return '-' + powerStr;
+            return coeff + powerStr;
+        }
+
+        // ==============================
+        // QUESTION GENERATORS (19 questions)
+        // ==============================
+
+        // Q1: b + b + ... (a times)
+        function generateQ1() {
+            const letters = ['b','c','d','g','h','p','q','z'];
+            const a = randomFromArray([3,4,5]);
+            const letter = randomFromArray(letters);
+            const expr = formatTerm(a, letter);
+            return {
+                text: `Simplify: ${Array(a).fill(letter).join(' + ')}`,
+                parts: [{
+                    label: "",
+                    answers: [expr, expr + ' ', expr.replace(/(\d)([a-z])/g, '$1 $2'), a + ' ' + letter],
+                    working: `${a} × ${letter} = ${expr}`
+                }]
+            };
+        }
+
+        // Q2: ap + bp
+        function generateQ2() {
+            const letters = ['p','q','n','m','k'];
+            const a = randBetween(1,9);
+            const b = randBetween(1,9);
+            const letter = randomFromArray(letters);
+            const sum = a + b;
+            const expr = formatTerm(sum, letter);
+            return {
+                text: `Simplify: ${formatTerm(a, letter)} + ${formatTerm(b, letter)}`,
+                parts: [{
+                    label: "",
+                    answers: [expr, expr + ' ', expr.replace(/(\d)([a-z])/g, '$1 $2'), (sum === 1 ? '' : sum) + ' ' + letter],
+                    working: `${a}${letter} + ${b}${letter} = ${expr}`
+                }]
+            };
+        }
+
+        // Q3: ap - bp (ensure a > b)
+        function generateQ3() {
+            const letters = ['p','q','n','m','k'];
+            let a, b;
+            do {
+                a = randBetween(2,9);
+                b = randBetween(1, a-1);
+            } while (a <= b);
+            const letter = randomFromArray(letters);
+            const diff = a - b;
+            const expr = formatTerm(diff, letter);
+            return {
+                text: `Simplify: ${formatTerm(a, letter)} - ${formatTerm(b, letter)}`,
+                parts: [{
+                    label: "",
+                    answers: [expr, expr + ' ', expr.replace(/(\d)([a-z])/g, '$1 $2'), (diff === 1 ? '' : diff) + ' ' + letter],
+                    working: `${a}${letter} - ${b}${letter} = ${expr}`
+                }]
+            };
+        }
+
+        // Q4: ap ± bp ± cp (three terms, result positive)
+        function generateQ4() {
+            const letters = ['p','q','n','m','k'];
+            const letter = randomFromArray(letters);
+            let a,b,c;
+            let signs = [];
+            let total;
+            do {
+                a = randBetween(1,9);
+                b = randBetween(1,9);
+                c = randBetween(1,9);
+                signs = [Math.random() < 0.5 ? 1 : -1, Math.random() < 0.5 ? 1 : -1, Math.random() < 0.5 ? 1 : -1];
+                total = signs[0]*a + signs[1]*b + signs[2]*c;
+            } while (total <= 0);
+            // Build expression string
+            let terms = [];
+            if (signs[0] === 1) terms.push(formatTerm(a, letter));
+            else terms.push('-' + formatTerm(a, letter));
+            if (signs[1] === 1) terms.push('+ ' + formatTerm(b, letter));
+            else terms.push('- ' + formatTerm(b, letter));
+            if (signs[2] === 1) terms.push('+ ' + formatTerm(c, letter));
+            else terms.push('- ' + formatTerm(c, letter));
+            const exprText = terms.join(' ').replace(/\+ -/g, '- ').replace(/^\+ /, '');
+            const result = formatTerm(total, letter);
+            return {
+                text: `Simplify: ${exprText}`,
+                parts: [{
+                    label: "",
+                    answers: [result, result + ' ', result.replace(/(\d)([a-z])/g, '$1 $2'), (total === 1 ? '' : total) + ' ' + letter],
+                    working: `Combined = ${result}`
+                }]
+            };
+        }
+
+        // Q5: ap ± bq ± cp ± dq (two different letters)
+        function generateQ5() {
+            const pairs = [['p','q'], ['m','n'], ['u','v'], ['g','h']];
+            const [p, q] = randomFromArray(pairs);
+            let a,b,c,d;
+            let signs = [];
+            let totalP, totalQ;
+            do {
+                a = randBetween(1,9);
+                b = randBetween(1,9);
+                c = randBetween(1,9);
+                d = randBetween(1,9);
+                signs = [Math.random() < 0.5 ? 1 : -1, Math.random() < 0.5 ? 1 : -1, Math.random() < 0.5 ? 1 : -1, Math.random() < 0.5 ? 1 : -1];
+                totalP = signs[0]*a + signs[2]*c;
+                totalQ = signs[1]*b + signs[3]*d;
+            } while (totalP === 0 || totalQ === 0);
+            // Build expression
+            let terms = [];
+            terms.push((signs[0] === 1 ? '' : '-') + formatTerm(Math.abs(a), p));
+            terms.push((signs[1] === 1 ? '+ ' : '- ') + formatTerm(Math.abs(b), q));
+            terms.push((signs[2] === 1 ? '+ ' : '- ') + formatTerm(Math.abs(c), p));
+            terms.push((signs[3] === 1 ? '+ ' : '- ') + formatTerm(Math.abs(d), q));
+            let exprText = terms.join(' ').replace(/\+ -/g, '- ').replace(/^\+ /, '');
+            // Build simplified result (just one possible order; the checker will accept any order)
+            let resultParts = [];
+            if (totalP !== 0) resultParts.push(formatTerm(totalP, p));
+            if (totalQ !== 0) resultParts.push(formatTerm(totalQ, q));
+            let result = resultParts.join('+').replace(/\+-/g, '-');
+            // Also generate a spaced version
+            let resultWithSpace = result.replace(/([+-]?\d*[a-z])/g, '$1 ').trim();
+            return {
+                text: `Simplify: ${exprText}`,
+                parts: [{
+                    label: "",
+                    answers: [result, resultWithSpace],
+                    working: `= ${result}`
+                }]
+            };
+        }
+
+        // Q6: Constant a and two copies of y and z each (five terms)
+        function generateQ6() {
+            const pairs = [['p','q'], ['m','n'], ['u','v'], ['g','h']];
+            const [p, q] = randomFromArray(pairs);
+            const a = randBetween(1,9); // constant
+            // Two p-terms with coefficients b1, b2 and signs
+            const b1 = randBetween(1,9);
+            const b2 = randBetween(1,9);
+            const sign1 = Math.random() < 0.5 ? 1 : -1;
+            const sign2 = Math.random() < 0.5 ? 1 : -1;
+            // Two q-terms with coefficients c1, c2 and signs
+            const c1 = randBetween(1,9);
+            const c2 = randBetween(1,9);
+            const sign3 = Math.random() < 0.5 ? 1 : -1;
+            const sign4 = Math.random() < 0.5 ? 1 : -1;
+            
+            // Create array of terms: constant, then p-terms, then q-terms
+            let terms = [
+                { type: 'const', value: a, sign: 1 },
+                { type: 'p', value: b1, sign: sign1 },
+                { type: 'p', value: b2, sign: sign2 },
+                { type: 'q', value: c1, sign: sign3 },
+                { type: 'q', value: c2, sign: sign4 }
+            ];
+            // Shuffle order
+            terms = shuffle(terms);
+            
+            // Build expression string
+            let exprParts = [];
+            for (let t of terms) {
+                if (t.type === 'const') {
+                    exprParts.push((t.sign === 1 ? '' : '-') + t.value);
+                } else if (t.type === 'p') {
+                    exprParts.push((t.sign === 1 ? '' : '-') + formatTerm(Math.abs(t.value), p));
+                } else {
+                    exprParts.push((t.sign === 1 ? '' : '-') + formatTerm(Math.abs(t.value), q));
+                }
+            }
+            // Join with ' + ' and then fix signs
+            let exprText = exprParts.join(' + ').replace(/\+ -/g, '- ').replace(/^\+ /, '');
+            
+            // Compute simplified
+            const totalP = sign1*b1 + sign2*b2;
+            const totalQ = sign3*c1 + sign4*c2;
+            let resultParts = [];
+            if (a !== 0) resultParts.push(a.toString());
+            if (totalP !== 0) resultParts.push(formatTerm(totalP, p));
+            if (totalQ !== 0) resultParts.push(formatTerm(totalQ, q));
+            let result = resultParts.join('+').replace(/\+-/g, '-');
+            let resultWithSpace = result.replace(/([+-]?\d*[a-z]|\d+)/g, '$1 ').trim();
+            
+            return {
+                text: `Simplify: ${exprText}`,
+                parts: [{
+                    label: "",
+                    answers: [result, resultWithSpace],
+                    working: `= ${result}`
+                }]
+            };
+        }
+
+        // Q7: p^2 + p^2 + p^2 (three times) with superscript
+        function generateQ7() {
+            const letters = ['p','q','u','v','a','b'];
+            const letter = randomFromArray(letters);
+            const term = letter + '<sup>2</sup>';
+            const expr = `${term} + ${term} + ${term}`;
+            const result = `3${letter}^2`; // plain for answer
+            const resultSup = `3${letter}<sup>2</sup>`; // for display
+            return {
+                text: `Simplify: ${expr}`,
+                parts: [{
+                    label: "",
+                    answers: [result, result.replace('^', '^ '), '3' + letter + '^2', '3' + letter + '²'],
+                    working: `= ${resultSup}`
+                }]
+            };
+        }
+
+        // Q8: ±apq ± bpq ± cpq
+        function generateQ8() {
+            const pairs = [['p','q'], ['u','v'], ['y','z'], ['g','h']];
+            const [p, q] = randomFromArray(pairs);
+            let a,b,c;
+            let signs = [];
+            let total;
+            do {
+                a = randBetween(1,9);
+                b = randBetween(1,9);
+                c = randBetween(1,9);
+                signs = [Math.random() < 0.5 ? 1 : -1, Math.random() < 0.5 ? 1 : -1, Math.random() < 0.5 ? 1 : -1];
+                total = signs[0]*a + signs[1]*b + signs[2]*c;
+            } while (total === 0);
+            // Build expression
+            let terms = [];
+            terms.push((signs[0] === 1 ? '' : '-') + formatTerm(Math.abs(a), p+q));
+            terms.push((signs[1] === 1 ? '+ ' : '- ') + formatTerm(Math.abs(b), p+q));
+            terms.push((signs[2] === 1 ? '+ ' : '- ') + formatTerm(Math.abs(c), p+q));
+            let exprText = terms.join(' ').replace(/\+ -/g, '- ').replace(/^\+ /, '');
+            let result = formatTerm(total, p+q);
+            let resultWithSpace = result.replace(/([+-]?\d*[a-z]+)/g, '$1 ').trim();
+            return {
+                text: `Simplify: ${exprText}`,
+                parts: [{
+                    label: "",
+                    answers: [result, resultWithSpace],
+                    working: `= ${result}`
+                }]
+            };
+        }
+
+        // Q9: ±ap^2 ± bp ± cp^2 ± dp (with superscripts)
+        function generateQ9() {
+            const letters = ['p','q','u','v','r','z'];
+            const letter = randomFromArray(letters);
+            let a,b,c,d;
+            let signs = [];
+            let totalP2, totalP;
+            do {
+                a = randBetween(1,9);
+                b = randBetween(1,9);
+                c = randBetween(1,9);
+                d = randBetween(1,9);
+                signs = [Math.random() < 0.5 ? 1 : -1, Math.random() < 0.5 ? 1 : -1, Math.random() < 0.5 ? 1 : -1, Math.random() < 0.5 ? 1 : -1];
+                totalP2 = signs[0]*a + signs[2]*c;
+                totalP = signs[1]*b + signs[3]*d;
+            } while (totalP2 === 0 && totalP === 0);
+            // Build expression with superscripts
+            let terms = [];
+            terms.push((signs[0] === 1 ? '' : '-') + a + letter + '<sup>2</sup>');
+            terms.push((signs[1] === 1 ? '+ ' : '- ') + b + letter);
+            terms.push((signs[2] === 1 ? '+ ' : '- ') + c + letter + '<sup>2</sup>');
+            terms.push((signs[3] === 1 ? '+ ' : '- ') + d + letter);
+            let exprText = terms.join(' ').replace(/\+ -/g, '- ').replace(/^\+ /, '');
+            // Build result (plain for answer)
+            let resultParts = [];
+            if (totalP2 !== 0) resultParts.push(formatPowerTerm(totalP2, letter, 2));
+            if (totalP !== 0) resultParts.push(formatTerm(totalP, letter));
+            let result = resultParts.join('+').replace(/\+-/g, '-');
+            let resultWithSpace = result.replace(/([+-]?\d*[a-z](\^2)?)/g, '$1 ').trim();
+            return {
+                text: `Simplify: ${exprText}`,
+                parts: [{
+                    label: "",
+                    answers: [result, resultWithSpace],
+                    working: `= ${result}`
+                }]
+            };
+        }
+
+        // Q10: b x b x ... (a times)
+        function generateQ10() {
+            const letters = ['b','c','d','g','h','p','q','z'];
+            const a = randomFromArray([3,4,5]);
+            const letter = randomFromArray(letters);
+            const expr = Array(a).fill(letter).join(' × ');
+            const result = letter + '^' + a;
+            return {
+                text: `Simplify: ${expr}`,
+                parts: [{
+                    label: "",
+                    answers: [result, result.replace('^', '^ '), letter + '^' + a],
+                    working: `= ${result}`
+                }]
+            };
+        }
+
+        // Q11: ap × bp × cp (three terms) with a,b,c in [2,5]
+        function generateQ11() {
+            const letters = ['d','g','h','q','z'];
+            const letter = randomFromArray(letters);
+            const a = randomFromArray([2,3,4,5]);
+            const b = randomFromArray([2,3,4,5]);
+            const c = randomFromArray([2,3,4,5]);
+            const product = a * b * c;
+            const expr = `${a}${letter} × ${b}${letter} × ${c}${letter}`;
+            const result = product + letter + '^3';
+            return {
+                text: `Simplify: ${expr}`,
+                parts: [{
+                    label: "",
+                    answers: [result, result.replace('^', '^ ')],
+                    working: `= ${result}`
+                }]
+            };
+        }
+
+        // Q12: a × b × c (different letters)
+        function generateQ12() {
+            const triples = [['a','b','c'], ['u','v','w'], ['p','q','r']];
+            const [l1, l2, l3] = randomFromArray(triples);
+            // Randomize order for question
+            const letters = [l1, l2, l3];
+            shuffle(letters);
+            const expr = letters.join(' × ');
+            const sorted = [l1, l2, l3].sort().join('');
+            return {
+                text: `Simplify: ${expr}`,
+                parts: [{
+                    label: "",
+                    answers: [sorted, sorted.split('').join(' ')],
+                    working: `= ${sorted}`
+                }]
+            };
+        }
+
+        // Q13: a × bp
+        function generateQ13() {
+            const letters = ['d','g','h','q','z'];
+            const letter = randomFromArray(letters);
+            const a = randBetween(2,8);
+            const b = randBetween(2,8);
+            const product = a * b;
+            const expr = `${a} × ${b}${letter}`;
+            const result = formatTerm(product, letter);
+            return {
+                text: `Simplify: ${expr}`,
+                parts: [{
+                    label: "",
+                    answers: [result, result + ' ', result.replace(/(\d)([a-z])/g, '$1 $2'), (product === 1 ? '' : product) + ' ' + letter],
+                    working: `= ${result}`
+                }]
+            };
+        }
+
+        // Q14: a × p × b (jumbled order)
+        function generateQ14() {
+            const letters = ['d','g','h','q','z'];
+            const letter = randomFromArray(letters);
+            const a = randBetween(2,8);
+            const b = randBetween(2,8);
+            const product = a * b;
+            // Create three factors: a, letter, b in random order
+            const factors = [a, letter, b];
+            shuffle(factors);
+            const expr = factors.join(' × ');
+            const result = formatTerm(product, letter);
+            return {
+                text: `Simplify: ${expr}`,
+                parts: [{
+                    label: "",
+                    answers: [result, result + ' ', result.replace(/(\d)([a-z])/g, '$1 $2'), (product === 1 ? '' : product) + ' ' + letter],
+                    working: `= ${result}`
+                }]
+            };
+        }
+
+        // Q15: a × p × q
+        function generateQ15() {
+            const pairs = [['p','q'], ['d','e'], ['g','h'], ['u','v']];
+            const [p, q] = randomFromArray(pairs);
+            const a = randBetween(2,8);
+            const factors = [a, p, q];
+            shuffle(factors);
+            const expr = factors.join(' × ');
+            // Sort letters alphabetically for answer
+            const sortedLetters = [p, q].sort();
+            const result = a + sortedLetters[0] + sortedLetters[1];
+            return {
+                text: `Simplify: ${expr}`,
+                parts: [{
+                    label: "",
+                    answers: [result, result + ' ', result.replace(/(\d)([a-z])/g, '$1 $2')],
+                    working: `= ${result}`
+                }]
+            };
+        }
+
+        // Q16: ap × bq (two different letters)
+        function generateQ16() {
+            const letters = ['p','q','n','m','k'];
+            // pick two distinct letters
+            let [l1, l2] = [randomFromArray(letters), randomFromArray(letters)];
+            while (l1 === l2) l2 = randomFromArray(letters);
+            const a = randBetween(1,9);
+            const b = randBetween(1,9);
+            const product = a * b;
+            const expr = `${formatTerm(a, l1)} × ${formatTerm(b, l2)}`;
+            // Sort letters
+            const sorted = [l1, l2].sort().join('');
+            const result = product + sorted;
+            return {
+                text: `Simplify: ${expr}`,
+                parts: [{
+                    label: "",
+                    answers: [result, result + ' ', result.replace(/(\d)([a-z])/g, '$1 $2')],
+                    working: `= ${result}`
+                }]
+            };
+        }
+
+        // Q17: a × p × b × q (two different letters)
+        function generateQ17() {
+            const letters = ['p','q','n','m','k'];
+            let [p, q] = [randomFromArray(letters), randomFromArray(letters)];
+            while (p === q) q = randomFromArray(letters);
+            const a = randBetween(1,9);
+            const b = randBetween(1,9);
+            const product = a * b;
+            const factors = [a, p, b, q];
+            shuffle(factors);
+            const expr = factors.join(' × ');
+            const sorted = [p, q].sort().join('');
+            const result = product + sorted;
+            return {
+                text: `Simplify: ${expr}`,
+                parts: [{
+                    label: "",
+                    answers: [result, result + ' ', result.replace(/(\d)([a-z])/g, '$1 $2')],
+                    working: `= ${result}`
+                }]
+            };
+        }
+
+        // Q18: (ab)p / a
+        function generateQ18() {
+            const letters = ['p','q','n','m','k'];
+            const letter = randomFromArray(letters);
+            const a = randBetween(1,9);
+            const b = randBetween(1,9);
+            const numerator = a * b;
+            const expr = `${numerator}${letter} / ${a}`;
+            const result = formatTerm(b, letter);
+            return {
+                text: `Simplify: ${expr}`,
+                parts: [{
+                    label: "",
+                    answers: [result, result + ' ', result.replace(/(\d)([a-z])/g, '$1 $2'), (b === 1 ? '' : b) + ' ' + letter],
+                    working: `= ${result}`
+                }]
+            };
+        }
+
+        // Q19: (ap + (ab-a)p)/b
+        function generateQ19() {
+            const letters = ['p','q','n','m','k'];
+            const letter = randomFromArray(letters);
+            const a = randBetween(1,9);
+            const b = randBetween(2,9); // b>1 to ensure (ab-a) positive
+            const term2 = a * (b - 1);
+            const expr = `(${formatTerm(a, letter)} + ${formatTerm(term2, letter)}) / ${b}`;
+            const result = formatTerm(a, letter);
+            return {
+                text: `Simplify: ${expr}`,
+                parts: [{
+                    label: "",
+                    answers: [result, result + ' ', result.replace(/(\d)([a-z])/g, '$1 $2'), (a === 1 ? '' : a) + ' ' + letter],
+                    working: `= ${result}`
+                }]
+            };
+        }
+
+        // ==============================
+        // QUIZ STATE
+        // ==============================
+        let currentQuestions = [];
+        let hasSubmitted = false;
+        let totalQuestions = 19;
+
+        function initializeQuiz() {
+            hasSubmitted = false;
+            currentQuestions = [
+                generateQ1(),
+                generateQ2(),
+                generateQ3(),
+                generateQ4(),
+                generateQ5(),
+                generateQ6(),
+                generateQ7(),
+                generateQ8(),
+                generateQ9(),
+                generateQ10(),
+                generateQ11(),
+                generateQ12(),
+                generateQ13(),
+                generateQ14(),
+                generateQ15(),
+                generateQ16(),
+                generateQ17(),
+                generateQ18(),
+                generateQ19()
+            ];
+            renderQuiz();
+            document.getElementById('submit-btn').disabled = false;
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+
+            currentQuestions.forEach((question, qIndex) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'question-container';
+                qDiv.id = `question-${qIndex+1}`;
+
+                // Header
+                const header = document.createElement('div');
+                header.className = 'question-header';
+                header.innerHTML = `<div class="question-number">Question ${qIndex+1}</div>`;
+                qDiv.appendChild(header);
+
+                // Question text
+                const textDiv = document.createElement('div');
+                textDiv.className = 'question-text';
+                textDiv.innerHTML = `<p>${question.text}</p>`;
+                qDiv.appendChild(textDiv);
+
+                // Parts (each question has exactly one part)
+                question.parts.forEach((part, pIndex) => {
+                    const partDiv = document.createElement('div');
+                    partDiv.className = 'part-container';
+
+                    const labelSpan = document.createElement('span');
+                    labelSpan.className = 'part-label';
+                    labelSpan.textContent = part.label ? part.label : '';
+                    partDiv.appendChild(labelSpan);
+
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'answer-input';
+                    input.id = `answer-${qIndex}-${pIndex}`;
+                    input.placeholder = 'Enter simplified expression';
+                    input.autocomplete = 'off';
+                    if (hasSubmitted) input.disabled = true;
+                    partDiv.appendChild(input);
+
+                    const feedback = document.createElement('div');
+                    feedback.className = 'answer-feedback';
+                    feedback.id = `feedback-${qIndex}-${pIndex}`;
+                    partDiv.appendChild(feedback);
+
+                    qDiv.appendChild(partDiv);
+                });
+
+                container.appendChild(qDiv);
+            });
+
+            setupAutoFocus();
+        }
+
+        function setupAutoFocus() {
+            const inputs = document.querySelectorAll('.answer-input:not(:disabled)');
+            if (inputs.length > 0) inputs[0].focus();
+            inputs.forEach((input, idx) => {
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        if (idx + 1 < inputs.length) {
+                            inputs[idx + 1].focus();
+                        } else {
+                            document.getElementById('submit-btn').focus();
+                        }
+                    }
+                });
+            });
+        }
+
+        function checkAnswers() {
+            if (hasSubmitted) return;
+            hasSubmitted = true;
+            document.getElementById('submit-btn').disabled = true;
+
+            let score = 0;
+            let allCorrect = true;
+
+            document.querySelectorAll('.answer-input').forEach(input => input.disabled = true);
+
+            currentQuestions.forEach((question, qIndex) => {
+                question.parts.forEach((part, pIndex) => {
+                    const input = document.getElementById(`answer-${qIndex}-${pIndex}`);
+                    const userAns = input.value.trim();
+                    const feedback = document.getElementById(`feedback-${qIndex}-${pIndex}`);
+                    const correct = isAnswerCorrect(userAns, part.answers);
+
+                    if (correct) {
+                        score++;
+                        input.style.borderColor = '#27ae60';
+                        input.style.backgroundColor = 'rgba(39, 174, 96, 0.1)';
+                        feedback.className = 'answer-feedback correct-feedback';
+                        feedback.innerHTML = `<div class="feedback-title">✓ Correct!</div><div>${part.working}</div>`;
+                    } else {
+                        allCorrect = false;
+                        input.style.borderColor = '#e74c3c';
+                        input.style.backgroundColor = 'rgba(231, 76, 60, 0.1)';
+                        feedback.className = 'answer-feedback incorrect-feedback';
+                        const acceptable = part.answers.join(' or ');
+                        feedback.innerHTML = `<div class="feedback-title">✗ Incorrect</div>
+                                              <div>${part.working}</div>
+                                              <div class="correct-answer">Correct answer: ${acceptable}</div>`;
+                    }
+                    feedback.style.display = 'block';
+                });
+            });
+
+            const percentage = Math.round((score / totalQuestions) * 100);
+            if (allCorrect && score === totalQuestions) {
+                setTimeout(() => showCertificate(percentage), 500);
+            } else {
+                setTimeout(() => alert(`You got ${score} out of ${totalQuestions} correct (${percentage}%)\n\nClick "Retry Quiz" to try again!`), 300);
+            }
+        }
+
+        function showCertificate(score) {
+            const name = document.getElementById('student-name').value || 'Student';
+            document.getElementById('certificate-name').textContent = name;
+            document.getElementById('certificate-score').textContent = `Score: ${score}%`;
+            const now = new Date();
+            document.getElementById('certificate-date').textContent = `Date: ${now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`;
+            document.getElementById('certificate-modal').style.display = 'flex';
+        }
+
+        function closeCertificate() {
+            document.getElementById('certificate-modal').style.display = 'none';
+        }
+
+        function retryQuiz() {
+            document.querySelectorAll('.answer-input').forEach(input => {
+                input.value = '';
+                input.style.borderColor = '';
+                input.style.backgroundColor = '';
+                input.disabled = false;
+            });
+            document.querySelectorAll('.answer-feedback').forEach(fb => {
+                fb.innerHTML = '';
+                fb.style.display = 'none';
+            });
+            initializeQuiz();
+        }
+
+        // ==============================
+        // INIT
+        // ==============================
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeQuiz();
+
+            document.getElementById('submit-btn').addEventListener('click', checkAnswers);
+            document.getElementById('retry-btn').addEventListener('click', retryQuiz);
+            document.getElementById('certificate-close').addEventListener('click', closeCertificate);
+            document.getElementById('certificate-modal').addEventListener('click', (e) => {
+                if (e.target === e.currentTarget) closeCertificate();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeCertificate();
+            });
+
+            document.getElementById('student-name').focus();
+            document.getElementById('student-name').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const firstInput = document.querySelector('.answer-input:not(:disabled)');
+                    if (firstInput) firstInput.focus();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCSE Foundation: Rounding to Decimal Places</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            line-height: 1.6;
+            font-size: 20px;
+            background-color: #f8f9fa;
+        }
+        h1 { font-size: 2.5em; color: #2c3e50; }
+        h2 { font-size: 2em; }
+        h3 { font-size: 1.6em; }
+        p, .question, label { font-size: 1.3em; }
+
+        #intro-container, #quiz-container, #result-container {
+            margin: 20px 0;
+            padding: 25px;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        /* STICKY TIMER */
+        #timer-container {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            text-align: center;
+            font-size: 1.4em;
+            margin: 0 0 20px 0;
+            padding: 15px;
+            background-color: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        #time-remaining { color: #e74c3c; font-size: 1.7em; }
+
+        /* TWO-COLUMN QUESTION LAYOUT */
+        #quiz-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .question {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-left: 5px solid #3498db;
+            border-radius: 5px;
+            break-inside: avoid;
+        }
+
+        /* CERTIFICATE STYLING (Final View) */
+        .certificate-view {
+            font-family: 'Georgia', serif;
+            width: 500px;
+            margin: 40px auto;
+            padding: 30px;
+            border: 12px double #2c3e50;
+            border-radius: 3px;
+            background-color: #ffffff;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            font-size: 1.1em;
+        }
+        .certificate-view h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+        .certificate-view .student-name {
+            color: #c0392b;
+            font-size: 2em;
+            font-weight: bold;
+            margin: 15px 0;
+            padding: 8px 0;
+            border-bottom: 3px solid #3498db;
+            display: inline-block;
+        }
+        .certificate-view .quiz-title {
+            font-size: 1.5em;
+            color: #27ae60;
+            margin: 10px 0;
+            font-style: italic;
+        }
+        .certificate-view .date {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-top: 20px;
+            font-size: 1em;
+        }
+
+        input[type="text"], input[type="number"] {
+            padding: 12px;
+            font-size: 1.1em;
+            margin: 8px 5px;
+            border: 2px solid #bdc3c7;
+            border-radius: 5px;
+            width: 140px; /* Wider for decimal numbers */
+            text-align: center;
+        }
+        input:focus { border-color: #3498db; outline: none; }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 10px 5px;
+        }
+        button:hover { background-color: #2980b9; }
+        #start-btn { background-color: #27ae60; }
+        #start-btn:hover { background-color: #219653; }
+        #retry-btn { background-color: #9b59b6; }
+        #retry-btn:hover { background-color: #8e44ad; }
+
+        .correct { color: #27ae60; font-weight: bold; }
+        .incorrect { color: #e74c3c; }
+        #feedback-area {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="intro-container">
+        <h1>GCSE Foundation: Rounding to Decimal Places</h1>
+        <p>Enter your full name to begin. You will have <strong>10 minutes</strong> to complete <strong>20 questions</strong>.</p>
+        <p><strong>Rules:</strong> No calculators or external help allowed. You need all 20 correct to pass.</p>
+        <p><em>Questions will ask you to round decimal numbers to 1, 2, or 3 decimal places.</em></p>
+        <label for="student-name">Your Full Name: </label>
+        <input type="text" id="student-name" placeholder="e.g., Alex Johnson" size="30">
+        <br><br>
+        <button id="start-btn" onclick="startQuiz()">Start the Timed Quiz</button>
+    </div>
+
+    <div id="timer-container" style="display:none;">
+        <h3>⏰ Time Remaining:</h3>
+        <div id="time-remaining">10:00</div>
+    </div>
+
+    <div id="quiz-container" style="display:none;">
+        <h2>Quiz Questions</h2>
+        <form id="quiz-form"></form>
+        <button type="button" onclick="checkAnswers()">Submit All Answers</button>
+        <button type="button" onclick="resetQuiz()">Restart Quiz</button>
+    </div>
+
+    <div id="result-container" style="display:none;">
+        <h2 id="result-title">Quiz Result</h2>
+        <p id="score-display"></p>
+        <div id="feedback-area"></div>
+    </div>
+
+    <script>
+        // ============== CONFIGURATION ==============
+        const totalQuestions = 20;
+        const quizTimeMinutes = 10;
+
+        let timeLeft = quizTimeMinutes * 60;
+        let timerInterval = null;
+        let studentName = '';
+        let questions = [];
+        let userAnswers = new Array(totalQuestions).fill('');
+
+        // ============== TIMER ==============
+        function startTimer() {
+            const timerDisplay = document.getElementById('time-remaining');
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "TIME'S UP!";
+                    checkAnswers();
+                    return;
+                }
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                timeLeft--;
+            }, 1000);
+        }
+
+        // ============== QUIZ FLOW ==============
+        function startQuiz() {
+            studentName = document.getElementById('student-name').value.trim();
+            if (!studentName) {
+                alert("Please enter your name to start the quiz.");
+                return;
+            }
+            document.getElementById('intro-container').style.display = 'none';
+            document.getElementById('timer-container').style.display = 'block';
+            document.getElementById('quiz-container').style.display = 'block';
+            generateQuiz();
+            startTimer();
+        }
+
+        function jumpToNextInput(currentIndex, event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const nextIndex = currentIndex + 1;
+                if (nextIndex < totalQuestions) {
+                    document.getElementById(`answer-${nextIndex}`).focus();
+                }
+            }
+        }
+
+        // ============== DECIMAL PLACES QUESTION GENERATOR ==============
+        function generateQuestion(index) {
+            // 1. Randomly choose the target decimal places: 1, 2, or 3
+            const dps = [1, 2, 3];
+            const targetDp = dps[Math.floor(Math.random() * dps.length)];
+
+            // 2. Generate a positive decimal number with MORE digits than needed
+            //    This ensures rounding is actually required.
+            let number;
+            const wholePart = Math.floor(Math.random() * 1000) + 1; // Positive whole part (1-1000)
+
+            // Generate a fractional part with at least (targetDp + 1) digits
+            // This creates numbers like 123.4567 for rounding to 2dp.
+            const extraDigits = 2; // Always generate at least 2 extra digits for variety
+            const fractionalDigits = targetDp + extraDigits;
+            const fractionalMultiplier = Math.pow(10, fractionalDigits);
+            const fractionalPart = Math.floor(Math.random() * fractionalMultiplier);
+
+            // Construct the full decimal number
+            number = wholePart + (fractionalPart / fractionalMultiplier);
+
+            // 3. Format the number to a string with all its generated digits
+            // This ensures we show the exact number for rounding.
+            const numberString = number.toFixed(fractionalDigits);
+
+            // 4. Calculate the correct answer using rounding
+            const correctAnswer = Math.round(number * Math.pow(10, targetDp)) / Math.pow(10, targetDp);
+
+            // 5. Create the question text
+            const questionText = `Round ${numberString} to ${targetDp} decimal place${targetDp !== 1 ? 's' : ''}.`;
+
+            // Store the question data
+            questions[index] = { questionText, correctAnswer, originalNumber: numberString, targetDp };
+
+            // Return the HTML for the question
+            // Use 'step="any"' to allow decimal answers
+            return `
+                <div class="question">
+                    <strong>Q${index + 1}:</strong> ${questionText}
+                    <input type="number" id="answer-${index}" step="any" placeholder="?"
+                           onchange="userAnswers[${index}] = this.value"
+                           onkeydown="jumpToNextInput(${index}, event)">
+                </div>
+            `;
+        }
+
+        function generateQuiz() {
+            const form = document.getElementById('quiz-form');
+            form.innerHTML = '';
+            questions = [];
+            for (let i = 0; i < totalQuestions; i++) {
+                form.innerHTML += generateQuestion(i);
+            }
+            userAnswers.fill('');
+        }
+
+        // ============== CHECK ANSWERS (Handles Decimals) ==============
+        function checkAnswers() {
+            clearInterval(timerInterval);
+            document.getElementById('timer-container').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'none';
+
+            let score = 0;
+            let feedbackHtml = '<h3>Question Review:</h3>';
+            const oldCert = document.getElementById('certificate');
+            const oldRetry = document.querySelector('#result-container button[onclick="resetQuiz()"]');
+            if (oldCert) oldCert.remove();
+            if (oldRetry) oldRetry.remove();
+
+            for (let i = 0; i < totalQuestions; i++) {
+                const q = questions[i];
+                const inputElement = document.getElementById(`answer-${i}`);
+                const rawValue = inputElement ? inputElement.value : '';
+                let userAnswer;
+                if (rawValue.trim() === '') {
+                    userAnswer = NaN;
+                } else {
+                    userAnswer = Number(rawValue);
+                }
+                // Compare numbers, allowing for tiny floating-point rounding errors
+                const isCorrect = Math.abs(userAnswer - q.correctAnswer) < 0.0000001;
+                if (isCorrect) score++;
+                const displayAnswer = (rawValue.trim() === '') ? '?' : rawValue;
+                feedbackHtml += `<p class="${isCorrect ? 'correct' : 'incorrect'}">
+                    Q${i + 1}: ${q.questionText} Your answer: <strong>${displayAnswer}</strong>
+                    ${isCorrect ? '✅' : `❌ (Correct: ${q.correctAnswer.toFixed(q.targetDp)})`}
+                </p>`;
+            }
+
+            const resultContainer = document.getElementById('result-container');
+            document.getElementById('score-display').innerHTML = `<strong>Score: ${score}/${totalQuestions}</strong>`;
+            document.getElementById('feedback-area').innerHTML = feedbackHtml;
+            resultContainer.style.display = 'block';
+
+            if (score === totalQuestions) {
+                document.getElementById('result-title').textContent = "Perfect Score! 🎉";
+                document.getElementById('result-title').style.color = '#27ae60';
+                showCertificateOnlyView();
+            } else {
+                document.getElementById('result-title').textContent = "Not Quite Perfect";
+                document.getElementById('result-title').style.color = '#e74c3c';
+                document.getElementById('result-title').innerHTML += `<br><small>You need all ${totalQuestions} correct to earn the certificate. Try again!</small>`;
+            }
+            const retryButton = `<br><br><button id="retry-btn" onclick="resetQuiz()">🔄 Retry This Quiz</button>`;
+            document.getElementById('result-container').insertAdjacentHTML('beforeend', retryButton);
+        }
+
+        // ============== CERTIFICATE-ONLY FINAL VIEW ==============
+        function showCertificateOnlyView() {
+            const today = new Date().toLocaleDateString('en-GB', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            const certificateHTML = `
+                <div class="certificate-view">
+                    <h1>CERTIFICATE OF ACHIEVEMENT</h1>
+                    <p>This certifies that</p>
+                    <div class="student-name">${studentName}</div>
+                    <p>has successfully completed with a perfect score</p>
+                    <div class="quiz-title">"GCSE Foundation: Rounding to Decimal Places"</div>
+                    <p>demonstrating mastery of rounding decimal numbers to 1, 2, and 3 decimal places.</p>
+                    <p class="date">Awarded on: ${today}</p>
+                    <p><em>This certificate is awarded by the Maths Mastery Quizzes programme.</em></p>
+                    <hr>
+                    <p><strong>To save:</strong> Click the button below, or use your browser's Print function (Ctrl+P).</p>
+                    <button onclick="window.print()">🖨️ Print / Save as PDF</button>
+                    <p style="margin-top:20px; font-size:0.9em;">
+                        <a href="javascript:location.reload()">↩ Retake Quiz</a> |
+                        <a href="../">← Back to Topic List</a>
+                    </p>
+                </div>
+            `;
+            document.body.innerHTML = certificateHTML;
+        }
+
+        // ============== RESET QUIZ (PRESERVES NAME) ==============
+        function resetQuiz() {
+            clearInterval(timerInterval);
+            timeLeft = quizTimeMinutes * 60;
+            document.getElementById('result-container').style.display = 'none';
+            document.getElementById('intro-container').style.display = 'block';
+            document.getElementById('timer-container').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'none';
+            // Do NOT clear the name field
+            document.getElementById('time-remaining').textContent = '10:00';
+            userAnswers.fill('');
+            generateQuiz();
+        }
+    </script>
+</body>
+</html>

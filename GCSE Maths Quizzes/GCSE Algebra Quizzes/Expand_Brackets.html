@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algebra: Expanding Brackets · Mastery</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        body {
+            background: linear-gradient(145deg, #f0f4fa 0%, #e6ecf5 100%);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+        .card {
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(8px);
+            border-radius: 30px;
+            box-shadow: 0 12px 30px rgba(0,10,30,0.2);
+            padding: 1.5rem 1.8rem;
+            width: 100%;
+            max-width: 750px;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        h1 {
+            margin: 0 0 0.2rem 0;
+            font-weight: 600;
+            font-size: 1.8rem;
+            color: #0b2b44;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 0.4rem;
+        }
+        h1 i {
+            color: #1e6f9f;
+        }
+        .header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin: 0.5rem 0 0.8rem 0;
+        }
+        .stage-box {
+            background: #0b2b44;
+            color: white;
+            border-radius: 40px;
+            padding: 0.3rem 1.2rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+            box-shadow: 0 3px 0 #041a2b;
+            display: inline-block;
+        }
+        .streak-box {
+            background: #1e6f9f;
+            color: white;
+            border-radius: 40px;
+            padding: 0.3rem 1.2rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+            box-shadow: 0 3px 0 #0f3b5e;
+        }
+        .teacher-icon {
+            cursor: pointer;
+            font-size: 1.4rem;
+            margin-left: 10px;
+            color: #475569;
+        }
+        .teacher-icon:hover {
+            color: #0b2b44;
+        }
+        .teacher-panel {
+            display: none;
+            margin-top: 10px;
+            background: #f0f4fa;
+            padding: 10px 15px;
+            border-radius: 30px;
+            align-items: center;
+            gap: 10px;
+        }
+        .teacher-panel label {
+            font-weight: 600;
+            color: #1e4b6e;
+        }
+        .teacher-panel input {
+            width: 80px;
+            padding: 0.3rem;
+            border: 2px solid #b9d3ec;
+            border-radius: 20px;
+            text-align: center;
+        }
+        .teacher-panel button {
+            background: #0b5e8e;
+            border: none;
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+        .lesson-box {
+            background: #e9f0f9;
+            border-left: 6px solid #1e6f9f;
+            border-radius: 20px;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0 1.5rem 0;
+            font-size: 1rem;
+            color: #0b2b44;
+            position: relative;
+        }
+        .lesson-box .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: #475569;
+        }
+        .lesson-box .close-btn:hover {
+            color: #0b2b44;
+        }
+        .question {
+            background: white;
+            border-radius: 24px;
+            padding: 1.2rem 1rem;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0f3b5e;
+            border: 2px solid #bdd3e8;
+            margin-bottom: 1rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            cursor: help;
+            position: relative;
+        }
+        .input-area {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        label {
+            font-weight: 600;
+            color: #1e4b6e;
+            font-size: 1rem;
+            margin-left: 0.3rem;
+        }
+        .answer-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        #answer {
+            flex: 1 1 200px;
+            padding: 0.8rem 1.2rem;
+            border: 2px solid #b9d3ec;
+            border-radius: 40px;
+            font-size: 1.2rem;
+            outline: none;
+            background: white;
+            font-family: 'Courier New', monospace;
+        }
+        #answer:focus {
+            border-color: #0b5e8e;
+            box-shadow: 0 0 0 3px rgba(17, 107, 175, 0.2);
+        }
+        button {
+            background: #0b5e8e;
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 0.8rem 1.8rem;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.15s;
+            border-bottom: 3px solid #073a57;
+            box-shadow: 0 4px 8px rgba(0,30,60,0.2);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+        button:hover {
+            background: #0f6fa8;
+            transform: translateY(-1px);
+        }
+        button:active {
+            transform: translateY(2px);
+            border-bottom-width: 2px;
+        }
+        button:disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .feedback {
+            margin: 1rem 0 1rem 0;
+            padding: 0.8rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 500;
+            background: #f8fafc;
+            border-left: 6px solid #94a3b8;
+            font-size: 0.95rem;
+        }
+        .feedback.correct {
+            background: #e6f7e6;
+            border-left-color: #2e7d32;
+            color: #1e4a2a;
+        }
+        .feedback.incorrect {
+            background: #ffebee;
+            border-left-color: #b71c1c;
+            color: #941212;
+        }
+        .reset-btn {
+            background: #475569;
+            border-bottom-color: #1e293b;
+        }
+        .reset-btn:hover {
+            background: #5f6b7f;
+        }
+        .note {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #4b5a6b;
+            background: #e9edf2;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+        }
+        .math-keyboard {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 6px;
+            margin: 10px 0 5px;
+        }
+        .math-keyboard button {
+            padding: 0.6rem 0.1rem;
+            font-size: 1.2rem;
+            border-radius: 18px;
+            border-bottom-width: 2px;
+            background: #eef2f6;
+            color: #0b2b44;
+            border-bottom-color: #b0c4d9;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            font-weight: 500;
+            min-width: 0;
+        }
+        .math-keyboard button.special {
+            background: #d9e2ef;
+            font-weight: 600;
+        }
+        .math-keyboard button.wide {
+            grid-column: span 2;
+            font-size: 1rem;
+        }
+        .math-keyboard button:active {
+            transform: translateY(2px);
+            border-bottom-width: 1px;
+        }
+        @media (max-width: 500px) {
+            .math-keyboard {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        /* certificate modal */
+        .certificate-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .certificate-content {
+            background: linear-gradient(135deg, #f9f9ff, #ffffff);
+            border-radius: 30px;
+            width: 90%;
+            max-width: 400px;
+            padding: 30px;
+            text-align: center;
+            border: 8px solid #3498db;
+            position: relative;
+        }
+        .certificate-header {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        .certificate-divider {
+            height: 3px;
+            background: linear-gradient(to right, transparent, #3498db, transparent);
+            margin: 20px 0;
+        }
+        .certificate-name {
+            font-size: 2rem;
+            color: #2c3e50;
+            background: #f0f7ff;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        .certificate-close {
+            position: absolute;
+            top: 10px; right: 10px;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div id="certificateModal" class="certificate-modal">
+        <div class="certificate-content">
+            <button class="certificate-close" id="certificateClose">&times;</button>
+            <div class="certificate-header">🎓 Certificate of Mastery</div>
+            <div class="certificate-divider"></div>
+            <div class="certificate-text">Awarded to</div>
+            <div class="certificate-name" id="certStudentName">Student</div>
+            <div>for completing all 6 levels of</div>
+            <div style="font-weight:700; margin:10px 0;">Expanding Brackets</div>
+            <div id="certDate"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h1>
+            <i>📐</i> Expanding Brackets · Mastery
+            <span class="teacher-icon" id="teacherIcon" title="Teacher settings">⚙️</span>
+        </h1>
+        <p style="color: #1f4b73; margin: 0 0 0.3rem 0;">
+            Get <strong><span id="targetDisplay">3</span> consecutive correct</strong> per level to advance.
+        </p>
+        
+        <div class="header-row">
+            <div class="stage-box" id="stageDisplay">Level 1 · Q1</div>
+            <div class="streak-box" id="streakDisplay">🔥 0 / 3</div>
+            <div id="teacherPanel" class="teacher-panel">
+                <label for="targetInput">Target per level:</label>
+                <input type="number" id="targetInput" min="1" max="10" value="3" step="1">
+                <button id="setTargetBtn">Set</button>
+                <span style="color:#666; font-size:0.9rem;">(teacher)</span>
+            </div>
+        </div>
+
+        <!-- Lesson box (hidden by default) -->
+        <div id="lessonBox" class="lesson-box" style="display: none;">
+            <span class="close-btn" id="closeLessonBtn">&times;</span>
+            <div id="lessonContent">Lesson content will appear here.</div>
+        </div>
+
+        <div class="question" id="questionDisplay">
+            2(3p+4)
+        </div>
+
+        <div class="input-area">
+            <label for="answer">Your answer (expanded form):</label>
+            <div class="answer-row">
+                <input type="text" id="answer" placeholder="e.g., 6p+8" autocomplete="off">
+                <button id="submitBtn">✓ Check</button>
+            </div>
+        </div>
+
+        <!-- on‑screen math keyboard -->
+        <div class="math-keyboard" id="mathKeyboard">
+            <button type="button" class="digit" data-value="7">7</button>
+            <button type="button" class="digit" data-value="8">8</button>
+            <button type="button" class="digit" data-value="9">9</button>
+            <button type="button" class="special" data-value="/">/</button>
+            <button type="button" class="special" data-value="√">√</button>
+            <button type="button" class="special" data-value="(">(</button>
+            <button type="button" class="special" data-value=")">)</button>
+            <button type="button" class="special wide" data-value="^">^</button>
+            
+            <button type="button" class="digit" data-value="4">4</button>
+            <button type="button" class="digit" data-value="5">5</button>
+            <button type="button" class="digit" data-value="6">6</button>
+            <button type="button" class="special" data-value="*">×</button>
+            <button type="button" class="special" data-value="+">+</button>
+            <button type="button" class="special" data-value="-">−</button>
+            <button type="button" class="special" data-value="Backspace">⌫</button>
+            <button type="button" class="special" data-value="Clear">C</button>
+            
+            <button type="button" class="digit" data-value="1">1</button>
+            <button type="button" class="digit" data-value="2">2</button>
+            <button type="button" class="digit" data-value="3">3</button>
+            <button type="button" class="special" data-value=".">.</button>
+            <button type="button" class="special" data-value=" ">␣</button>
+            <button type="button" class="special wide" data-value="0">0</button>
+        </div>
+
+        <div class="feedback" id="feedbackMessage">
+            Enter an answer and click Check.
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 0.5rem;">
+            <button id="resetBtn" class="reset-btn">⟲ Reset all levels</button>
+        </div>
+
+        <div class="note">
+            ✅ Expand and simplify. Use ^ for powers (e.g., p^2). You can also use superscripts from the keyboard.<br>
+            ⭐ After a wrong answer, the correct answer and explanation are shown. You can also hover over the question to see the answer.
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ----- Constants & helpers -----
+            const letters1 = ['p','q','x','y','u','v']; // for single letters
+            const pairs = [['p','q'], ['x','y'], ['u','v']]; // for two-letter questions
+
+            function randBetween(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+            function randomFromArray(arr) {
+                return arr[Math.floor(Math.random() * arr.length)];
+            }
+
+            // Superscript conversion for display
+            function getSuperscript(num) {
+                const sups = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
+                return num.toString().split('').map(d => sups[d]).join('');
+            }
+
+            // Normalize answer: remove spaces, replace superscripts with ^digit, lowercase, then sort terms
+            function normalizeAnswer(s) {
+                const supMap = {'⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};
+                let norm = '';
+                for (let ch of s) {
+                    if (ch in supMap) norm += '^' + supMap[ch];
+                    else norm += ch;
+                }
+                norm = norm.replace(/\s+/g, '').toLowerCase();
+                if (!norm) return '';
+                if (!norm.startsWith('+') && !norm.startsWith('-')) norm = '+' + norm;
+                const termRegex = /[+-][^+-]+/g;
+                let terms = norm.match(termRegex) || [];
+                let parsed = [];
+                for (let term of terms) {
+                    let sign = term[0] === '+' ? 1 : -1;
+                    let rest = term.slice(1);
+                    let match = rest.match(/^(\d*)(.*)$/);
+                    let coeffStr = match[1];
+                    let varPart = match[2];
+                    let coeff = coeffStr === '' ? 1 : parseInt(coeffStr, 10);
+                    coeff *= sign;
+                    parsed.push({ var: varPart, coeff: coeff });
+                }
+                // sort by variable (empty first)
+                parsed.sort((a,b) => {
+                    if (a.var === '' && b.var === '') return 0;
+                    if (a.var === '') return -1;
+                    if (b.var === '') return 1;
+                    return a.var.localeCompare(b.var);
+                });
+                let result = '';
+                for (let p of parsed) {
+                    if (p.var === '') {
+                        result += (p.coeff > 0 ? '+' : '') + p.coeff;
+                    } else {
+                        let coeffAbs = Math.abs(p.coeff);
+                        let sign = p.coeff > 0 ? '+' : '-';
+                        if (coeffAbs === 1) result += sign + p.var;
+                        else result += sign + coeffAbs + p.var;
+                    }
+                }
+                if (result.startsWith('+')) result = result.slice(1);
+                return result;
+            }
+
+            function isAnswerCorrect(userAns, acceptableAnswers) {
+                const normUser = normalizeAnswer(userAns);
+                for (let ans of acceptableAnswers) {
+                    if (normUser === normalizeAnswer(ans)) return true;
+                }
+                return false;
+            }
+
+            // Format question text with proper superscripts
+            function formatWithSuperscripts(str) {
+                return str.replace(/\^(\d+)/g, '<sup>$1</sup>');
+            }
+
+            // ----- Lesson texts for each level (0‑based) -----
+            const lessonTexts = [
+                "🔹 **Level 1: Single bracket with addition**<br>Example: 2(3p+4) = 2×3p + 2×4 = 6p + 8. Multiply the term outside by each term inside.",
+                "🔹 **Level 2: Bracket with subtraction and a variable outside**<br>Example: 3p(p-5) = 3p×p - 3p×5 = 3p² - 15p. Remember: p × p = p².",
+                "🔹 **Level 3: Two brackets added together**<br>Example: 2(p-3) + 4(p-1) = 2p-6 + 4p-4 = 6p - 10. Collect like terms.",
+                "🔹 **Level 4: Bracket with two variables**<br>Example: p(p+q) = p×p + p×q = p² + pq.",
+                "🔹 **Level 5: Bracket with powers**<br>Example: 2p³(4p-5) = 2p³×4p - 2p³×5 = 8p⁴ - 10p³. Add exponents when multiplying same base.",
+                "🔹 **Level 6: Bracket with powers and two variables**<br>Example: 3p(2p⁴ - q) = 3p×2p⁴ - 3p×q = 6p⁵ - 3pq."
+            ];
+
+            // Explanatory feedback snippets for each level (used after wrong answer)
+            const explanationTexts = [
+                "Multiply the number outside by each term inside: a(bp+c) = a·b·p + a·c.",
+                "Multiply: ap(p-b) = a·p·p - a·p·b = ap² - abp.",
+                "Expand each bracket separately, then collect like terms.",
+                "p(p+q) = p·p + p·q = p² + pq.",
+                "ap^b (cp-d) = a·c·p^(b+1) - a·d·p^b. Remember to add exponents.",
+                "ap(cp^b - q) = a·c·p^(b+1) - a·p·q."
+            ];
+
+            // ----- Question generators for each stage (0‑based) -----
+            function generateQuestion(stage) {
+                switch(stage) {
+                    case 0: return generateQ1();
+                    case 1: return generateQ2();
+                    case 2: return generateQ3();
+                    case 3: return generateQ4();
+                    case 4: return generateQ5();
+                    case 5: return generateQ6();
+                    default: return { text: 'Error', answers: [], working: '' };
+                }
+            }
+
+            function generateQ1() {
+                const a = randBetween(2,6);
+                const b = randBetween(2,6);
+                const c = randBetween(2,6);
+                const p = randomFromArray(letters1);
+                const term1 = a * b;
+                const term2 = a * c;
+                const expr = `${a}(${b}${p} + ${c})`;
+                const ansBase = (term1 === 1 ? '' : term1) + p + (term2 >= 0 ? '+' : '') + term2;
+                const ansBase2 = (term1 === 1 ? '' : term1) + p + (term2 >= 0 ? ' + ' : ' ') + term2;
+                const answers = [ansBase, ansBase2];
+                // also with spaces
+                answers.push(ansBase.replace(/([+-]?\d*[a-z])/g, '$1 ').trim());
+                return {
+                    text: expr,
+                    answers: answers,
+                    working: `${term1}${p} + ${term2}`
+                };
+            }
+
+            function generateQ2() {
+                const a = randBetween(2,6);
+                const b = randBetween(2,6);
+                const p = randomFromArray(letters1);
+                const term1 = a;
+                const term2 = a * b;
+                const expr = `${a}${p}(${p} - ${b})`;
+                const ansBase = (term1 === 1 ? '' : term1) + p + '^2 - ' + (term2 === 1 ? '' : term2) + p;
+                const ansBase2 = (term1 === 1 ? '' : term1) + p + '^2 - ' + (term2 === 1 ? '' : term2) + p;
+                const answers = [ansBase, ansBase2];
+                // with superscript
+                answers.push((term1 === 1 ? '' : term1) + p + '² - ' + (term2 === 1 ? '' : term2) + p);
+                return {
+                    text: expr,
+                    answers: answers,
+                    working: `${term1}${p}^2 - ${term2}${p}`
+                };
+            }
+
+            function generateQ3() {
+                const a = randBetween(2,6);
+                const b = randBetween(2,6);
+                const c = randBetween(2,6);
+                const d = randBetween(2,6);
+                const p = randomFromArray(letters1);
+                const coeffP = a + c;
+                const constTerm = -(a * b + c * d);
+                const expr = `${a}(${p} - ${b}) + ${c}(${p} - ${d})`;
+                let ansBase;
+                if (constTerm === 0) {
+                    ansBase = (coeffP === 1 ? '' : coeffP) + p;
+                } else {
+                    ansBase = (coeffP === 1 ? '' : coeffP) + p + (constTerm > 0 ? '+' : '') + constTerm;
+                }
+                const answers = [ansBase, ansBase.replace(/([+-]?\d*[a-z]|\d+)/g, '$1 ').trim()];
+                return {
+                    text: expr,
+                    answers: answers,
+                    working: `${coeffP}${p} - ${a*b + c*d}`
+                };
+            }
+
+            function generateQ4() {
+                const [p, q] = randomFromArray(pairs);
+                const expr = `${p}(${p} + ${q})`;
+                const ansBase = p + '^2 + ' + p + q;
+                const ansBase2 = p + '² + ' + p + q;
+                const answers = [ansBase, ansBase2, p + '^2 + ' + p + q, p + '² + ' + p + q];
+                return {
+                    text: expr,
+                    answers: answers,
+                    working: `${p}^2 + ${p}${q}`
+                };
+            }
+
+            function generateQ5() {
+                const a = randBetween(2,6);
+                const b = randBetween(2,6);
+                const c = randBetween(2,6);
+                const d = randBetween(2,6);
+                const p = randomFromArray(letters1);
+                const term1 = a * c;
+                const term2 = a * d;
+                const exprRaw = `${a}${p}^${b}(${c}${p} - ${d})`;
+                const expr = formatWithSuperscripts(exprRaw);
+                const ansBase = (term1 === 1 ? '' : term1) + p + '^' + (b+1) + ' - ' + (term2 === 1 ? '' : term2) + p + '^' + b;
+                const ansBase2 = (term1 === 1 ? '' : term1) + p + getSuperscript(b+1) + ' - ' + (term2 === 1 ? '' : term2) + p + getSuperscript(b);
+                const answers = [ansBase, ansBase2];
+                return {
+                    text: expr,
+                    answers: answers,
+                    working: `${term1}${p}^${b+1} - ${term2}${p}^${b}`
+                };
+            }
+
+            function generateQ6() {
+                const [p, q] = randomFromArray(pairs);
+                const a = randBetween(2,6);
+                const b = randBetween(2,6);
+                const c = randBetween(2,6);
+                const term1 = a * c;
+                const term2 = a; // coefficient of p q
+                const exprRaw = `${a}${p}(${c}${p}^${b} - ${q})`;
+                const expr = formatWithSuperscripts(exprRaw);
+                const ansBase = (term1 === 1 ? '' : term1) + p + '^' + (b+1) + ' - ' + (term2 === 1 ? '' : term2) + p + q;
+                const ansBase2 = (term1 === 1 ? '' : term1) + p + getSuperscript(b+1) + ' - ' + (term2 === 1 ? '' : term2) + p + q;
+                const answers = [ansBase, ansBase2];
+                return {
+                    text: expr,
+                    answers: answers,
+                    working: `${term1}${p}^${b+1} - ${term2}${p}${q}`
+                };
+            }
+
+            // ----- State -----
+            let currentStage = 0;               // 0..5
+            let streak = 0;
+            let target = 3;
+            let hoverEnabled = false;
+            let currentQuestion = null;          // object with text, answers, working
+            let locked = false;                  // true when all stages completed
+            let levelQuestionCount = 1;           // question number within current level
+
+            // DOM elements
+            const stageDisplay = document.getElementById('stageDisplay');
+            const streakDisplay = document.getElementById('streakDisplay');
+            const targetDisplay = document.getElementById('targetDisplay');
+            const questionEl = document.getElementById('questionDisplay');
+            const answerInput = document.getElementById('answer');
+            const submitBtn = document.getElementById('submitBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const feedbackEl = document.getElementById('feedbackMessage');
+            const teacherIcon = document.getElementById('teacherIcon');
+            const teacherPanel = document.getElementById('teacherPanel');
+            const targetInput = document.getElementById('targetInput');
+            const setTargetBtn = document.getElementById('setTargetBtn');
+            const certificateModal = document.getElementById('certificateModal');
+            const certificateClose = document.getElementById('certificateClose');
+            const certStudentName = document.getElementById('certStudentName');
+            const certDate = document.getElementById('certDate');
+            const lessonBox = document.getElementById('lessonBox');
+            const lessonContent = document.getElementById('lessonContent');
+            const closeLessonBtn = document.getElementById('closeLessonBtn');
+
+            // Show lesson for current stage
+            function showLesson() {
+                lessonContent.innerHTML = lessonTexts[currentStage];
+                lessonBox.style.display = 'block';
+            }
+
+            closeLessonBtn.addEventListener('click', function() {
+                lessonBox.style.display = 'none';
+            });
+
+            // Update UI
+            function updateDisplay() {
+                stageDisplay.textContent = `Level ${currentStage+1} · Q${levelQuestionCount}`;
+                streakDisplay.innerHTML = `🔥 ${streak} / ${target}`;
+                targetDisplay.textContent = target;
+                if (currentQuestion) {
+                    questionEl.innerHTML = currentQuestion.text;
+                }
+                updateHover();
+            }
+
+            function updateHover() {
+                if (hoverEnabled && currentQuestion) {
+                    questionEl.title = `Correct: ${currentQuestion.working}`;
+                } else {
+                    questionEl.title = '';
+                }
+            }
+
+            // Load a new random question for current stage (after correct or new question)
+            function loadNewQuestion() {
+                currentQuestion = generateQuestion(currentStage);
+                hoverEnabled = false;
+                answerInput.value = '';
+                feedbackEl.className = 'feedback';
+                feedbackEl.innerHTML = 'Enter your answer.';
+                levelQuestionCount++;
+                updateDisplay();
+                answerInput.focus();
+            }
+
+            // Set a specific question (used after wrong answer to keep same question)
+            function setQuestion(question) {
+                currentQuestion = question;
+                hoverEnabled = false; // will be enabled only after wrong answer
+                answerInput.value = '';
+                questionEl.innerHTML = currentQuestion.text;
+                updateHover();
+            }
+
+            // Handle correct answer
+            function handleCorrect() {
+                streak++;
+                updateDisplay();
+                feedbackEl.className = 'feedback correct';
+                feedbackEl.innerHTML = `✅ Correct! ${streak} in a row.`;
+
+                if (streak >= target) {
+                    // Level complete
+                    if (currentStage === 5) {
+                        // All levels done – show certificate
+                        locked = true;
+                        submitBtn.disabled = true;
+                        answerInput.disabled = true;
+                        feedbackEl.innerHTML = '🎉 Congratulations! You have mastered all levels.';
+                        showCertificate();
+                    } else {
+                        // Move to next stage
+                        currentStage++;
+                        streak = 0;
+                        levelQuestionCount = 1;
+                        // Show lesson for new level
+                        showLesson();
+                        currentQuestion = generateQuestion(currentStage);
+                        setQuestion(currentQuestion);
+                        updateDisplay();
+                    }
+                } else {
+                    // Stay in same stage, new question
+                    loadNewQuestion();
+                }
+                saveState();
+            }
+
+            // Handle incorrect answer
+            function handleIncorrect() {
+                streak = 0;
+                hoverEnabled = true;   // allow seeing correct answer on hover
+                updateDisplay();
+                const correctAns = currentQuestion.working;
+                // Provide explanatory feedback
+                const explanation = explanationTexts[currentStage] || "Check your expansion.";
+                feedbackEl.className = 'feedback incorrect';
+                feedbackEl.innerHTML = `❌ Incorrect. Correct answer: <strong>${correctAns}</strong><br>${explanation}`;
+                // Keep same question, but enable hover
+                updateHover();
+                answerInput.value = '';
+                answerInput.focus();
+                saveState();
+            }
+
+            // Show certificate
+            function showCertificate() {
+                let student = prompt("Enter your name for the certificate:", "Student");
+                if (!student) student = "Student";
+                certStudentName.textContent = student;
+                const now = new Date();
+                certDate.textContent = now.toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+                certificateModal.style.display = 'flex';
+            }
+
+            // Save state to localStorage
+            function saveState() {
+                const state = {
+                    currentStage,
+                    streak,
+                    target,
+                    levelQuestionCount,
+                    locked
+                };
+                localStorage.setItem('expandMasteryState', JSON.stringify(state));
+            }
+
+            // Load state from localStorage
+            function loadState() {
+                const saved = localStorage.getItem('expandMasteryState');
+                if (saved) {
+                    try {
+                        const state = JSON.parse(saved);
+                        currentStage = state.currentStage || 0;
+                        streak = state.streak || 0;
+                        target = state.target || 3;
+                        levelQuestionCount = state.levelQuestionCount || 1;
+                        locked = state.locked || false;
+                        if (locked) {
+                            submitBtn.disabled = true;
+                            answerInput.disabled = true;
+                        }
+                        // regenerate current question
+                        currentQuestion = generateQuestion(currentStage);
+                        setQuestion(currentQuestion);
+                        updateDisplay();
+                        // Show lesson if at start of level (optional)
+                        // We'll show lesson only when level loads; after reload, maybe show it? Let's show it.
+                        showLesson();
+                    } catch(e) {
+                        fullReset();
+                    }
+                } else {
+                    fullReset();
+                }
+            }
+
+            // Reset everything
+            function fullReset() {
+                currentStage = 0;
+                streak = 0;
+                locked = false;
+                submitBtn.disabled = false;
+                answerInput.disabled = false;
+                hoverEnabled = false;
+                levelQuestionCount = 1;
+                target = parseInt(targetInput.value, 10) || 3; // sync with input
+                currentQuestion = generateQuestion(0);
+                setQuestion(currentQuestion);
+                updateDisplay();
+                showLesson(); // show lesson for level 1
+                localStorage.removeItem('expandMasteryState'); // clear saved state
+            }
+
+            // Teacher panel
+            function revealTeacherPanel() {
+                let pwd = prompt("Enter teacher password:");
+                if (pwd === "teacher") {
+                    teacherPanel.style.display = "flex";
+                } else {
+                    alert("Incorrect password.");
+                }
+            }
+
+            function setTarget() {
+                let newTarget = parseInt(targetInput.value, 10);
+                if (isNaN(newTarget) || newTarget < 1) newTarget = 1;
+                if (newTarget > 10) newTarget = 10;
+                target = newTarget;
+                targetInput.value = target;
+                updateDisplay();
+                saveState();
+            }
+
+            // Event listeners
+            submitBtn.addEventListener('click', function() {
+                if (locked) return;
+                const userAns = answerInput.value.trim();
+                if (userAns === '') {
+                    feedbackEl.className = 'feedback incorrect';
+                    feedbackEl.innerHTML = '⚠️ Please enter an answer.';
+                    return;
+                }
+                if (isAnswerCorrect(userAns, currentQuestion.answers)) {
+                    handleCorrect();
+                } else {
+                    handleIncorrect();
+                }
+            });
+
+            answerInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    submitBtn.click();
+                }
+            });
+
+            resetBtn.addEventListener('click', fullReset);
+
+            teacherIcon.addEventListener('click', revealTeacherPanel);
+            setTargetBtn.addEventListener('click', setTarget);
+
+            certificateClose.addEventListener('click', function() {
+                certificateModal.style.display = 'none';
+            });
+            window.addEventListener('click', function(e) {
+                if (e.target === certificateModal) certificateModal.style.display = 'none';
+            });
+
+            // on‑screen keyboard
+            const keyboard = document.getElementById('mathKeyboard');
+            keyboard.addEventListener('click', function(e) {
+                const target = e.target;
+                if (target.tagName !== 'BUTTON') return;
+                e.preventDefault();
+                const value = target.getAttribute('data-value');
+                if (!value) return;
+
+                if (value === 'Backspace') {
+                    const start = answerInput.selectionStart;
+                    const end = answerInput.selectionEnd;
+                    if (start === 0 && end === 0) return;
+                    const newVal = answerInput.value.substring(0, start-1) + answerInput.value.substring(end);
+                    answerInput.value = newVal;
+                    answerInput.setSelectionRange(start-1, start-1);
+                    answerInput.focus();
+                    return;
+                }
+                if (value === 'Clear') {
+                    answerInput.value = '';
+                    answerInput.focus();
+                    return;
+                }
+                let insert = value;
+                if (value === '^') insert = '^';
+                const start = answerInput.selectionStart;
+                const end = answerInput.selectionEnd;
+                const newVal = answerInput.value.substring(0, start) + insert + answerInput.value.substring(end);
+                answerInput.value = newVal;
+                answerInput.setSelectionRange(start + insert.length, start + insert.length);
+                answerInput.focus();
+            });
+
+            // Initial load: try to restore state, otherwise fullReset
+            loadState();
+        })();
+    </script>
+</body>
+</html>

@@ -1,12 +1,184 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>GCSE Statistics Quizzes</title>
-    <style>body { font-family: Arial; margin: 40px; }</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algebra Quizzes · Index</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        body {
+            background: linear-gradient(145deg, #f0f4fa 0%, #e6ecf5 100%);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .card {
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(8px);
+            border-radius: 30px;
+            box-shadow: 0 12px 30px rgba(0,10,30,0.2);
+            padding: 2rem 2.5rem;
+            width: 100%;
+            max-width: 750px;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        h1 {
+            margin: 0 0 0.5rem 0;
+            font-weight: 600;
+            font-size: 2rem;
+            color: #0b2b44;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 0.5rem;
+        }
+        h1 i {
+            color: #1e6f9f;
+        }
+        .subtitle {
+            color: #1f4b73;
+            font-size: 1.1rem;
+            margin: 0.5rem 0 1.5rem 0;
+        }
+        .quiz-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .quiz-item {
+            margin: 0.8rem 0;
+            border-radius: 50px;
+            background: #f8fafc;
+            border: 2px solid #b9d3ec;
+            transition: all 0.2s;
+        }
+        .quiz-item:hover {
+            background: #e1efff;
+            border-color: #0b5e8e;
+            transform: translateY(-2px);
+        }
+        .quiz-link {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            color: #0b2b44;
+            font-weight: 600;
+            font-size: 1.2rem;
+            gap: 12px;
+        }
+        .quiz-link i {
+            font-size: 1.5rem;
+            color: #1e6f9f;
+            width: 30px;
+            text-align: center;
+        }
+        .quiz-name {
+            flex: 1;
+        }
+        .file-name {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #64748b;
+            background: #e9edf2;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+        }
+        .footer {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #4b5a6b;
+            text-align: center;
+            border-top: 1px dashed #b0c4d9;
+            padding-top: 1.5rem;
+        }
+        @media (max-width: 600px) {
+            .card { padding: 1.5rem; }
+            .quiz-link { flex-wrap: wrap; }
+            .file-name { margin-left: 37px; }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <h1>GCSE Statistics Quizzes</h1>
-    <p><a href="../">← Back to GCSE</a></p>
-    <p>Quizzes coming soon!</p>
+    <div class="card">
+        <h1>
+            <i class="fas fa-calculator"></i> Algebra Quizzes
+        </h1>
+        <div class="subtitle">
+            <i class="fas fa-folder-open"></i> All available quizzes in this folder
+        </div>
+
+        <ul class="quiz-list">
+            <li class="quiz-item">
+                <a href="Simplifying_Expressions.html" class="quiz-link">
+                    <i class="fas fa-compress-alt"></i>
+                    <span class="quiz-name">Simplifying Expressions</span>
+                    <span class="file-name">Simplifying_Expressions.html</span>
+                </a>
+            </li>
+            <li class="quiz-item">
+                <a href="Write%20an%20expression.html" class="quiz-link">
+                    <i class="fas fa-pencil-alt"></i>
+                    <span class="quiz-name">Write an Expression</span>
+                    <span class="file-name">Write an expression.html</span>
+                </a>
+            </li>
+            <li class="quiz-item">
+                <a href="Use_Index_Laws.html" class="quiz-link">
+                    <i class="fas fa-exponent"></i>
+                    <span class="quiz-name">Use Index Laws</span>
+                    <span class="file-name">Use_Index_Laws.html</span>
+                </a>
+            </li>
+            <li class="quiz-item">
+                <a href="Expand_Brackets.html" class="quiz-link">
+                    <i class="fas fa-expand-alt"></i>
+                    <span class="quiz-name">Expand Brackets</span>
+                    <span class="file-name">Expand_Brackets.html</span>
+                </a>
+            </li>
+            <li class="quiz-item">
+                <a href="Factorising.html" class="quiz-link">
+                    <i class="fas fa-factor"></i>
+                    <span class="quiz-name">Factorising</span>
+                    <span class="file-name">Factorising.html</span>
+                </a>
+            </li>
+            <li class="quiz-item">
+                <a href="Solving_Equations_Basic.html" class="quiz-link">
+                    <i class="fas fa-square-root-alt"></i>
+                    <span class="quiz-name">Solving Equations – Basic</span>
+                    <span class="file-name">Solving_Equations_Basic.html</span>
+                </a>
+            </li>
+            <li class="quiz-item">
+                <a href="Solve_Equations_intermediate.html" class="quiz-link">
+                    <i class="fas fa-arrow-right-arrow-left"></i>
+                    <span class="quiz-name">Solving Equations – Intermediate</span>
+                    <span class="file-name">Solve_Equations_intermediate.html</span>
+                </a>
+            </li>
+            <li class="quiz-item">
+                <a href="Solving_Equations_Advanced.html" class="quiz-link">
+                    <i class="fas fa-star"></i>
+                    <span class="quiz-name">Solving Equations – Advanced</span>
+                    <span class="file-name">Solving_Equations_Advanced.html</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="footer">
+            <i class="fas fa-arrow-left"></i> Click any quiz to start &nbsp;|&nbsp;
+            <i class="fas fa-sync-alt"></i> All quizzes saved locally
+        </div>
+    </div>
 </body>
 </html>

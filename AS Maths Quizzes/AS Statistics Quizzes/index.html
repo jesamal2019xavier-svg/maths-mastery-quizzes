@@ -3,180 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AS Statistics Quizzes</title>
+    <title>All Quizzes · Index</title>
     <style>
         * {
-            margin: 0;
-            padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
         }
-        
         body {
-            background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+            background: linear-gradient(145deg, #f0f4fa 0%, #e6ecf5 100%);
             min-height: 100vh;
-            padding: 40px 20px;
+            margin: 0;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
+            padding: 20px;
         }
-        
-        .container {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            width: 90%;
-            max-width: 900px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            text-align: center;
-            margin-top: 20px;
+        .card {
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(8px);
+            border-radius: 30px;
+            box-shadow: 0 12px 30px rgba(0,10,30,0.2);
+            padding: 2rem 2.5rem;
+            width: 100%;
+            max-width: 700px;
+            border: 1px solid rgba(255,255,255,0.5);
         }
-        
         h1 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-            font-size: 2.5rem;
-            background: linear-gradient(90deg, #1a2980, #26d0ce);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            margin: 0 0 0.5rem 0;
+            font-weight: 600;
+            font-size: 2rem;
+            color: #0b2b44;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 0.5rem;
         }
-        
+        h1 i {
+            color: #1e6f9f;
+        }
         .subtitle {
-            color: #7f8c8d;
-            margin-bottom: 30px;
+            color: #1f4b73;
             font-size: 1.1rem;
+            margin: 0.5rem 0 1.5rem 0;
         }
-        
-        .back-link {
-            display: inline-block;
-            background: #3498db;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
+        .quiz-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
-        
-        .back-link:hover {
-            background: #2980b9;
+        .quiz-item {
+            margin: 0.8rem 0;
+            border-radius: 50px;
+            background: #f8fafc;
+            border: 2px solid #b9d3ec;
+            transition: all 0.2s;
+        }
+        .quiz-item:hover {
+            background: #e1efff;
+            border-color: #0b5e8e;
             transform: translateY(-2px);
         }
-        
-        .quiz-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
-        
-        .quiz-card {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 25px 20px;
+        .quiz-link {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
             text-decoration: none;
-            color: #2c3e50;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            color: #0b2b44;
+            font-weight: 600;
+            font-size: 1.2rem;
+            gap: 12px;
         }
-        
-        .quiz-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
-            border-color: #26d0ce;
-            background: #e8f7f7;
+        .quiz-link i {
+            font-size: 1.5rem;
+            color: #1e6f9f;
+            width: 30px;
+            text-align: center;
         }
-        
-        .quiz-card h2 {
-            margin-bottom: 12px;
-            font-size: 1.3rem;
-            color: #1a2980;
+        .quiz-name {
+            flex: 1;
         }
-        
-        .quiz-card p {
-            color: #666;
-            font-size: 0.9rem;
-            line-height: 1.5;
+        .file-name {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #64748b;
+            background: #e9edf2;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
         }
-        
-        .icon {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            display: inline-block;
-        }
-        
         .footer {
-            margin-top: 40px;
-            color: #7f8c8d;
+            margin-top: 2rem;
             font-size: 0.9rem;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
+            color: #4b5a6b;
+            text-align: center;
+            border-top: 1px dashed #b0c4d9;
+            padding-top: 1.5rem;
         }
-        
-        @media (max-width: 768px) {
-            .quiz-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .container {
-                padding: 25px;
-            }
+        @media (max-width: 500px) {
+            .card { padding: 1.5rem; }
+            .quiz-link { flex-wrap: wrap; }
+            .file-name { margin-left: 37px; }
         }
     </style>
+    <!-- Font Awesome for icons (optional but nice) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1>📊 AS Statistics Quizzes</h1>
-        <p class="subtitle">Master probability and statistical concepts for AS Level</p>
-        
-        <a href="../" class="back-link">← Back to AS Level</a>
-        
-        <div class="quiz-grid">
-            <!-- Probability Quiz 01 -->
-            <a href="AS_Probability_quiz01.html" class="quiz-card">
-                <div class="icon">🎲</div>
-                <h2>Probability Quiz 01</h2>
-                <p>Basic probability concepts, sample spaces, and simple events.</p>
-            </a>
-            
-            <!-- Probability Quiz 02 -->
-            <a href="AS_Probability_quiz02.html" class="quiz-card">
-                <div class="icon">📊</div>
-                <h2>Probability Quiz 02</h2>
-                <p>Compound events, independent and mutually exclusive events.</p>
-            </a>
-            
-            <!-- Probability Quiz 03 -->
-            <a href="AS_Probability_quiz03.html" class="quiz-card">
-                <div class="icon">🎯</div>
-                <h2>Probability Quiz 03</h2>
-                <p>Conditional probability and probability trees basics.</p>
-            </a>
-            
-            <!-- Probability Quiz 04 -->
-            <a href="AS_Probability_quiz04.html" class="quiz-card">
-                <div class="icon">🧮</div>
-                <h2>Probability Quiz 04</h2>
-                <p>Advanced probability concepts and combined probabilities.</p>
-            </a>
-            
-            <!-- Tree Diagrams Quiz -->
-            <a href="Treefinal.html" class="quiz-card">
-                <div class="icon">🌳</div>
-                <h2>Tree Diagrams Mastery</h2>
-                <p>Comprehensive tree diagram practice for probability problems.</p>
-            </a>
+    <div class="card">
+        <h1>
+            <i class="fas fa-calculator"></i> Quiz Collection
+        </h1>
+        <div class="subtitle">
+            <i class="fas fa-folder-open"></i> All available quizzes in this folder
         </div>
-        
+
+        <ul class="quiz-list">
+            <li class="quiz-item">
+                <a href="AS_Probability_quiz01.html" class="quiz-link">
+                    <i class="fas fa-dice"></i>
+                    <span class="quiz-name">Probability · Quiz 1</span>
+                    <span class="file-name">AS_Probability_quiz01.html</span>
+                </a>
+            </li>
+            <li class="quiz-item">
+                <a href="AS_Probability_quiz02.html" class="quiz-link">
+                    <i class="fas fa-dice"></i>
+                    <span class="quiz-name">Probability · Quiz 2</span>
+                    <span class="file-name">AS_Probability_quiz02.html</span>
+                </a>
+            </li>
+            <li class="quiz-item">
+                <a href="AS_Probability_quiz03.html" class="quiz-link">
+                    <i class="fas fa-dice"></i>
+                    <span class="quiz-name">Probability · Quiz 3</span>
+                    <span class="file-name">AS_Probability_quiz03.html</span>
+                </a>
+            </li>
+            <li class="quiz-item">
+                <a href="AS_Probability_quiz04.html" class="quiz-link">
+                    <i class="fas fa-dice"></i>
+                    <span class="quiz-name">Probability · Quiz 4</span>
+                    <span class="file-name">AS_Probability_quiz04.html</span>
+                </a>
+            </li>
+            <li class="quiz-item">
+                <a href="Tree_Diagram.html" class="quiz-link">
+                    <i class="fas fa-tree"></i>
+                    <span class="quiz-name">Tree Diagrams</span>
+                    <span class="file-name">Tree_Diagram.html</span>
+                </a>
+            </li>
+            <li class="quiz-item">
+                <a href="Measures_Location.html" class="quiz-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span class="quiz-name">Measures of Location</span>
+                    <span class="file-name">Measures_Location.html</span>
+                </a>
+            </li>
+        </ul>
+
         <div class="footer">
-            <p>Complete all 5 quizzes to master AS Statistics Probability!</p>
-            <p style="margin-top: 10px; color: #2ecc71;">✅ All quiz files are properly linked</p>
+            <i class="fas fa-arrow-left"></i> Click any quiz to start &nbsp;|&nbsp; 
+            <i class="fas fa-sync-alt"></i> All quizzes saved locally
         </div>
     </div>
 </body>
