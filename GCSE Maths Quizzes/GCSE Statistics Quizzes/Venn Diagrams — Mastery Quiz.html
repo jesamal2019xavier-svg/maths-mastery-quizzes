@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<!-- saved from url=(0201)file:///C:/Users/Jesurasa.Xavier/AppData/Local/Microsoft/Olk/Attachments/ooa-d8a10387-f7a0-44f9-b406-a5806b6297a3/1ce6a2eec86b509afce6e7c304d491a82f48278f589c2bfaf814d1b909eee516/venn-mastery-quiz.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Venn Diagrams — Mastery Quiz</title>
+<link href="./Venn Diagrams — Mastery Quiz_files/css2" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --surface2: #21262d;
+  --border: #30363d;
+  --teal: #2dd4bf;
+  --teal-dim: #0f7a70;
+  --amber: #fbbf24;
+  --coral: #f87171;
+  --green: #34d399;
+  --text: #e6edf3;
+  --muted: #8b949e;
+  --radius: 12px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ===== SCREEN MANAGEMENT ===== */
+.screen { display: none; }
+.screen.active { display: flex; flex-direction: column; min-height: 100vh; }
+
+/* ===== WELCOME SCREEN ===== */
+#welcome-screen {
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: radial-gradient(ellipse at 30% 20%, rgba(45,212,191,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 80%, rgba(251,191,36,0.06) 0%, transparent 60%),
+              var(--bg);
+}
+
+.welcome-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 3rem 2.5rem;
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+}
+
+.venn-logo {
+  margin: 0 auto 1.5rem;
+  width: 100px; height: 60px;
+  position: relative;
+}
+.venn-logo svg { width: 100%; height: 100%; }
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 900;
+  line-height: 1.15;
+  margin-bottom: 0.5rem;
+}
+h1 span { color: var(--teal); }
+
+.tagline {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.rules {
+  background: var(--surface2);
+  border-radius: var(--radius);
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+.rules h3 { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.75rem; }
+.rules li { font-size: 0.88rem; color: var(--muted); margin-bottom: 0.4rem; padding-left: 1rem; position: relative; list-style: none; line-height: 1.5; }
+.rules li::before { content: '→'; position: absolute; left: 0; color: var(--amber); font-size: 0.75rem; top: 1px; }
+
+.name-input-wrap { margin-bottom: 1.5rem; text-align: left; }
+.name-input-wrap label { font-size: 0.82rem; font-weight: 700; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; display: block; margin-bottom: 0.5rem; }
+.name-input-wrap input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: border-color 0.2s;
+}
+.name-input-wrap input:focus { outline: none; border-color: var(--teal); }
+
+.start-btn {
+  width: 100%;
+  padding: 1rem;
+  background: var(--teal);
+  color: #0d1117;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.03em;
+}
+.start-btn:hover { background: #5eead4; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(45,212,191,0.3); }
+
+/* ===== QUIZ SCREEN ===== */
+#quiz-screen {
+  background: radial-gradient(ellipse at 80% 10%, rgba(45,212,191,0.05) 0%, transparent 50%), var(--bg);
+}
+
+.quiz-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.quiz-header-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--teal);
+}
+
+.progress-wrap { flex: 1; max-width: 320px; }
+.progress-label { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.3rem; display: flex; justify-content: space-between; }
+.progress-bar { height: 6px; background: var(--surface2); border-radius: 99px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--teal), var(--amber)); border-radius: 99px; transition: width 0.5s ease; }
+
+.q-counter {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.q-counter span { color: var(--amber); font-size: 1.1rem; }
+
+.quiz-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+}
+
+.question-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 680px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.q-type-badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+.badge-venn { background: rgba(45,212,191,0.15); color: var(--teal); }
+.badge-prob { background: rgba(251,191,36,0.15); color: var(--amber); }
+
+.q-text {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+.q-text strong { color: var(--teal); }
+
+/* VENN SVG in quiz */
+.venn-wrap {
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+.venn-wrap svg { max-width: 100%; height: auto; }
+
+/* Answer input */
+.answer-area { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+
+.ans-input {
+  flex: 1;
+  min-width: 160px;
+  padding: 0.75rem 1rem;
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  transition: border-color 0.2s;
+}
+.ans-input:focus { outline: none; border-color: var(--teal); }
+.ans-input.correct { border-color: var(--green); background: rgba(52,211,153,0.1); color: var(--green); }
+.ans-input.wrong { border-color: var(--coral); background: rgba(248,113,113,0.1); color: var(--coral); animation: shake 0.4s ease; }
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+}
+
+.submit-ans {
+  padding: 0.75rem 1.5rem;
+  background: var(--teal);
+  color: #0d1117;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.submit-ans:hover { background: #5eead4; }
+.submit-ans:disabled { background: var(--surface2); color: var(--muted); cursor: default; }
+
+/* Fraction input for probability */
+.frac-wrap { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.frac-col { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.frac-line { width: 50px; height: 2px; background: var(--text); border-radius: 2px; }
+.frac-input {
+  width: 56px; height: 36px;
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+.frac-input:focus { outline: none; border-color: var(--teal); }
+.frac-input.correct { border-color: var(--green); background: rgba(52,211,153,0.1); color: var(--green); }
+.frac-input.wrong { border-color: var(--coral); background: rgba(248,113,113,0.1); color: var(--coral); }
+
+/* Feedback */
+.feedback {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  display: none;
+}
+.feedback.show { display: block; animation: fadeIn 0.3s ease; }
+.feedback.ok { background: rgba(52,211,153,0.12); color: var(--green); border: 1px solid rgba(52,211,153,0.3); }
+.feedback.bad { background: rgba(248,113,113,0.12); color: var(--coral); border: 1px solid rgba(248,113,113,0.3); }
+
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+/* Attempt counter */
+.attempt-badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 0.75rem;
+}
+.attempt-badge span { color: var(--amber); font-weight: 700; }
+
+/* ===== CERTIFICATE SCREEN ===== */
+#cert-screen {
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: radial-gradient(ellipse at 50% 0%, rgba(251,191,36,0.1) 0%, transparent 60%), var(--bg);
+}
+
+.cert-wrapper {
+  max-width: 700px;
+  width: 100%;
+}
+
+.congrats-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.congrats-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--amber);
+  margin-bottom: 0.5rem;
+}
+.congrats-header p { color: var(--muted); font-size: 0.9rem; }
+
+/* The certificate itself */
+.certificate {
+  background: #fffdf7;
+  border-radius: 16px;
+  padding: 3rem 2.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  color: #1a1a2e;
+  border: 8px solid transparent;
+  background-clip: padding-box;
+}
+
+/* Gold decorative border */
+.certificate::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  padding: 4px;
+  background: linear-gradient(135deg, #f5c842, #e8a838, #f5c842, #c8880a, #f5c842);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Decorative corner circles */
+.cert-corner {
+  position: absolute;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  opacity: 0.08;
+  background: #c8880a;
+}
+.cert-corner.tl { top: -20px; left: -20px; }
+.cert-corner.tr { top: -20px; right: -20px; }
+.cert-corner.bl { bottom: -20px; left: -20px; }
+.cert-corner.br { bottom: -20px; right: -20px; }
+
+.cert-dept {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #c8880a;
+  margin-bottom: 0.25rem;
+}
+
+.cert-presents {
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 0.5rem;
+  font-style: italic;
+}
+
+.cert-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: #1a1a2e;
+  line-height: 1.2;
+  margin-bottom: 0.25rem;
+}
+
+.cert-divider {
+  width: 60px; height: 3px;
+  background: linear-gradient(90deg, #f5c842, #c8880a);
+  border-radius: 2px;
+  margin: 1rem auto;
+}
+
+.cert-awarded-to {
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 0.4rem;
+}
+
+.cert-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 0.25rem;
+  font-style: italic;
+}
+
+.cert-body {
+  font-size: 0.92rem;
+  color: #555;
+  line-height: 1.7;
+  margin-bottom: 0.5rem;
+}
+
+.cert-topic {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  color: #0f7a70;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.cert-score {
+  display: inline-block;
+  background: linear-gradient(135deg, #f5c842, #c8880a);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: 0.3rem 1rem;
+  border-radius: 99px;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.05em;
+}
+
+.cert-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e8dfc8;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.cert-footer-item { text-align: center; }
+.cert-footer-item .label { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: #aaa; margin-bottom: 0.2rem; }
+.cert-footer-item .value { font-size: 0.85rem; font-weight: 700; color: #333; }
+
+.cert-seal {
+  width: 70px; height: 70px;
+  background: linear-gradient(135deg, #f5c842, #c8880a);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  font-size: 1.8rem;
+  box-shadow: 0 4px 16px rgba(200,136,10,0.4);
+}
+
+/* Cert actions */
+.cert-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+.cert-btn {
+  padding: 0.75rem 1.75rem;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.cert-btn-primary { background: var(--amber); color: #1a1a2e; }
+.cert-btn-primary:hover { background: #fcd34d; transform: translateY(-1px); }
+.cert-btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+.cert-btn-secondary:hover { background: var(--surface2); }
+
+/* Stars animation on cert */
+@keyframes starPop {
+  0% { transform: scale(0) rotate(0deg); opacity: 0; }
+  60% { transform: scale(1.2) rotate(20deg); opacity: 1; }
+  100% { transform: scale(1) rotate(15deg); opacity: 1; }
+}
+.star { display: inline-block; animation: starPop 0.5s ease forwards; }
+.star:nth-child(2) { animation-delay: 0.1s; }
+.star:nth-child(3) { animation-delay: 0.2s; }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .question-card { padding: 1.5rem; }
+  .certificate { padding: 2rem 1.5rem; }
+  .cert-name { font-size: 1.8rem; }
+  .cert-title { font-size: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!--  WELCOME SCREEN                                              -->
+<!-- ============================================================ -->
+<div id="welcome-screen" class="screen active">
+  <div class="welcome-card">
+    <div class="venn-logo">
+      <svg viewBox="0 0 100 60">
+        <circle cx="35" cy="30" r="26" fill="rgba(45,212,191,0.2)" stroke="#2dd4bf" stroke-width="2"></circle>
+        <circle cx="65" cy="30" r="26" fill="rgba(251,191,36,0.2)" stroke="#fbbf24" stroke-width="2"></circle>
+      </svg>
+    </div>
+    <h1>Venn Diagram<br><span>Mastery Quiz</span></h1>
+    <p class="tagline">GCSE Foundation &amp; Higher &nbsp;·&nbsp; 15 Questions<br>Score 100% to earn your certificate 🏆</p>
+
+    <div class="rules">
+      <h3>How it works</h3>
+      <ul>
+        <li>Answer each question — they're marked instantly</li>
+        <li>If wrong, the question resets so you can try again</li>
+        <li>Keep going until every question is correct</li>
+        <li>Questions are randomised — different numbers every time</li>
+        <li>Score 100% → earn your certificate!</li>
+      </ul>
+    </div>
+
+    <div class="name-input-wrap">
+      <label>Your full name</label>
+      <input type="text" id="student-name" placeholder="e.g. Jamie Smith" autocomplete="name">
+    </div>
+
+    <button class="start-btn" onclick="startQuiz()">Start Quiz →</button>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  QUIZ SCREEN                                                 -->
+<!-- ============================================================ -->
+<div id="quiz-screen" class="screen">
+  <div class="quiz-header">
+    <div class="quiz-header-title">Venn Mastery</div>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Progress</span>
+        <span id="prog-label">0 / 15 correct</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="q-counter">Q <span id="q-num">1</span> of 15</div>
+  </div>
+
+  <div class="quiz-body">
+    <div class="question-card" id="question-card">
+      <!-- Injected by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  CERTIFICATE SCREEN                                          -->
+<!-- ============================================================ -->
+<div id="cert-screen" class="screen">
+  <div class="cert-wrapper">
+    <div class="congrats-header">
+      <h2><span class="star">⭐</span><span class="star">⭐</span><span class="star">⭐</span> 100% Mastery!</h2>
+      <p>Screenshot this certificate and send it to your teacher.</p>
+    </div>
+
+    <div class="certificate" id="certificate">
+      <div class="cert-corner tl"></div>
+      <div class="cert-corner tr"></div>
+      <div class="cert-corner bl"></div>
+      <div class="cert-corner br"></div>
+
+      <div class="cert-dept">Maths Department</div>
+      <div class="cert-presents">proudly presents this</div>
+      <div class="cert-title">Certificate of Mastery</div>
+      <div class="cert-divider"></div>
+
+      <div class="cert-awarded-to">Awarded to</div>
+      <div class="cert-name" id="cert-name-display">—</div>
+
+      <div class="cert-body">for demonstrating complete mastery of</div>
+      <div class="cert-topic">Venn Diagrams &amp; Probability</div>
+      <div class="cert-body" style="margin-bottom:0.25rem">achieving a perfect score of</div>
+      <div class="cert-score">15 out of 15 &nbsp;·&nbsp; 100%</div>
+
+      <div class="cert-seal">🏆</div>
+
+      <div class="cert-footer">
+        <div class="cert-footer-item">
+          <div class="label">Date Completed</div>
+          <div class="value" id="cert-date">—</div>
+        </div>
+        <div class="cert-footer-item">
+          <div class="label">Topic</div>
+          <div class="value">Venn Diagrams &amp; Probability</div>
+        </div>
+        <div class="cert-footer-item">
+          <div class="label">Department</div>
+          <div class="value">Maths Department</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cert-actions">
+      <button class="cert-btn cert-btn-primary" onclick="window.print()">🖨️ Print Certificate</button>
+      <button class="cert-btn cert-btn-secondary" onclick="restartQuiz()">🔄 Try Again</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ================================================================
+//  QUESTION GENERATORS — each returns a question object
+//  { type, badge, html, checkFn, resetFn }
+// ================================================================
+
+function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
+function simplify(n, d) { const g = gcd(n, d); return [n/g, d/g]; }
+
+// ---- Venn type 1: Fill missing region ----
+function makeVennFill() {
+  const total = rand(30, 60);
+  const both  = rand(3, 12);
+  const aTotal = rand(both + 5, Math.floor(total * 0.6));
+  const bTotal = rand(both + 3, Math.floor(total * 0.5));
+  const aOnly  = aTotal - both;
+  const bOnly  = bTotal - both;
+  const neither = total - aOnly - both - bOnly;
+  if (neither < 1 || aOnly < 1 || bOnly < 1) return makeVennFill(); // retry
+
+  const sets = [
+    ['Football','Basketball'], ['Tea','Coffee'], ['PE','Art'],
+    ['Dogs','Cats'], ['Maths','Science'], ['French','Spanish'],
+    ['Guitar','Piano'], ['Reading','Gaming']
+  ];
+  const [A, B] = sets[rand(0, sets.length-1)];
+
+  // Which region to hide?
+  const hideRegion = rand(0, 3); // 0=aOnly,1=both,2=bOnly,3=neither
+  const answers = [aOnly, both, bOnly, neither];
+  const labels = [`${A} only`, 'Both', `${B} only`, 'Neither'];
+  const answer = answers[hideRegion];
+
+  const regions = answers.map((v, i) => i === hideRegion ? '?' : v);
+
+  return {
+    badge: 'badge-venn',
+    badgeText: 'Filling a Venn Diagram',
+    html: `
+      <div class="q-text">In a survey of <strong>${total} people</strong>:<br>
+      • <strong>${aTotal}</strong> like <strong>${A}</strong>
+      &nbsp;• <strong>${bTotal}</strong> like <strong>${B}</strong>
+      &nbsp;• <strong>${both}</strong> like <strong>both</strong><br><br>
+      Find the number who like <strong>${labels[hideRegion]}</strong>.</div>
+      <div class="venn-wrap">${vennSVG(A, B, regions)}</div>
+      <div class="answer-area">
+        <input class="ans-input" id="main-ans" type="number" placeholder="Your answer" min="0"/>
+        <button class="submit-ans" onclick="checkNumeric(${answer})">Submit</button>
+      </div>
+      <div class="feedback" id="feedback"></div>
+      <div class="attempt-badge">Attempts: <span id="att-count">0</span></div>
+    `,
+    answer
+  };
+}
+
+// ---- Venn type 2: Find total ----
+function makeVennTotal() {
+  const aOnly   = rand(5, 18);
+  const both    = rand(3, 10);
+  const bOnly   = rand(4, 15);
+  const neither = rand(2, 10);
+  const total   = aOnly + both + bOnly + neither;
+  const sets    = [['Cycling','Swimming'],['Drama','Music'],['Cricket','Tennis'],['History','Geography']];
+  const [A, B]  = sets[rand(0, sets.length-1)];
+
+  return {
+    badge: 'badge-venn',
+    badgeText: 'Filling a Venn Diagram',
+    html: `
+      <div class="q-text">A Venn diagram shows: <strong>${A} only = ${aOnly}</strong>, 
+      <strong>Both = ${both}</strong>, <strong>${B} only = ${bOnly}</strong>, 
+      <strong>Neither = ${neither}</strong>.<br><br>
+      What is the <strong>total number of people</strong> in the survey?</div>
+      <div class="venn-wrap">${vennSVG(A, B, [aOnly, both, bOnly, neither])}</div>
+      <div class="answer-area">
+        <input class="ans-input" id="main-ans" type="number" placeholder="Total = ?" min="0"/>
+        <button class="submit-ans" onclick="checkNumeric(${total})">Submit</button>
+      </div>
+      <div class="feedback" id="feedback"></div>
+      <div class="attempt-badge">Attempts: <span id="att-count">0</span></div>
+    `,
+    answer: total
+  };
+}
+
+// ---- Venn type 3: neither from words ----
+function makeVennNeither() {
+  const total  = rand(30, 70);
+  const both   = rand(4, 12);
+  const aTotal = rand(both + 5, Math.floor(total * 0.55));
+  const bTotal = rand(both + 3, Math.floor(total * 0.45));
+  const aOnly  = aTotal - both;
+  const bOnly  = bTotal - both;
+  const neither = total - aOnly - both - bOnly;
+  if (neither < 2 || aOnly < 2 || bOnly < 2) return makeVennNeither();
+
+  const sets = [['Chocolate','Vanilla'],['Coding','Art'],['Tennis','Swimming'],['Chess','Draughts']];
+  const [A, B] = sets[rand(0, sets.length-1)];
+
+  return {
+    badge: 'badge-venn',
+    badgeText: 'Filling a Venn Diagram',
+    html: `
+      <div class="q-text"><strong>${total} students</strong> were surveyed.<br>
+      • <strong>${aTotal}</strong> like <strong>${A}</strong>
+      &nbsp;• <strong>${bTotal}</strong> like <strong>${B}</strong>
+      &nbsp;• <strong>${both}</strong> like both<br><br>
+      How many like <strong>neither</strong>?</div>
+      <div class="venn-wrap">${vennSVG(A, B, [aOnly, both, bOnly, '?'])}</div>
+      <div class="answer-area">
+        <input class="ans-input" id="main-ans" type="number" placeholder="Neither = ?" min="0"/>
+        <button class="submit-ans" onclick="checkNumeric(${neither})">Submit</button>
+      </div>
+      <div class="feedback" id="feedback"></div>
+      <div class="attempt-badge">Attempts: <span id="att-count">0</span></div>
+    `,
+    answer: neither
+  };
+}
+
+// ---- Prob type 1: P(A) ----
+function makeProbA() {
+  const total  = rand(20, 50) * 2; // even for clean fractions
+  const both   = rand(3, 8);
+  const aOnly  = rand(5, 15);
+  const bOnly  = rand(4, 12);
+  const neither = total - aOnly - both - bOnly;
+  if (neither < 1) return makeProbA();
+
+  const aTotal = aOnly + both;
+  const sets   = [['A','B'],['C','D'],['E','F'],['G','H']];
+  const [A, B] = sets[rand(0, sets.length-1)];
+  const [sn, sd] = simplify(aTotal, total);
+
+  return {
+    badge: 'badge-prob',
+    badgeText: 'Probability from Venn Diagrams',
+    html: `
+      <div class="q-text">The Venn diagram shows results for <strong>${total} people</strong>.<br><br>
+      Find <strong>P(${A})</strong> — give your answer as a fraction in its simplest form.</div>
+      <div class="venn-wrap">${vennSVG(A, B, [aOnly, both, bOnly, neither])}</div>
+      <div class="answer-area">
+        <div class="frac-wrap">
+          <div class="frac-col">
+            <input class="frac-input" id="frac-num" type="number" placeholder="?" min="0"/>
+            <div class="frac-line"></div>
+            <input class="frac-input" id="frac-den" type="number" placeholder="?" min="1"/>
+          </div>
+          <button class="submit-ans" onclick="checkFraction(${sn},${sd},${aTotal},${total})">Submit</button>
+        </div>
+      </div>
+      <div class="feedback" id="feedback"></div>
+      <div class="attempt-badge">Attempts: <span id="att-count">0</span></div>
+    `,
+    answer: [sn, sd]
+  };
+}
+
+// ---- Prob type 2: P(A∩B) ----
+function makeProbIntersect() {
+  const total  = rand(20, 60);
+  const both   = rand(3, 10);
+  const aOnly  = rand(4, 15);
+  const bOnly  = rand(4, 12);
+  const neither = total - aOnly - both - bOnly;
+  if (neither < 1) return makeProbIntersect();
+
+  const pairs = [['M','N'],['P','Q'],['R','S'],['X','Y']];
+  const [A, B] = pairs[rand(0, pairs.length-1)];
+  const [sn, sd] = simplify(both, total);
+
+  return {
+    badge: 'badge-prob',
+    badgeText: 'Probability from Venn Diagrams',
+    html: `
+      <div class="q-text">The Venn diagram shows results for <strong>${total} people</strong>.<br><br>
+      Find <strong>P(${A}∩${B})</strong> — the probability of being in <em>both</em> sets.</div>
+      <div class="venn-wrap">${vennSVG(A, B, [aOnly, both, bOnly, neither])}</div>
+      <div class="answer-area">
+        <div class="frac-wrap">
+          <div class="frac-col">
+            <input class="frac-input" id="frac-num" type="number" placeholder="?" min="0"/>
+            <div class="frac-line"></div>
+            <input class="frac-input" id="frac-den" type="number" placeholder="?" min="1"/>
+          </div>
+          <button class="submit-ans" onclick="checkFraction(${sn},${sd},${both},${total})">Submit</button>
+        </div>
+      </div>
+      <div class="feedback" id="feedback"></div>
+      <div class="attempt-badge">Attempts: <span id="att-count">0</span></div>
+    `,
+    answer: [sn, sd]
+  };
+}
+
+// ---- Prob type 3: P(A∪B) ----
+function makeProbUnion() {
+  const total  = rand(24, 60);
+  const both   = rand(3, 8);
+  const aOnly  = rand(5, 15);
+  const bOnly  = rand(4, 12);
+  const neither = total - aOnly - both - bOnly;
+  if (neither < 2) return makeProbUnion();
+
+  const union   = aOnly + both + bOnly;
+  const pairs   = [['A','B'],['C','D'],['P','Q'],['X','Y']];
+  const [A, B]  = pairs[rand(0, pairs.length-1)];
+  const [sn, sd] = simplify(union, total);
+
+  return {
+    badge: 'badge-prob',
+    badgeText: 'Probability from Venn Diagrams',
+    html: `
+      <div class="q-text">The Venn diagram shows results for <strong>${total} people</strong>.<br><br>
+      Find <strong>P(${A}∪${B})</strong> — the probability of being in <em>at least one</em> set.</div>
+      <div class="venn-wrap">${vennSVG(A, B, [aOnly, both, bOnly, neither])}</div>
+      <div class="answer-area">
+        <div class="frac-wrap">
+          <div class="frac-col">
+            <input class="frac-input" id="frac-num" type="number" placeholder="?" min="0"/>
+            <div class="frac-line"></div>
+            <input class="frac-input" id="frac-den" type="number" placeholder="?" min="1"/>
+          </div>
+          <button class="submit-ans" onclick="checkFraction(${sn},${sd},${union},${total})">Submit</button>
+        </div>
+      </div>
+      <div class="feedback" id="feedback"></div>
+      <div class="attempt-badge">Attempts: <span id="att-count">0</span></div>
+    `,
+    answer: [sn, sd]
+  };
+}
+
+// ---- Prob type 4: P(A') complement ----
+function makeProbComplement() {
+  const total   = rand(20, 50);
+  const both    = rand(3, 8);
+  const aOnly   = rand(5, 14);
+  const bOnly   = rand(4, 12);
+  const neither = total - aOnly - both - bOnly;
+  if (neither < 1) return makeProbComplement();
+
+  const aTotal  = aOnly + both;
+  const notA    = total - aTotal;
+  const pairs   = [['A','B'],['C','D'],['M','N'],['R','S']];
+  const [A, B]  = pairs[rand(0, pairs.length-1)];
+  const [sn, sd] = simplify(notA, total);
+
+  return {
+    badge: 'badge-prob',
+    badgeText: 'Probability from Venn Diagrams',
+    html: `
+      <div class="q-text">The Venn diagram shows results for <strong>${total} people</strong>.<br><br>
+      Find <strong>P(${A}')</strong> — the probability of <em>not</em> being in set ${A}.</div>
+      <div class="venn-wrap">${vennSVG(A, B, [aOnly, both, bOnly, neither])}</div>
+      <div class="answer-area">
+        <div class="frac-wrap">
+          <div class="frac-col">
+            <input class="frac-input" id="frac-num" type="number" placeholder="?" min="0"/>
+            <div class="frac-line"></div>
+            <input class="frac-input" id="frac-den" type="number" placeholder="?" min="1"/>
+          </div>
+          <button class="submit-ans" onclick="checkFraction(${sn},${sd},${notA},${total})">Submit</button>
+        </div>
+      </div>
+      <div class="feedback" id="feedback"></div>
+      <div class="attempt-badge">Attempts: <span id="att-count">0</span></div>
+    `,
+    answer: [sn, sd]
+  };
+}
+
+// ---- Prob type 5: P(neither) ----
+function makeProbNeither() {
+  const total   = rand(24, 60);
+  const both    = rand(3, 8);
+  const aOnly   = rand(5, 14);
+  const bOnly   = rand(4, 11);
+  const neither = total - aOnly - both - bOnly;
+  if (neither < 2) return makeProbNeither();
+
+  const pairs   = [['A','B'],['C','D'],['P','Q'],['X','Y']];
+  const [A, B]  = pairs[rand(0, pairs.length-1)];
+  const [sn, sd] = simplify(neither, total);
+
+  return {
+    badge: 'badge-prob',
+    badgeText: 'Probability from Venn Diagrams',
+    html: `
+      <div class="q-text">The Venn diagram shows results for <strong>${total} people</strong>.<br><br>
+      Find the probability that a randomly chosen person is in <strong>neither</strong> set.</div>
+      <div class="venn-wrap">${vennSVG(A, B, [aOnly, both, bOnly, neither])}</div>
+      <div class="answer-area">
+        <div class="frac-wrap">
+          <div class="frac-col">
+            <input class="frac-input" id="frac-num" type="number" placeholder="?" min="0"/>
+            <div class="frac-line"></div>
+            <input class="frac-input" id="frac-den" type="number" placeholder="?" min="1"/>
+          </div>
+          <button class="submit-ans" onclick="checkFraction(${sn},${sd},${neither},${total})">Submit</button>
+        </div>
+      </div>
+      <div class="feedback" id="feedback"></div>
+      <div class="attempt-badge">Attempts: <span id="att-count">0</span></div>
+    `,
+    answer: [sn, sd]
+  };
+}
+
+// ---- Venn type: find A total from parts ----
+function makeVennATotal() {
+  const aOnly  = rand(5, 18);
+  const both   = rand(3, 10);
+  const bOnly  = rand(4, 14);
+  const neither = rand(2, 10);
+  const total  = aOnly + both + bOnly + neither;
+  const aTotal = aOnly + both;
+
+  const sets = [['Cycling','Swimming'],['Drama','Music'],['Rugby','Hockey'],['Chemistry','Biology']];
+  const [A, B] = sets[rand(0, sets.length-1)];
+
+  return {
+    badge: 'badge-venn',
+    badgeText: 'Filling a Venn Diagram',
+    html: `
+      <div class="q-text">A Venn diagram shows: <strong>${A} only = ${aOnly}</strong>, 
+      <strong>Both = ${both}</strong>, <strong>${B} only = ${bOnly}</strong>, 
+      <strong>Neither = ${neither}</strong>.<br><br>
+      How many people are in set <strong>${A}</strong> in total? (i.e. including those in both)</div>
+      <div class="venn-wrap">${vennSVG(A, B, [aOnly, both, bOnly, neither])}</div>
+      <div class="answer-area">
+        <input class="ans-input" id="main-ans" type="number" placeholder="${A} total = ?" min="0"/>
+        <button class="submit-ans" onclick="checkNumeric(${aTotal})">Submit</button>
+      </div>
+      <div class="feedback" id="feedback"></div>
+      <div class="attempt-badge">Attempts: <span id="att-count">0</span></div>
+    `,
+    answer: aTotal
+  };
+}
+
+// SVG Venn diagram generator
+function vennSVG(A, B, regions) {
+  // regions = [aOnly, both, bOnly, neither]
+  const [ao, bo, bO, n] = regions;
+  const shortA = A.length > 7 ? A.substring(0,7) : A;
+  const shortB = B.length > 7 ? B.substring(0,7) : B;
+  return `
+  <svg viewBox="0 0 380 190" width="380" height="190">
+    <rect x="8" y="8" width="364" height="174" rx="8" fill="none" stroke="#30363d" stroke-width="1.5"/>
+    <text x="22" y="28" font-size="13" fill="#8b949e" font-family="Nunito">ξ</text>
+    <circle cx="147" cy="97" r="72" fill="rgba(45,212,191,0.1)" stroke="#2dd4bf" stroke-width="2"/>
+    <circle cx="233" cy="97" r="72" fill="rgba(251,191,36,0.1)" stroke="#fbbf24" stroke-width="2"/>
+    <text x="100" y="38" font-size="12" font-weight="700" fill="#2dd4bf" font-family="Nunito">${shortA}</text>
+    <text x="238" y="38" font-size="12" font-weight="700" fill="#fbbf24" font-family="Nunito">${shortB}</text>
+    <!-- aOnly -->
+    <text x="97" y="93" font-size="22" font-weight="800" fill="${ao==='?'?'#f87171':'#e6edf3'}" font-family="Nunito" text-anchor="middle">${ao}</text>
+    <text x="97" y="112" font-size="10" fill="#8b949e" font-family="Nunito" text-anchor="middle">${shortA} only</text>
+    <!-- both -->
+    <text x="190" y="93" font-size="22" font-weight="800" fill="${bo==='?'?'#f87171':'#e6edf3'}" font-family="Nunito" text-anchor="middle">${bo}</text>
+    <text x="190" y="112" font-size="10" fill="#8b949e" font-family="Nunito" text-anchor="middle">Both</text>
+    <!-- bOnly -->
+    <text x="282" y="93" font-size="22" font-weight="800" fill="${bO==='?'?'#f87171':'#e6edf3'}" font-family="Nunito" text-anchor="middle">${bO}</text>
+    <text x="282" y="112" font-size="10" fill="#8b949e" font-family="Nunito" text-anchor="middle">${shortB} only</text>
+    <!-- neither -->
+    <text x="346" y="162" font-size="18" font-weight="800" fill="${n==='?'?'#f87171':'#8b949e'}" font-family="Nunito" text-anchor="middle">${n}</text>
+    <text x="346" y="177" font-size="9" fill="#8b949e" font-family="Nunito" text-anchor="middle">Neither</text>
+  </svg>`;
+}
+
+// ================================================================
+//  QUIZ STATE
+// ================================================================
+const GENERATORS = [
+  makeVennFill, makeVennFill,           // 2× fill missing region
+  makeVennTotal,                         // find total
+  makeVennNeither,                       // find neither
+  makeVennATotal,                        // find A total
+  makeProbA, makeProbA,                  // 2× P(A)
+  makeProbIntersect, makeProbIntersect,  // 2× P(A∩B)
+  makeProbUnion, makeProbUnion,          // 2× P(A∪B)
+  makeProbComplement, makeProbComplement,// 2× P(A')
+  makeProbNeither, makeProbNeither       // 2× P(neither)
+]; // 16 total — quiz picks first 15 after shuffle
+
+let questions = [];
+let currentQ  = 0;
+let correct   = 0;
+let attempts  = 0;
+let studentName = '';
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function startQuiz() {
+  studentName = document.getElementById('student-name').value.trim();
+  if (!studentName) {
+    document.getElementById('student-name').style.borderColor = '#f87171';
+    document.getElementById('student-name').placeholder = 'Please enter your name first!';
+    return;
+  }
+  // Generate shuffled question set
+  const gens = shuffle([...GENERATORS]).slice(0, 15);
+  questions = gens.map(g => g());
+  currentQ = 0;
+  correct  = 0;
+  attempts = 0;
+
+  showScreen('quiz-screen');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  const card = document.getElementById('question-card');
+  card.innerHTML = `
+    <span class="q-type-badge ${q.badge}">${q.badgeText}</span>
+    ${q.html}
+  `;
+  updateProgress();
+  // Auto-focus input
+  setTimeout(() => {
+    const inp = card.querySelector('input');
+    if (inp) inp.focus();
+    // Enter key support
+    card.querySelectorAll('input').forEach(i => {
+      i.addEventListener('keydown', e => { if (e.key === 'Enter') { const btn = card.querySelector('.submit-ans'); if (btn && !btn.disabled) btn.click(); }});
+    });
+  }, 100);
+}
+
+function updateProgress() {
+  document.getElementById('q-num').textContent = currentQ + 1;
+  document.getElementById('prog-label').textContent = `${correct} / 15 correct`;
+  document.getElementById('prog-fill').style.width = `${(correct / 15) * 100}%`;
+}
+
+// ---- Numeric check ----
+function checkNumeric(answer) {
+  const inp = document.getElementById('main-ans');
+  const val = parseInt(inp.value);
+  const fb  = document.getElementById('feedback');
+  const att = document.getElementById('att-count');
+  attempts++;
+  att.textContent = attempts;
+
+  if (isNaN(val)) {
+    fb.textContent = 'Please enter a number.';
+    fb.className = 'feedback show bad';
+    return;
+  }
+
+  if (val === answer) {
+    inp.className = 'ans-input correct';
+    fb.textContent = '✓ Correct! Well done — moving to next question…';
+    fb.className = 'feedback show ok';
+    document.querySelector('.submit-ans').disabled = true;
+    correct++;
+    updateProgress();
+    setTimeout(nextQuestion, 1200);
+  } else {
+    inp.className = 'ans-input wrong';
+    fb.textContent = `✗ Not quite — that's not right. Think carefully and try again!`;
+    fb.className = 'feedback show bad';
+    setTimeout(() => {
+      inp.value = '';
+      inp.className = 'ans-input';
+      inp.focus();
+    }, 800);
+  }
+}
+
+// ---- Fraction check ----
+function checkFraction(sn, sd, rawN, rawD) {
+  const numInp = document.getElementById('frac-num');
+  const denInp = document.getElementById('frac-den');
+  const fb     = document.getElementById('feedback');
+  const att    = document.getElementById('att-count');
+  attempts++;
+  att.textContent = attempts;
+
+  const n = parseInt(numInp.value);
+  const d = parseInt(denInp.value);
+
+  if (isNaN(n) || isNaN(d) || d === 0) {
+    fb.textContent = 'Please fill in both numerator and denominator.';
+    fb.className = 'feedback show bad';
+    return;
+  }
+
+  // Accept equivalent fractions
+  const isCorrect = (n * rawD === d * rawN) && n > 0 && d > 0;
+  // Also accept unsimplified
+  if (isCorrect) {
+    numInp.className = 'frac-input correct';
+    denInp.className = 'frac-input correct';
+    const simplified = (n === sn && d === sd) ? '' : ` (simplest form: ${sn}/${sd})`;
+    fb.textContent = `✓ Correct!${simplified} Moving on…`;
+    fb.className = 'feedback show ok';
+    document.querySelector('.submit-ans').disabled = true;
+    correct++;
+    updateProgress();
+    setTimeout(nextQuestion, 1400);
+  } else {
+    numInp.className = 'frac-input wrong';
+    denInp.className = 'frac-input wrong';
+    fb.textContent = `✗ Not quite. Check which values go in the numerator and denominator, then try again!`;
+    fb.className = 'feedback show bad';
+    setTimeout(() => {
+      numInp.value = '';
+      denInp.value = '';
+      numInp.className = 'frac-input';
+      denInp.className = 'frac-input';
+      numInp.focus();
+    }, 900);
+  }
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= 15) {
+    showCertificate();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showCertificate() {
+  document.getElementById('cert-name-display').textContent = studentName;
+  const now = new Date();
+  document.getElementById('cert-date').textContent = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  showScreen('cert-screen');
+}
+
+function restartQuiz() {
+  showScreen('welcome-screen');
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+</script>
+
+<style>
+@media print {
+  body { background: white; }
+  #cert-screen { background: white !important; display: flex !important; }
+  .congrats-header, .cert-actions { display: none !important; }
+  .certificate {
+    box-shadow: none !important;
+    border: 6px solid #c8880a !important;
+    color: #1a1a2e !important;
+    page-break-inside: avoid;
+  }
+  .cert-name, .cert-title, .cert-topic { color: #1a1a2e !important; }
+}
+</style>
+
+
+</body></html>
