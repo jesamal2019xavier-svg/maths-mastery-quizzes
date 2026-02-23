@@ -1,12 +1,142 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>GCSE Statistics Quizzes</title>
-    <style>body { font-family: Arial; margin: 40px; }</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCSE Statistics · Quiz Hub</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        body {
+            background: linear-gradient(145deg, #2b3a67 0%, #3e5a8a 100%);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(8px);
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            padding: 2rem 2.5rem;
+            width: 100%;
+            max-width: 700px;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        h1 {
+            margin: 0 0 0.5rem 0;
+            font-weight: 600;
+            font-size: 2.2rem;
+            color: #1f2b48;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 3px solid #ffb84d;
+            padding-bottom: 0.5rem;
+        }
+        h1 i {
+            color: #ffb84d;
+        }
+        .subtitle {
+            color: #2f4172;
+            font-size: 1.1rem;
+            margin: 0.5rem 0 1.5rem 0;
+        }
+        .quiz-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .quiz-item {
+            margin: 1rem 0;
+            border-radius: 50px;
+            background: #f8fafc;
+            border: 2px solid #b7c9e2;
+            transition: all 0.2s;
+        }
+        .quiz-item:hover {
+            background: #e1efff;
+            border-color: #2b3a67;
+            transform: translateY(-3px);
+        }
+        .quiz-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.8rem;
+            text-decoration: none;
+            color: #1f2b48;
+            font-weight: 600;
+            font-size: 1.2rem;
+            gap: 15px;
+        }
+        .quiz-link i {
+            font-size: 1.8rem;
+            color: #3e5a8a;
+            width: 40px;
+            text-align: center;
+        }
+        .quiz-name {
+            flex: 1;
+        }
+        .file-name {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #4f658d;
+            background: #e9edf2;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+        }
+        .footer {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #4b5a6b;
+            text-align: center;
+            border-top: 1px dashed #b0c4d9;
+            padding-top: 1.5rem;
+        }
+        @media (max-width: 500px) {
+            .card { padding: 1.5rem; }
+            .quiz-link { flex-wrap: wrap; }
+            .file-name { margin-left: 55px; }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <h1>GCSE Statistics Quizzes</h1>
-    <p><a href="../">← Back to GCSE</a></p>
-    <p>Quizzes coming soon!</p>
+    <div class="card">
+        <h1>
+            <i class="fas fa-chart-pie"></i> GCSE Statistics
+        </h1>
+        <div class="subtitle">
+            <i class="fas fa-folder-open"></i> Venn diagram quizzes
+        </div>
+
+        <ul class="quiz-list">
+            <li class="quiz-item">
+                <a href="Venn Diagrams — Mastery Quiz.html" class="quiz-link">
+                    <i class="fas fa-crown"></i>
+                    <span class="quiz-name">Venn Diagrams – Mastery Quiz</span>
+                    <span class="file-name">Venn Diagrams — Mastery Quiz.html</span>
+                </a>
+            </li>
+            <li class="quiz-item">
+                <a href="Venn Diagrams — GCSE Foundation.html" class="quiz-link">
+                    <i class="fas fa-school"></i>
+                    <span class="quiz-name">Venn Diagrams – GCSE Foundation</span>
+                    <span class="file-name">Venn Diagrams — GCSE Foundation.html</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="footer">
+            <i class="fas fa-arrow-left"></i> Click a quiz to start &nbsp;|&nbsp;
+            <i class="fas fa-venn-diagram"></i> Two ready‑to‑use resources
+        </div>
+    </div>
 </body>
 </html>

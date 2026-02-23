@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<!-- saved from url=(0203)file:///C:/Users/Jesurasa.Xavier/AppData/Local/Microsoft/Olk/Attachments/ooa-d8a10387-f7a0-44f9-b406-a5806b6297a3/e8f281843bc1b8e9af3c84eb708129c567b7848b7aab443fe4c5837b8b4be9be/venn-diagram-lesson.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Venn Diagrams — GCSE Foundation</title>
+<link href="./Venn Diagrams — GCSE Foundation_files/css2" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf7f2;
+    --dark: #1a1a2e;
+    --navy: #16213e;
+    --teal: #0f7173;
+    --amber: #e8a838;
+    --coral: #e05c5c;
+    --mint: #d4edda;
+    --soft: #f0ebe3;
+    --border: #ddd5c8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--dark);
+    padding: 2.5rem 2rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(15,113,115,0.25);
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: -40px;
+    width: 250px; height: 250px;
+    border-radius: 50%;
+    background: rgba(232,168,56,0.15);
+  }
+  header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 900;
+    color: #fff;
+    position: relative;
+    z-index: 1;
+  }
+  header h1 span { color: var(--amber); }
+  header p {
+    color: #aaa;
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* NAV TABS */
+  nav {
+    background: var(--navy);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem;
+    padding: 0.75rem 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  }
+  nav button {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background: transparent;
+    color: #aaa;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  nav button:hover { color: #fff; background: rgba(255,255,255,0.08); }
+  nav button.active { background: var(--teal); color: #fff; }
+
+  /* SECTIONS */
+  section {
+    display: none;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+    animation: fadeIn 0.35s ease;
+  }
+  section.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-label {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    background: rgba(15,113,115,0.1);
+    padding: 0.25rem 0.65rem;
+    border-radius: 3px;
+    margin-bottom: 0.75rem;
+  }
+
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  .intro-text {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* QUESTION CARDS */
+  .question-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    position: relative;
+    transition: box-shadow 0.2s;
+  }
+  .question-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.09); }
+
+  .q-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--dark);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .question-text {
+    font-size: 0.97rem;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+
+  /* VENN DIAGRAM SVG */
+  .venn-container {
+    background: var(--soft);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .venn-container svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* INPUT FIELDS */
+  .fill-input {
+    width: 52px;
+    height: 32px;
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    background: #fff;
+    transition: border-color 0.2s;
+    color: var(--dark);
+  }
+  .fill-input:focus { outline: none; border-color: var(--teal); }
+  .fill-input.correct { border-color: #28a745; background: #d4edda; color: #155724; }
+  .fill-input.incorrect { border-color: var(--coral); background: #fde8e8; }
+
+  /* ANSWER REVEAL */
+  .show-answer-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+    padding: 0.45rem 1rem;
+    border: 1.5px solid var(--teal);
+    background: transparent;
+    color: var(--teal);
+    border-radius: 5px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .show-answer-btn:hover { background: var(--teal); color: #fff; }
+
+  .answer-box {
+    display: none;
+    margin-top: 0.75rem;
+    padding: 1rem 1.2rem;
+    background: #f0faf0;
+    border-left: 3px solid #28a745;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #155724;
+  }
+  .answer-box.visible { display: block; animation: fadeIn 0.2s ease; }
+  .answer-box strong { display: block; margin-bottom: 0.3rem; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* MISTAKE CARDS */
+  .mistake-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    border-left: 4px solid var(--coral);
+  }
+  .mistake-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 0.5rem;
+  }
+
+  /* PROBABILITY TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+  th {
+    background: var(--dark);
+    color: #fff;
+    padding: 0.6rem 0.9rem;
+    text-align: left;
+    font-weight: 600;
+  }
+  td {
+    padding: 0.6rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: var(--soft); }
+
+  /* NOTATION CHIP */
+  .notation {
+    display: inline-block;
+    background: var(--dark);
+    color: var(--amber);
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 4px;
+    margin: 0 2px;
+  }
+
+  /* QUIZ SECTION */
+  .quiz-q {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .options label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 0.75rem;
+    margin-top: 0.4rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+    border: 1.5px solid transparent;
+  }
+  .options label:hover { background: var(--soft); }
+  .options input[type=radio] { accent-color: var(--teal); }
+  .options label.selected-correct { background: #d4edda; border-color: #28a745; color: #155724; }
+  .options label.selected-wrong { background: #fde8e8; border-color: var(--coral); color: #721c24; }
+  .options label.reveal-correct { background: #d4edda; border-color: #28a745; }
+
+  .check-btn {
+    margin-top: 1rem;
+    padding: 0.55rem 1.3rem;
+    background: var(--teal);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .check-btn:hover { background: #0a5759; }
+  .check-btn:disabled { background: #aaa; cursor: default; }
+
+  .feedback-msg {
+    margin-top: 0.6rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    display: none;
+  }
+  .feedback-msg.show { display: block; }
+  .feedback-msg.correct-msg { color: #28a745; }
+  .feedback-msg.wrong-msg { color: var(--coral); }
+
+  /* SCORE */
+  #quiz-score {
+    display: none;
+    background: var(--dark);
+    color: #fff;
+    border-radius: 10px;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+  #quiz-score h3 { font-family: 'Fraunces', serif; font-size: 1.8rem; color: var(--amber); }
+  #quiz-score p { margin-top: 0.5rem; color: #ccc; font-size: 0.93rem; }
+
+  #submit-quiz {
+    display: block;
+    margin: 1.5rem auto 0;
+    padding: 0.75rem 2.5rem;
+    background: var(--amber);
+    color: var(--dark);
+    border: none;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  #submit-quiz:hover { opacity: 0.85; }
+
+  /* EXIT TICKET */
+  .exit-card {
+    background: var(--dark);
+    border-radius: 12px;
+    padding: 2rem;
+    color: #fff;
+    margin-bottom: 1.25rem;
+  }
+  .exit-card .q-number { background: var(--amber); color: var(--dark); }
+  .exit-card .question-text { color: #ddd; }
+  textarea {
+    width: 100%;
+    min-height: 70px;
+    border: 1.5px solid #444;
+    border-radius: 6px;
+    background: #2a2a40;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.93rem;
+    padding: 0.75rem;
+    resize: vertical;
+    margin-top: 0.5rem;
+  }
+  textarea:focus { outline: none; border-color: var(--amber); }
+  .exit-card .answer-box {
+    background: rgba(255,255,255,0.07);
+    border-left-color: var(--amber);
+    color: #e0e0e0;
+  }
+  .exit-card .show-answer-btn { border-color: var(--amber); color: var(--amber); }
+  .exit-card .show-answer-btn:hover { background: var(--amber); color: var(--dark); }
+
+  /* DIFFICULTY BADGE */
+  .diff {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+  }
+  .diff-easy { background: #d4edda; color: #155724; }
+  .diff-medium { background: #fff3cd; color: #856404; }
+  .diff-hard { background: #fde8e8; color: #721c24; }
+
+  /* VENN FILL LABELS */
+  .venn-labels {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+  }
+  .venn-labels span {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #555;
+  }
+  .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+
+  @media (max-width: 600px) {
+    nav button { font-size: 0.74rem; padding: 0.45rem 0.7rem; }
+    section { padding: 1.5rem 1rem 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Venn <span>Diagrams</span></h1>
+  <p>GCSE Foundation Resit &nbsp;·&nbsp; Interactive Lesson Resource &nbsp;·&nbsp; 1.5 hrs</p>
+</header>
+
+<nav>
+  <button class="active" onclick="showSection(&#39;guided&#39;)">① Guided Practice</button>
+  <button onclick="showSection(&#39;probability&#39;)">② Probability</button>
+  <button onclick="showSection(&#39;mistakes&#39;)">③ Common Mistakes</button>
+  <button onclick="showSection(&#39;quiz&#39;)">④ Mini Quiz</button>
+  <button onclick="showSection(&#39;exit&#39;)">⑤ Exit Ticket</button>
+</nav>
+
+<!-- ===================== SECTION 1: GUIDED PRACTICE ===================== -->
+<section id="guided" class="active">
+  <div class="section-label">Section 1</div>
+  <h2>Guided Practice</h2>
+  <p class="intro-text">Fill in the Venn diagram regions using the information given. Remember: the <strong>intersection (middle)</strong> contains people/items that belong to <em>both</em> groups — don't count them twice! Work through Question 1 with your teacher, then try the rest with a partner.</p>
+
+  <!-- Q1 -->
+  <div class="question-card">
+    <div class="q-number">1</div>
+    <div class="question-text">
+      In a class of <strong>30 students</strong>:<br>
+      • 18 study <strong>PE</strong> &nbsp;• 12 study <strong>Art</strong> &nbsp;• 5 study <strong>both</strong><br><br>
+      Fill in the four regions of the Venn diagram.
+    </div>
+    <div class="venn-container">
+      <svg width="360" height="200" viewBox="0 0 360 200">
+        <!-- Universal set rectangle -->
+        <rect x="10" y="10" width="340" height="180" rx="8" fill="none" stroke="#1a1a2e" stroke-width="2"></rect>
+        <text x="25" y="30" font-size="13" fill="#555" font-family="DM Sans">ξ</text>
+        <!-- Circles -->
+        <circle cx="140" cy="100" r="72" fill="rgba(15,113,115,0.12)" stroke="#0f7173" stroke-width="2.5"></circle>
+        <circle cx="220" cy="100" r="72" fill="rgba(232,168,56,0.12)" stroke="#e8a838" stroke-width="2.5"></circle>
+        <!-- Labels -->
+        <text x="95" y="38" font-size="13" font-weight="600" fill="#0f7173" font-family="DM Sans">PE</text>
+        <text x="230" y="38" font-size="13" font-weight="600" fill="#c8880a" font-family="DM Sans">Art</text>
+        <!-- Input regions -->
+        <!-- PE only -->
+        <foreignobject x="82" y="83" width="56" height="36">
+          <input xmlns="http://www.w3.org/1999/xhtml" class="fill-input" data-answer="13" placeholder="?" title="PE only">
+        </foreignobject>
+        <!-- Both -->
+        <foreignobject x="152" y="83" width="56" height="36">
+          <input xmlns="http://www.w3.org/1999/xhtml" class="fill-input" data-answer="5" placeholder="?" title="Both">
+        </foreignobject>
+        <!-- Art only -->
+        <foreignobject x="224" y="83" width="56" height="36">
+          <input xmlns="http://www.w3.org/1999/xhtml" class="fill-input" data-answer="7" placeholder="?" title="Art only">
+        </foreignobject>
+        <!-- Neither -->
+        <foreignobject x="305" y="155" width="42" height="36">
+          <input xmlns="http://www.w3.org/1999/xhtml" class="fill-input" data-answer="10" placeholder="?" title="Neither">
+        </foreignobject>
+        <!-- Region labels small -->
+        <text x="97" y="76" font-size="10" fill="#888" font-family="DM Sans">PE only</text>
+        <text x="158" y="76" font-size="10" fill="#888" font-family="DM Sans">Both</text>
+        <text x="232" y="76" font-size="10" fill="#888" font-family="DM Sans">Art only</text>
+        <text x="295" y="152" font-size="10" fill="#888" font-family="DM Sans">Neither</text>
+      </svg>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer(this)">▸ Show answers</button>
+    <div class="answer-box">
+      <strong>✓ Mark Scheme</strong>
+      PE only = 18 − 5 = <strong>13</strong><br>
+      Both = <strong>5</strong> (given)<br>
+      Art only = 12 − 5 = <strong>7</strong><br>
+      Neither = 30 − 13 − 5 − 7 = <strong>5</strong><br><br>
+      <em>Check: 13 + 5 + 7 + 5 = 30 ✓</em>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-card">
+    <div class="q-number">2</div>
+    <div class="question-text">
+      A group of <strong>40 people</strong> were surveyed about pets:<br>
+      • 22 own a <strong>Dog</strong> &nbsp;• 15 own a <strong>Cat</strong> &nbsp;• 6 own <strong>both</strong> &nbsp;• Some own <strong>neither</strong><br><br>
+      Fill in the Venn diagram, then state how many own neither.
+    </div>
+    <div class="venn-container">
+      <svg width="360" height="200" viewBox="0 0 360 200">
+        <rect x="10" y="10" width="340" height="180" rx="8" fill="none" stroke="#1a1a2e" stroke-width="2"></rect>
+        <text x="25" y="30" font-size="13" fill="#555" font-family="DM Sans">ξ</text>
+        <circle cx="140" cy="100" r="72" fill="rgba(15,113,115,0.12)" stroke="#0f7173" stroke-width="2.5"></circle>
+        <circle cx="220" cy="100" r="72" fill="rgba(224,92,92,0.12)" stroke="#e05c5c" stroke-width="2.5"></circle>
+        <text x="92" y="38" font-size="13" font-weight="600" fill="#0f7173" font-family="DM Sans">Dog</text>
+        <text x="230" y="38" font-size="13" font-weight="600" fill="#e05c5c" font-family="DM Sans">Cat</text>
+        <foreignobject x="82" y="83" width="56" height="36">
+          <input xmlns="http://www.w3.org/1999/xhtml" class="fill-input" data-answer="16" placeholder="?">
+        </foreignobject>
+        <foreignobject x="152" y="83" width="56" height="36">
+          <input xmlns="http://www.w3.org/1999/xhtml" class="fill-input" data-answer="6" placeholder="?">
+        </foreignobject>
+        <foreignobject x="224" y="83" width="56" height="36">
+          <input xmlns="http://www.w3.org/1999/xhtml" class="fill-input" data-answer="9" placeholder="?">
+        </foreignobject>
+        <foreignobject x="305" y="155" width="42" height="36">
+          <input xmlns="http://www.w3.org/1999/xhtml" class="fill-input" data-answer="9" placeholder="?">
+        </foreignobject>
+        <text x="97" y="76" font-size="10" fill="#888" font-family="DM Sans">Dog only</text>
+        <text x="158" y="76" font-size="10" fill="#888" font-family="DM Sans">Both</text>
+        <text x="230" y="76" font-size="10" fill="#888" font-family="DM Sans">Cat only</text>
+        <text x="295" y="152" font-size="10" fill="#888" font-family="DM Sans">Neither</text>
+      </svg>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer(this)">▸ Show answers</button>
+    <div class="answer-box">
+      <strong>✓ Mark Scheme</strong>
+      Dog only = 22 − 6 = <strong>16</strong><br>
+      Both = <strong>6</strong> (given)<br>
+      Cat only = 15 − 6 = <strong>9</strong><br>
+      Neither = 40 − 16 − 6 − 9 = <strong>9</strong><br><br>
+      <em>Check: 16 + 6 + 9 + 9 = 40 ✓</em>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-card">
+    <div class="q-number">3</div>
+    <div class="question-text">
+      50 students were asked if they like <strong>Maths</strong> and/or <strong>Science</strong>.<br>
+      • 9 like neither &nbsp;• 14 like <strong>both</strong> &nbsp;• 30 like <strong>Maths</strong><br><br>
+      How many like Science? Fill in all regions.
+    </div>
+    <div class="venn-container">
+      <svg width="360" height="200" viewBox="0 0 360 200">
+        <rect x="10" y="10" width="340" height="180" rx="8" fill="none" stroke="#1a1a2e" stroke-width="2"></rect>
+        <text x="25" y="30" font-size="13" fill="#555" font-family="DM Sans">ξ</text>
+        <circle cx="140" cy="100" r="72" fill="rgba(15,113,115,0.12)" stroke="#0f7173" stroke-width="2.5"></circle>
+        <circle cx="220" cy="100" r="72" fill="rgba(130,80,200,0.12)" stroke="#8250c8" stroke-width="2.5"></circle>
+        <text x="83" y="38" font-size="13" font-weight="600" fill="#0f7173" font-family="DM Sans">Maths</text>
+        <text x="222" y="38" font-size="13" font-weight="600" fill="#8250c8" font-family="DM Sans">Science</text>
+        <foreignobject x="82" y="83" width="56" height="36">
+          <input xmlns="http://www.w3.org/1999/xhtml" class="fill-input" data-answer="16" placeholder="?">
+        </foreignobject>
+        <foreignobject x="152" y="83" width="56" height="36">
+          <input xmlns="http://www.w3.org/1999/xhtml" class="fill-input" data-answer="14" placeholder="?">
+        </foreignobject>
+        <foreignobject x="224" y="83" width="56" height="36">
+          <input xmlns="http://www.w3.org/1999/xhtml" class="fill-input" data-answer="11" placeholder="?">
+        </foreignobject>
+        <foreignobject x="305" y="155" width="42" height="36">
+          <input xmlns="http://www.w3.org/1999/xhtml" class="fill-input" data-answer="9" placeholder="?">
+        </foreignobject>
+        <text x="97" y="76" font-size="10" fill="#888" font-family="DM Sans">Maths only</text>
+        <text x="158" y="76" font-size="10" fill="#888" font-family="DM Sans">Both</text>
+        <text x="224" y="76" font-size="10" fill="#888" font-family="DM Sans">Sci only</text>
+        <text x="295" y="152" font-size="10" fill="#888" font-family="DM Sans">Neither</text>
+      </svg>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer(this)">▸ Show answers</button>
+    <div class="answer-box">
+      <strong>✓ Mark Scheme</strong>
+      Neither = <strong>9</strong> (given)<br>
+      Both = <strong>14</strong> (given)<br>
+      Maths only = 30 − 14 = <strong>16</strong><br>
+      Total accounted for = 50 − 9 = 41 in circles<br>
+      Science only = 41 − 30 = <strong>11</strong>, so Science total = 11 + 14 = <strong>25</strong><br><br>
+      <em>Check: 16 + 14 + 11 + 9 = 50 ✓</em>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 2: PROBABILITY ===================== -->
+<section id="probability">
+  <div class="section-label">Section 2</div>
+  <h2>Probability from Venn Diagrams</h2>
+  <p class="intro-text">Once a Venn diagram is filled in, we can calculate probabilities. The denominator is <strong>always the total of all values in the diagram</strong> (the universal set). Use the key notation below, then answer each question.</p>
+
+  <!-- Notation reference -->
+  <div class="question-card" style="background:var(--soft); border-color:var(--border);">
+    <table>
+      <tbody><tr><th>Notation</th><th>Meaning</th><th>Which region(s)?</th></tr>
+      <tr><td><span class="notation">P(A)</span></td><td>Probability of A</td><td>Left circle (both parts)</td></tr>
+      <tr><td><span class="notation">P(A∩B)</span></td><td>P(A <em>and</em> B) — intersection</td><td>Middle only</td></tr>
+      <tr><td><span class="notation">P(A∪B)</span></td><td>P(A <em>or</em> B) — union</td><td>Everything in either circle</td></tr>
+      <tr><td><span class="notation">P(A')</span></td><td>P(not A) — complement</td><td>Everything outside A's circle</td></tr>
+    </tbody></table>
+  </div>
+
+  <!-- Reference diagram for this section -->
+  <div class="question-card">
+    <div class="question-text" style="margin-bottom:0.5rem;"><strong>Use this diagram for Questions 1–4:</strong><br>
+    80 people were asked if they have a <strong>driving licence (D)</strong> and/or a <strong>passport (P)</strong>.</div>
+    <div class="venn-container">
+      <svg width="380" height="210" viewBox="0 0 380 210">
+        <rect x="10" y="10" width="360" height="190" rx="8" fill="none" stroke="#1a1a2e" stroke-width="2"></rect>
+        <text x="25" y="32" font-size="13" fill="#555" font-family="DM Sans">ξ = 80</text>
+        <circle cx="148" cy="108" r="78" fill="rgba(15,113,115,0.13)" stroke="#0f7173" stroke-width="2.5"></circle>
+        <circle cx="232" cy="108" r="78" fill="rgba(232,168,56,0.13)" stroke="#e8a838" stroke-width="2.5"></circle>
+        <!-- Static labels with values -->
+        <text x="85" y="100" font-size="22" font-weight="700" fill="#0f7173" font-family="DM Sans" text-anchor="middle">35</text>
+        <text x="85" y="122" font-size="11" fill="#0f7173" font-family="DM Sans" text-anchor="middle">D only</text>
+        <text x="190" y="100" font-size="22" font-weight="700" fill="#555" font-family="DM Sans" text-anchor="middle">21</text>
+        <text x="190" y="122" font-size="11" fill="#555" font-family="DM Sans" text-anchor="middle">Both</text>
+        <text x="294" y="100" font-size="22" font-weight="700" fill="#c8880a" font-family="DM Sans" text-anchor="middle">14</text>
+        <text x="294" y="122" font-size="11" fill="#c8880a" font-family="DM Sans" text-anchor="middle">P only</text>
+        <text x="345" y="185" font-size="18" font-weight="700" fill="#e05c5c" font-family="DM Sans" text-anchor="middle">10</text>
+        <text x="345" y="200" font-size="10" fill="#e05c5c" font-family="DM Sans" text-anchor="middle">Neither</text>
+        <text x="100" y="46" font-size="13" font-weight="600" fill="#0f7173" font-family="DM Sans">D</text>
+        <text x="254" y="46" font-size="13" font-weight="600" fill="#c8880a" font-family="DM Sans">P</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Prob Q1 -->
+  <div class="question-card">
+    <div class="q-number">1</div><span class="diff diff-easy">Easy</span>
+    <div class="question-text">A person is chosen at random. Find <span class="notation">P(D)</span> — the probability they have a driving licence.</div>
+    <button class="show-answer-btn" onclick="toggleAnswer(this)">▸ Show answer</button>
+    <div class="answer-box">
+      <strong>✓ Answer</strong>
+      D includes "D only" and "Both": 35 + 21 = 56<br>
+      <strong>P(D) = 56/80 = 7/10</strong>
+    </div>
+  </div>
+
+  <!-- Prob Q2 -->
+  <div class="question-card">
+    <div class="q-number">2</div><span class="diff diff-easy">Easy</span>
+    <div class="question-text">Find <span class="notation">P(D∩P)</span> — the probability a person has both a driving licence <em>and</em> a passport.</div>
+    <button class="show-answer-btn" onclick="toggleAnswer(this)">▸ Show answer</button>
+    <div class="answer-box">
+      <strong>✓ Answer</strong>
+      The intersection (middle) = 21<br>
+      <strong>P(D∩P) = 21/80</strong>
+    </div>
+  </div>
+
+  <!-- Prob Q3 -->
+  <div class="question-card">
+    <div class="q-number">3</div><span class="diff diff-medium">Medium</span>
+    <div class="question-text">Find <span class="notation">P(D∪P)</span> — the probability a person has a driving licence <em>or</em> a passport (or both).</div>
+    <button class="show-answer-btn" onclick="toggleAnswer(this)">▸ Show answer</button>
+    <div class="answer-box">
+      <strong>✓ Answer</strong>
+      Union = everyone inside either circle = 35 + 21 + 14 = 70<br>
+      <strong>P(D∪P) = 70/80 = 7/8</strong><br><br>
+      <em>Alternative: P(D∪P) = 1 − P(neither) = 1 − 10/80 = 70/80 ✓</em>
+    </div>
+  </div>
+
+  <!-- Prob Q4 -->
+  <div class="question-card">
+    <div class="q-number">4</div><span class="diff diff-medium">Medium</span>
+    <div class="question-text">Find <span class="notation">P(D')</span> — the probability a person does <em>not</em> have a driving licence.</div>
+    <button class="show-answer-btn" onclick="toggleAnswer(this)">▸ Show answer</button>
+    <div class="answer-box">
+      <strong>✓ Answer</strong>
+      D' = everything outside D's circle = P only + Neither = 14 + 10 = 24<br>
+      <strong>P(D') = 24/80 = 3/10</strong><br><br>
+      <em>Or: P(D') = 1 − P(D) = 1 − 56/80 = 24/80 ✓</em>
+    </div>
+  </div>
+
+  <!-- Prob Q5 -->
+  <div class="question-card">
+    <div class="q-number">5</div><span class="diff diff-hard">Hard</span>
+    <div class="question-text">
+      A different survey of <strong>60 students</strong>:<br>
+      • P(plays guitar) = 1/3 &nbsp;&nbsp;• P(plays piano) = 1/4 &nbsp;&nbsp;• P(plays both) = 1/12<br><br>
+      Find the number of students who play <em>neither</em> instrument. Draw and complete the Venn diagram.
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer(this)">▸ Show answer</button>
+    <div class="answer-box">
+      <strong>✓ Answer</strong>
+      Guitar total = 1/3 × 60 = 20 &nbsp;|&nbsp; Piano total = 1/4 × 60 = 15 &nbsp;|&nbsp; Both = 1/12 × 60 = 5<br>
+      Guitar only = 20 − 5 = <strong>15</strong><br>
+      Piano only = 15 − 5 = <strong>10</strong><br>
+      Neither = 60 − 15 − 5 − 10 = <strong>30</strong>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 3: COMMON MISTAKES ===================== -->
+<section id="mistakes">
+  <div class="section-label">Section 3</div>
+  <h2>Spot the Mistake</h2>
+  <p class="intro-text">Each of the following contains a deliberate error. Can you find it and explain what the student should have done instead? Try before revealing the answer!</p>
+
+  <div class="mistake-card">
+    <div class="mistake-label">⚠ Mistake 1</div>
+    <div class="question-text">
+      <strong>Question:</strong> 50 people, 28 like Tea, 20 like Coffee, 8 like both. A student writes:<br><br>
+      <em>"Tea only = 28, Coffee only = 20, Both = 8, Neither = 50 − 28 − 20 − 8 = <strong>−6</strong>"</em>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer(this)">▸ Reveal mistake</button>
+    <div class="answer-box">
+      <strong>✓ The Error</strong>
+      The student used the <strong>total</strong> for Tea (28) and Coffee (20) without subtracting the intersection first. They counted the 8 "both" people three times.<br><br>
+      <strong>Correct working:</strong><br>
+      Tea only = 28 − 8 = 20 &nbsp;|&nbsp; Coffee only = 20 − 8 = 12 &nbsp;|&nbsp; Both = 8<br>
+      Neither = 50 − 20 − 12 − 8 = <strong>10</strong><br><br>
+      <em>Key rule: Always subtract the intersection from each circle total before placing values.</em>
+    </div>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-label">⚠ Mistake 2</div>
+    <div class="question-text">
+      <strong>Question:</strong> The diagram shows: A only = 12, Both = 7, B only = 9, Neither = 4. Total = 32.<br>
+      A student writes: <em>"P(A) = 12/32"</em>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer(this)">▸ Reveal mistake</button>
+    <div class="answer-box">
+      <strong>✓ The Error</strong>
+      P(A) means the probability of being in set A — which includes <strong>both</strong> the "A only" region <em>and</em> the intersection.<br><br>
+      <strong>Correct:</strong> P(A) = (12 + 7)/32 = <strong>19/32</strong><br><br>
+      <em>Remember: A circle contains two regions — "only" and "both".</em>
+    </div>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-label">⚠ Mistake 3</div>
+    <div class="question-text">
+      <strong>Question:</strong> 40 people. A only = 10, B only = 15, Both = 8.<br>
+      A student says: <em>"Neither = 40 − 10 − 15 = 15"</em>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer(this)">▸ Reveal mistake</button>
+    <div class="answer-box">
+      <strong>✓ The Error</strong>
+      The student forgot to subtract the <strong>intersection (Both = 8)</strong> from the total.<br><br>
+      <strong>Correct:</strong> Neither = 40 − 10 − 15 − 8 = <strong>7</strong><br><br>
+      <em>Always subtract all four regions. The intersection is its own region!</em>
+    </div>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-label">⚠ Mistake 4</div>
+    <div class="question-text">
+      <strong>Question:</strong> P(A∩B) = 3/20. A student says: <em>"This means 3 people like A and 20 people like B."</em>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer(this)">▸ Reveal mistake</button>
+    <div class="answer-box">
+      <strong>✓ The Error</strong>
+      P(A∩B) = 3/20 is a <strong>probability fraction</strong>, not a count. The numerator (3) and denominator (20) do not individually represent group sizes.<br><br>
+      <strong>Correct interpretation:</strong> If 3/20 of the total are in the intersection, and total = e.g. 40, then 6 people like both.<br><br>
+      <em>Never read a probability fraction as individual group sizes.</em>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 4: MINI QUIZ ===================== -->
+<section id="quiz">
+  <div class="section-label">Section 4</div>
+  <h2>Independent Mini Quiz</h2>
+  <p class="intro-text">Answer all 6 questions on your own — no help! Click <strong>Check</strong> after each question. Your score will appear at the end.</p>
+
+  <!-- Quiz Q1 -->
+  <div class="quiz-q" id="qq1">
+    <div class="q-number">1</div><span class="diff diff-easy">Easy</span>
+    <div class="question-text">30 students, 14 like Football, 10 like Basketball, 4 like both. How many like <strong>neither</strong>?</div>
+    <div class="options" id="opts1">
+      <label><input type="radio" name="q1" value="A"> A) &nbsp;6</label>
+      <label><input type="radio" name="q1" value="B"> B) &nbsp;10</label>
+      <label><input type="radio" name="q1" value="C"> C) &nbsp;12</label>
+      <label><input type="radio" name="q1" value="D"> D) &nbsp;8</label>
+    </div>
+    <button class="check-btn" onclick="checkMCQ(1,&#39;B&#39;,&#39;Football only=10, Basketball only=6, Both=4. Neither = 30−10−6−4 = 10&#39;)">Check</button>
+    <div class="feedback-msg" id="fb1"></div>
+  </div>
+
+  <!-- Quiz Q2 -->
+  <div class="quiz-q" id="qq2">
+    <div class="q-number">2</div><span class="diff diff-easy">Easy</span>
+    <div class="question-text">From the diagram: A only = 8, Both = 5, B only = 11, Neither = 6. What is the total number of people?</div>
+    <div class="options" id="opts2">
+      <label><input type="radio" name="q2" value="A"> A) &nbsp;24</label>
+      <label><input type="radio" name="q2" value="B"> B) &nbsp;25</label>
+      <label><input type="radio" name="q2" value="C"> C) &nbsp;30</label>
+      <label><input type="radio" name="q2" value="D"> D) &nbsp;30</label>
+    </div>
+    <button class="check-btn" onclick="checkMCQ(2,&#39;C&#39;,&#39;8 + 5 + 11 + 6 = 30&#39;)">Check</button>
+    <div class="feedback-msg" id="fb2"></div>
+  </div>
+
+  <!-- Quiz Q3 -->
+  <div class="quiz-q" id="qq3">
+    <div class="q-number">3</div><span class="diff diff-easy">Easy</span>
+    <div class="question-text">Diagram: C only = 9, Both = 6, D only = 5, Neither = 4. Total = 24. Find P(C).</div>
+    <div class="options" id="opts3">
+      <label><input type="radio" name="q3" value="A"> A) &nbsp;9/24</label>
+      <label><input type="radio" name="q3" value="B"> B) &nbsp;15/24</label>
+      <label><input type="radio" name="q3" value="C"> C) &nbsp;6/24</label>
+      <label><input type="radio" name="q3" value="D"> D) &nbsp;10/24</label>
+    </div>
+    <button class="check-btn" onclick="checkMCQ(3,&#39;B&#39;,&#39;P(C) = (C only + Both)/total = (9+6)/24 = 15/24&#39;)">Check</button>
+    <div class="feedback-msg" id="fb3"></div>
+  </div>
+
+  <!-- Quiz Q4 -->
+  <div class="quiz-q" id="qq4">
+    <div class="q-number">4</div><span class="diff diff-medium">Medium</span>
+    <div class="question-text">Diagram: E only = 12, Both = 8, F only = 10, Neither = 5. Total = 35. Find P(E∩F).</div>
+    <div class="options" id="opts4">
+      <label><input type="radio" name="q4" value="A"> A) &nbsp;20/35</label>
+      <label><input type="radio" name="q4" value="B"> B) &nbsp;8/35</label>
+      <label><input type="radio" name="q4" value="C"> C) &nbsp;18/35</label>
+      <label><input type="radio" name="q4" value="D"> D) &nbsp;30/35</label>
+    </div>
+    <button class="check-btn" onclick="checkMCQ(4,&#39;B&#39;,&#39;P(E∩F) = intersection only = 8/35&#39;)">Check</button>
+    <div class="feedback-msg" id="fb4"></div>
+  </div>
+
+  <!-- Quiz Q5 -->
+  <div class="quiz-q" id="qq5">
+    <div class="q-number">5</div><span class="diff diff-medium">Medium</span>
+    <div class="question-text">Diagram: G only = 7, Both = 3, H only = 8, Neither = 2. Total = 20. Find P(G∪H).</div>
+    <div class="options" id="opts5">
+      <label><input type="radio" name="q5" value="A"> A) &nbsp;18/20</label>
+      <label><input type="radio" name="q5" value="B"> B) &nbsp;10/20</label>
+      <label><input type="radio" name="q5" value="C"> C) &nbsp;15/20</label>
+      <label><input type="radio" name="q5" value="D"> D) &nbsp;3/20</label>
+    </div>
+    <button class="check-btn" onclick="checkMCQ(5,&#39;A&#39;,&#39;P(G∪H) = (7+3+8)/20 = 18/20. Or 1 − 2/20 = 18/20&#39;)">Check</button>
+    <div class="feedback-msg" id="fb5"></div>
+  </div>
+
+  <!-- Quiz Q6 -->
+  <div class="quiz-q" id="qq6">
+    <div class="q-number">6</div><span class="diff diff-hard">Hard</span>
+    <div class="question-text">100 people surveyed. P(owns a car) = 0.6, P(owns a bike) = 0.35, P(owns both) = 0.15. How many own <strong>neither</strong>?</div>
+    <div class="options" id="opts6">
+      <label><input type="radio" name="q6" value="A"> A) &nbsp;5</label>
+      <label><input type="radio" name="q6" value="B"> B) &nbsp;10</label>
+      <label><input type="radio" name="q6" value="C"> C) &nbsp;20</label>
+      <label><input type="radio" name="q6" value="D"> D) &nbsp;25</label>
+    </div>
+    <button class="check-btn" onclick="checkMCQ(6,&#39;C&#39;,&#39;Car only=45, Bike only=20, Both=15. Neither=100−45−20−15=20&#39;)">Check</button>
+    <div class="feedback-msg" id="fb6"></div>
+  </div>
+
+  <button id="submit-quiz" onclick="showScore()">See My Score →</button>
+  <div id="quiz-score">
+    <h3 id="score-text"></h3>
+    <p id="score-msg"></p>
+  </div>
+</section>
+
+<!-- ===================== SECTION 5: EXIT TICKET ===================== -->
+<section id="exit">
+  <div class="section-label">Section 5</div>
+  <h2>Exit Ticket</h2>
+  <p class="intro-text">Complete these 3 questions independently before leaving. Your teacher will collect them to check understanding. Write your working in the box provided.</p>
+
+  <div class="exit-card">
+    <div class="q-number">1</div>
+    <div class="question-text">
+      In a group of 25 people: 14 drink tea, 9 drink coffee, 3 drink both.<br>
+      <strong>(a)</strong> Draw and complete a Venn diagram.<br>
+      <strong>(b)</strong> A person is chosen at random. Find P(drinks tea but not coffee).
+    </div>
+    <textarea placeholder="Write your working here..."></textarea>
+    <button class="show-answer-btn" onclick="toggleAnswer(this)">▸ Show answer</button>
+    <div class="answer-box">
+      <strong>✓ Answer</strong>
+      Tea only = 14−3 = 11 &nbsp;|&nbsp; Both = 3 &nbsp;|&nbsp; Coffee only = 9−3 = 6 &nbsp;|&nbsp; Neither = 25−11−3−6 = 5<br>
+      <strong>(b)</strong> P(tea only) = 11/25
+    </div>
+  </div>
+
+  <div class="exit-card">
+    <div class="q-number">2</div>
+    <div class="question-text">
+      Using the diagram: J only = 8, Both = 4, K only = 13, Neither = 5. Total = 30.<br>
+      Find: <strong>(a)</strong> P(J∩K) &nbsp;&nbsp; <strong>(b)</strong> P(J') &nbsp;&nbsp; <strong>(c)</strong> P(J∪K)
+    </div>
+    <textarea placeholder="Write your working here..."></textarea>
+    <button class="show-answer-btn" onclick="toggleAnswer(this)">▸ Show answer</button>
+    <div class="answer-box">
+      <strong>✓ Answers</strong>
+      (a) P(J∩K) = 4/30 = 2/15<br>
+      (b) P(J') = (13+5)/30 = 18/30 = 3/5<br>
+      (c) P(J∪K) = (8+4+13)/30 = 25/30 = 5/6
+    </div>
+  </div>
+
+  <div class="exit-card">
+    <div class="q-number">3</div>
+    <div class="question-text">
+      <strong>Explain in your own words:</strong> Why do we subtract the intersection when filling in a Venn diagram? Give an example to support your answer.
+    </div>
+    <textarea placeholder="Write your explanation here..."></textarea>
+    <button class="show-answer-btn" onclick="toggleAnswer(this)">▸ Show model answer</button>
+    <div class="answer-box">
+      <strong>✓ Model Answer</strong>
+      When we're told "18 people like PE," those 18 include people who like PE only AND people who like both. If we put 18 into the PE circle without adjusting, we'd count the "both" people twice — once in each circle. So we subtract the intersection first to find how many like PE alone.<br><br>
+      Example: 18 like PE, 5 like both → PE only = 18−5 = 13.
+    </div>
+  </div>
+</section>
+
+<script>
+  function showSection(id) {
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleAnswer(btn) {
+    const box = btn.nextElementSibling;
+    const showing = box.classList.contains('visible');
+    box.classList.toggle('visible', !showing);
+    btn.textContent = showing ? '▸ Show answer' : '▼ Hide answer';
+  }
+
+  // MCQ state
+  const scores = {};
+  const answered = {};
+
+  function checkMCQ(qNum, correctVal, explanation) {
+    if (answered[qNum]) return;
+    const selected = document.querySelector(`input[name="q${qNum}"]:checked`);
+    const fb = document.getElementById(`fb${qNum}`);
+    const opts = document.getElementById(`opts${qNum}`);
+    const btn = opts.nextElementSibling;
+
+    if (!selected) {
+      fb.textContent = 'Please select an answer first.';
+      fb.className = 'feedback-msg show wrong-msg';
+      return;
+    }
+
+    answered[qNum] = true;
+    btn.disabled = true;
+
+    const labels = opts.querySelectorAll('label');
+    labels.forEach(label => {
+      const radio = label.querySelector('input');
+      if (radio.value === correctVal) label.classList.add('reveal-correct');
+      if (radio.checked && radio.value !== correctVal) label.classList.add('selected-wrong');
+    });
+
+    if (selected.value === correctVal) {
+      scores[qNum] = 1;
+      fb.textContent = '✓ Correct! ' + explanation;
+      fb.className = 'feedback-msg show correct-msg';
+    } else {
+      scores[qNum] = 0;
+      fb.textContent = '✗ Not quite. ' + explanation;
+      fb.className = 'feedback-msg show wrong-msg';
+    }
+  }
+
+  function showScore() {
+    const total = Object.values(scores).reduce((a, b) => a + b, 0);
+    const attempted = Object.keys(scores).length;
+    const scoreDiv = document.getElementById('quiz-score');
+    const scoreText = document.getElementById('score-text');
+    const scoreMsg = document.getElementById('score-msg');
+
+    scoreText.textContent = `${total} / 6`;
+
+    const msgs = [
+      'Keep practising — revisit the guided practice section and try again!',
+      'Getting there! Review the questions you missed with your teacher.',
+      'Good effort! A couple of areas to revisit.',
+      'Well done! Strong understanding of Venn diagrams.',
+      'Excellent! Almost perfect — check any mistakes carefully.',
+      '🎉 Full marks! Outstanding — you\'ve mastered this topic!'
+    ];
+    scoreMsg.textContent = msgs[total] || msgs[0];
+    scoreDiv.style.display = 'block';
+    scoreDiv.scrollIntoView({ behavior: 'smooth' });
+  }
+</script>
+
+
+</body></html>
