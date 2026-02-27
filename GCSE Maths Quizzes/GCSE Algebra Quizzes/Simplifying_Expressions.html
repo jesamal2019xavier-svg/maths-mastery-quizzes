@@ -402,7 +402,7 @@
             return arr[Math.floor(Math.random() * arr.length)];
         }
 
-        // Normalize an expression by splitting into terms, sorting them, and rebuilding
+        // Normalize an expression: sort terms and also sort letters within each variable part (if no exponents)
         function normalizeExpression(expr) {
             // Remove all spaces
             let s = expr.replace(/\s+/g, '');
@@ -411,8 +411,7 @@
             // Handle leading sign
             if (!s.startsWith('+') && !s.startsWith('-')) s = '+' + s;
             
-            // Split into terms at '+' or '-' that are not part of exponent notation (^)
-            // We'll use a regex that splits on + or - but not when inside ^? Actually exponents are ^2, so the sign is outside.
+            // Split into terms at '+' or '-'
             const termRegex = /[+-][^+-]+/g;
             let terms = s.match(termRegex) || [];
             
@@ -430,12 +429,16 @@
                 let coeff = coeffStr === '' ? 1 : parseInt(coeffStr, 10);
                 coeff *= sign;
                 
-                // Normalize variable: for sorting, we treat constant as empty string
+                // Normalize variable: sort letters if no exponent (e.g., 'pk' -> 'kp')
+                if (variable && !variable.includes('^')) {
+                    // sort the characters (letters) alphabetically
+                    variable = variable.split('').sort().join('');
+                }
+                
                 if (variable === '') {
-                    parsedTerms.push({ var: '', coeff: coeff, display: coeff.toString() });
+                    parsedTerms.push({ var: '', coeff: coeff });
                 } else {
-                    // Ensure powers are normalized: e.g., 'x^2' vs 'x²' – we'll keep as given, but sorting on var string works.
-                    parsedTerms.push({ var: variable, coeff: coeff, display: term });
+                    parsedTerms.push({ var: variable, coeff: coeff });
                 }
             }
             
@@ -625,7 +628,7 @@
             terms.push((signs[2] === 1 ? '+ ' : '- ') + formatTerm(Math.abs(c), p));
             terms.push((signs[3] === 1 ? '+ ' : '- ') + formatTerm(Math.abs(d), q));
             let exprText = terms.join(' ').replace(/\+ -/g, '- ').replace(/^\+ /, '');
-            // Build simplified result (just one possible order; the checker will accept any order)
+            // Build simplified result
             let resultParts = [];
             if (totalP !== 0) resultParts.push(formatTerm(totalP, p));
             if (totalQ !== 0) resultParts.push(formatTerm(totalQ, q));
