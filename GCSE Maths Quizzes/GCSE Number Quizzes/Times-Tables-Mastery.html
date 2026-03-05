@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Times Tables Mastery</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f0f4ff; --white:#fff; --navy:#1a1f4b; --blue:#3b5bdb;
+  --green:#2f9e44; --green-light:#d3f9d8; --red:#e03131; --red-light:#ffe3e3;
+  --yellow:#f59f00; --yellow-light:#fff3bf; --orange:#e8590c;
+  --purple:#7048e8; --gold:#f7c948; --teal:#0ca678;
+  --muted:#868e96; --border:#dee2e6;
+  --shadow:0 4px 24px rgba(26,31,75,.10); --shadow-lg:0 8px 40px rgba(26,31,75,.16);
+  --radius:20px; --radius-sm:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--navy);min-height:100vh;padding-bottom:40px;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle at 20% 20%,rgba(59,91,219,.07) 0%,transparent 50%),
+  radial-gradient(circle at 80% 80%,rgba(112,72,232,.07) 0%,transparent 50%)}
+
+.screen{display:none}.screen.active{display:block}
+
+/* ===== MAP ===== */
+#mapScreen{padding:20px 16px;max-width:480px;margin:0 auto}
+.app-header{text-align:center;margin-bottom:18px}
+.app-title{font-family:'Fredoka One',cursive;font-size:2.3rem;color:var(--navy);line-height:1}
+.app-title span{color:var(--blue)}
+.app-sub{font-size:.88rem;color:var(--muted);margin-top:4px;font-weight:600}
+
+/* Name card */
+.name-card{
+  background:var(--white);border-radius:var(--radius);padding:16px 20px;
+  margin-bottom:16px;box-shadow:var(--shadow);
+  display:flex;align-items:center;gap:14px;
+}
+.name-avatar{
+  width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--purple));
+  display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;
+}
+.name-right{flex:1}
+.name-label{font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.name-input{
+  width:100%;border:2px solid var(--border);border-radius:var(--radius-sm);
+  padding:9px 13px;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;
+  color:var(--navy);background:var(--bg);outline:none;transition:border-color .2s;
+}
+.name-input:focus{border-color:var(--blue);background:var(--white)}
+.name-greeting{font-size:.85rem;font-weight:700;color:var(--blue);margin-top:4px;min-height:20px}
+
+.progress-summary{
+  background:var(--white);border-radius:var(--radius);padding:14px 18px;
+  margin-bottom:16px;box-shadow:var(--shadow);display:flex;align-items:center;gap:14px
+}
+.progress-ring{transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--border);stroke-width:6}
+.ring-fill{fill:none;stroke:var(--blue);stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .6s ease}
+.progress-info h3{font-size:.97rem;font-weight:800}
+.progress-info p{font-size:.8rem;color:var(--muted);font-weight:600;margin-top:2px}
+.certs-count{font-family:'Fredoka One',cursive;font-size:1.5rem;color:var(--gold)}
+
+.tables-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.table-card{
+  background:var(--white);border-radius:var(--radius);padding:13px 16px;
+  box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;
+  cursor:pointer;transition:transform .18s,box-shadow .18s;border:2.5px solid transparent
+}
+.table-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.table-card:active{transform:scale(.98)}
+.table-card.locked{opacity:.42;cursor:not-allowed}
+.table-card.locked:hover{transform:none;box-shadow:var(--shadow)}
+.table-card.completed{border-color:var(--green)}
+.table-card.in-progress{border-color:var(--blue)}
+.table-badge{
+  width:50px;height:50px;border-radius:13px;flex-shrink:0;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Fredoka One',cursive;font-size:1.4rem
+}
+.table-info{flex:1}
+.table-name{font-weight:800;font-size:.95rem}
+.table-status{font-size:.75rem;color:var(--muted);font-weight:600;margin-top:2px}
+.table-right{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.speed-badge{font-size:.68rem;font-weight:800;padding:3px 9px;border-radius:50px;background:var(--yellow-light);color:var(--yellow)}
+
+.final-card{
+  background:linear-gradient(135deg,var(--navy),var(--purple));
+  border-radius:var(--radius);padding:18px;color:#fff;text-align:center;
+  cursor:pointer;transition:transform .18s,box-shadow .18s;
+  box-shadow:0 6px 30px rgba(112,72,232,.35);margin-bottom:12px
+}
+.final-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(112,72,232,.45)}
+.final-card.locked{opacity:.4;cursor:not-allowed}
+.final-card.locked:hover{transform:none}
+.final-card h3{font-family:'Fredoka One',cursive;font-size:1.4rem;margin-bottom:3px}
+.final-card p{font-size:.82rem;opacity:.85;font-weight:600}
+
+/* ===== EXERCISE ===== */
+#exerciseScreen{padding:14px 16px;max-width:480px;margin:0 auto}
+.ex-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.icon-btn{
+  width:40px;height:40px;border-radius:50%;border:2px solid var(--border);
+  background:var(--white);font-size:1.05rem;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;transition:all .15s
+}
+.icon-btn:hover{border-color:var(--blue);color:var(--blue)}
+.help-btn{border-color:var(--teal);color:var(--teal);font-family:'Fredoka One',cursive;font-size:1.1rem}
+.help-btn:hover{background:var(--teal);color:#fff;border-color:var(--teal)}
+.ex-title-wrap{flex:1}
+.ex-title{font-family:'Fredoka One',cursive;font-size:1.3rem}
+.ex-level{font-size:.74rem;color:var(--muted);font-weight:700}
+
+/* Streak bar */
+.streak-bar-wrap{
+  background:var(--white);border-radius:var(--radius);padding:11px 15px;
+  margin-bottom:10px;box-shadow:var(--shadow);display:flex;align-items:center;gap:11px
+}
+.streak-info{flex:1}
+.streak-label{font-size:.68rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.streak-dots{display:flex;gap:4px;flex-wrap:wrap}
+.sd{width:14px;height:14px;border-radius:50%;background:var(--border);transition:background .2s,transform .2s}
+.sd.done{background:var(--green);transform:scale(1.1)}
+.sd.current{background:var(--blue);box-shadow:0 0 0 3px rgba(59,91,219,.25)}
+.streak-count{font-family:'Fredoka One',cursive;font-size:1.75rem;color:var(--navy);line-height:1;text-align:right;min-width:42px}
+.streak-count span{font-size:.68rem;color:var(--muted);font-weight:700;display:block;text-align:center}
+
+/* Speed chips */
+.speed-row{
+  background:var(--white);border-radius:var(--radius);padding:9px 15px;
+  margin-bottom:10px;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:space-between
+}
+.speed-row-label{font-size:.68rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.speed-chips{display:flex;gap:5px;flex-wrap:wrap}
+.chip{font-size:.68rem;font-weight:800;padding:3px 8px;border-radius:50px;background:var(--bg);color:var(--muted)}
+.chip.done{background:var(--green-light);color:var(--green)}
+.chip.active{background:var(--blue);color:#fff}
+.chip.goal{background:var(--yellow-light);color:var(--orange)}
+
+/* Timer */
+.timer-wrap{display:flex;justify-content:center;margin-bottom:10px;position:relative}
+.timer-svg{transform:rotate(-90deg)}
+.timer-ring-bg{fill:none;stroke:var(--border);stroke-width:8}
+.timer-ring-fill{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset .1s linear,stroke .3s}
+.timer-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.timer-num{font-family:'Fredoka One',cursive;font-size:2.5rem;color:var(--navy);line-height:1}
+.timer-unit{font-size:.6rem;color:var(--muted);font-weight:700;text-transform:uppercase}
+
+/* Question */
+.question-wrap{
+  background:var(--white);border-radius:var(--radius);padding:15px 17px;
+  text-align:center;margin-bottom:10px;box-shadow:var(--shadow)
+}
+.reset-notice{
+  background:var(--red-light);color:var(--red);font-size:.76rem;font-weight:800;
+  border-radius:8px;padding:5px 11px;margin-bottom:8px;display:none
+}
+.reset-notice.show{display:block}
+.q-info{font-size:.73rem;color:var(--muted);font-weight:700;margin-bottom:6px}
+.question-text{font-family:'Fredoka One',cursive;font-size:2.9rem;color:var(--navy);margin-bottom:12px;line-height:1}
+.question-text .hl{color:var(--blue)}
+.answer-row{display:flex;justify-content:center}
+.answer-input{
+  width:128px;padding:10px;border-radius:var(--radius-sm);
+  border:2.5px solid var(--border);font-family:'Fredoka One',cursive;
+  font-size:2rem;text-align:center;color:var(--navy);background:var(--bg);
+  outline:none;transition:border-color .2s,background .2s;-moz-appearance:textfield
+}
+.answer-input::-webkit-inner-spin-button,.answer-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.answer-input:focus{border-color:var(--blue);background:var(--white)}
+.answer-input.correct{border-color:var(--green);background:var(--green-light);color:var(--green)}
+.answer-input.wrong{border-color:var(--red);background:var(--red-light);color:var(--red)}
+.feedback-msg{min-height:22px;text-align:center;font-size:.84rem;font-weight:800;margin-top:6px;opacity:0;transition:opacity .2s}
+.feedback-msg.show{opacity:1}
+.feedback-msg.correct{color:var(--green)}
+.feedback-msg.wrong{color:var(--red)}
+
+/* Numpad */
+.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.nk{
+  padding:14px 8px;border-radius:var(--radius-sm);border:2px solid var(--border);
+  background:var(--white);font-family:'Fredoka One',cursive;font-size:1.3rem;
+  color:var(--navy);cursor:pointer;transition:all .12s;text-align:center;
+  box-shadow:0 2px 6px rgba(26,31,75,.06)
+}
+.nk:hover{background:var(--bg);border-color:var(--blue);transform:scale(1.04)}
+.nk:active{transform:scale(.96)}
+.nk.del{color:var(--red);font-size:.95rem}
+.nk.ok{background:var(--blue);border-color:var(--blue);color:#fff}
+.nk.ok:hover{background:#2f4ac7}
+
+/* ===== HELP MODAL ===== */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(26,31,75,.55);
+  display:flex;align-items:center;justify-content:center;
+  z-index:1000;padding:20px;backdrop-filter:blur(4px);
+  opacity:0;pointer-events:none;transition:opacity .25s
+}
+.modal-overlay.show{opacity:1;pointer-events:all}
+.modal-box{
+  background:var(--white);border-radius:var(--radius);padding:20px 17px;
+  max-width:310px;width:100%;box-shadow:var(--shadow-lg);
+  transform:scale(.9);transition:transform .25s;max-height:88vh;overflow-y:auto
+}
+.modal-overlay.show .modal-box{transform:scale(1)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.modal-title{font-family:'Fredoka One',cursive;font-size:1.2rem}
+.modal-close{
+  width:30px;height:30px;border-radius:50%;border:2px solid var(--border);
+  background:var(--bg);font-size:.9rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all .15s
+}
+.modal-close:hover{border-color:var(--red);color:var(--red)}
+.tt-grid{display:grid;grid-template-columns:1fr 1fr;border-radius:var(--radius-sm);overflow:hidden;border:2px solid var(--border)}
+.tt-cell{padding:9px 12px;font-size:.92rem;font-weight:800;border-bottom:1px solid var(--border)}
+.tt-cell:nth-child(odd){background:var(--bg);color:var(--muted);border-right:1px solid var(--border)}
+.tt-cell:nth-child(even){background:var(--white)}
+.tt-cell.hl-row{background:var(--yellow-light)!important;color:var(--orange)!important;font-size:1rem}
+.modal-note{margin-top:11px;font-size:.75rem;color:var(--muted);font-weight:600;text-align:center;font-style:italic}
+.modal-note b{color:var(--red);font-style:normal}
+
+/* ===== RESULT ===== */
+#resultScreen{padding:16px;max-width:480px;margin:0 auto;text-align:center}
+.result-card{background:var(--white);border-radius:var(--radius);padding:24px 19px;box-shadow:var(--shadow-lg);margin-bottom:13px}
+.result-emoji{font-size:3.6rem;margin-bottom:7px;display:block}
+.result-title{font-family:'Fredoka One',cursive;font-size:1.8rem;margin-bottom:3px}
+.result-sub{color:var(--muted);font-size:.84rem;font-weight:600;margin-bottom:13px}
+.info-banner{
+  border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:13px;
+  font-weight:700;font-size:.84rem;text-align:left;display:flex;align-items:flex-start;gap:9px
+}
+.info-banner.advance{background:#e8f5e9;color:var(--green);border-left:4px solid var(--green)}
+.info-banner.cert{background:var(--yellow-light);color:var(--orange);border-left:4px solid var(--gold)}
+.info-banner.retry{background:var(--red-light);color:var(--red);border-left:4px solid var(--red)}
+.ib-icon{font-size:1.15rem;flex-shrink:0;margin-top:1px}
+.ib-body .ib-title{font-weight:900;font-size:.9rem;margin-bottom:2px}
+.stats-row{display:flex;justify-content:center;gap:9px;margin-bottom:13px;flex-wrap:wrap}
+.stat-box{background:var(--bg);border-radius:var(--radius-sm);padding:10px 13px;min-width:70px}
+.stat-box .sv{font-family:'Fredoka One',cursive;font-size:1.65rem;line-height:1}
+.stat-box .sl{font-size:.66rem;color:var(--muted);font-weight:700;text-transform:uppercase;margin-top:2px}
+.review-list{text-align:left;margin-top:7px;max-height:240px;overflow-y:auto}
+.review-item{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:.83rem}
+.review-item:last-child{border-bottom:none}
+.rq{color:var(--muted);font-weight:700}
+.ra{font-weight:800}
+.ra.right{color:var(--green)}
+.ra.wrong{color:var(--red)}
+.action-btn{
+  width:100%;padding:14px;border-radius:var(--radius);border:none;
+  font-family:'Fredoka One',cursive;font-size:1.18rem;
+  cursor:pointer;transition:all .15s;margin-bottom:9px
+}
+.action-btn.primary{background:var(--blue);color:#fff;box-shadow:0 6px 20px rgba(59,91,219,.28)}
+.action-btn.primary:hover{background:#2f4ac7;transform:translateY(-2px)}
+.action-btn.secondary{background:var(--white);color:var(--navy);border:2px solid var(--border)}
+.action-btn.secondary:hover{border-color:var(--blue)}
+
+/* ===== CERT ===== */
+#certScreen{padding:18px 16px;max-width:480px;margin:0 auto}
+.cert-wrap{background:var(--white);border-radius:var(--radius);overflow:hidden;margin-bottom:15px;box-shadow:var(--shadow-lg)}
+.cert-top{background:linear-gradient(135deg,var(--navy),var(--blue));padding:24px 20px 17px;text-align:center;color:#fff}
+.cert-stars{font-size:1.8rem;margin-bottom:6px}
+.cert-top h2{font-family:'Fredoka One',cursive;font-size:1.5rem;margin-bottom:3px}
+.cert-top p{opacity:.8;font-size:.82rem;font-weight:600}
+.cert-body{padding:20px 18px;text-align:center}
+.cert-student{font-family:'Fredoka One',cursive;font-size:1.5rem;color:var(--blue);margin-bottom:13px}
+.cert-ach{background:var(--yellow-light);border-radius:var(--radius-sm);padding:13px;margin-bottom:13px}
+.cert-ach .ca-title{font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--yellow)}
+.cert-ach .ca-desc{font-size:.8rem;color:var(--muted);font-weight:600;margin-top:3px}
+.cert-seal{font-size:3rem;margin:5px 0;display:block}
+.cert-date{font-size:.74rem;color:var(--muted);font-weight:600;margin-top:6px}
+
+/* Confetti */
+
+/* ===== START SCREEN ===== */
+#startScreen { padding: 20px 16px; max-width: 480px; margin: 0 auto; }
+.start-card {
+  background: var(--white); border-radius: var(--radius);
+  padding: 28px 22px; box-shadow: var(--shadow-lg);
+  text-align: center; margin-bottom: 16px;
+}
+.start-icon { font-size: 3.8rem; margin-bottom: 10px; display: block; }
+.start-title { font-family: 'Fredoka One', cursive; font-size: 1.9rem; color: var(--navy); margin-bottom: 5px; }
+.start-subtitle { color: var(--muted); font-size: .88rem; font-weight: 600; margin-bottom: 20px; }
+.start-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.start-info-box { background: var(--bg); border-radius: var(--radius-sm); padding: 12px; text-align: center; }
+.start-info-box .sib-val { font-family: 'Fredoka One', cursive; font-size: 1.45rem; color: var(--navy); line-height: 1; }
+.start-info-box .sib-lbl { font-size: .68rem; color: var(--muted); font-weight: 700; text-transform: uppercase; margin-top: 3px; }
+.start-rules { background: var(--yellow-light); border-radius: var(--radius-sm); padding: 13px 15px; text-align: left; margin-bottom: 20px; }
+.start-rules .sr-title { font-family: 'Fredoka One', cursive; font-size: .97rem; color: var(--orange); margin-bottom: 7px; }
+.start-rules ul { list-style: none; padding: 0; }
+.start-rules li { font-size: .81rem; font-weight: 700; color: var(--navy); padding: 3px 0; }
+.start-rules li::before { content: '→ '; color: var(--orange); }
+.begin-btn {
+  width: 100%; padding: 17px; border-radius: var(--radius); border: none;
+  background: linear-gradient(135deg, var(--blue), var(--purple));
+  color: #fff; font-family: 'Fredoka One', cursive; font-size: 1.4rem;
+  cursor: pointer; transition: all .18s;
+  box-shadow: 0 6px 24px rgba(59,91,219,.35);
+}
+.begin-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(59,91,219,.45); }
+.begin-btn:active { transform: scale(.98); }
+/* Numpad toggle */
+.numpad-toggle {
+  width: 100%; padding: 10px; border-radius: var(--radius-sm);
+  border: 2px solid var(--border); background: var(--white);
+  font-family: 'Nunito', sans-serif; font-weight: 800; font-size: .84rem;
+  color: var(--muted); cursor: pointer; transition: all .15s;
+  margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.numpad-toggle:hover { border-color: var(--blue); color: var(--blue); }
+.numpad-toggle.pad-on { border-color: var(--teal); color: var(--teal); background: #e6fcf5; }
+.numpad.hidden { display: none; }
+
+.confetti-container{position:fixed;inset:0;pointer-events:none;z-index:999;overflow:hidden}
+.confetti-piece{position:absolute;top:-20px;animation:fall linear forwards;border-radius:2px}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+
+@keyframes popIn{0%{transform:scale(.8);opacity:0}70%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
+.pop-in{animation:popIn .4s ease forwards}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.shake{animation:shake .35s ease}
+@keyframes streakPop{0%{transform:scale(1)}50%{transform:scale(1.35)}100%{transform:scale(1)}}
+.streak-pop{animation:streakPop .3s ease}
+</style>
+</head>
+<body>
+
+<!-- MAP -->
+<div id="mapScreen" class="screen active">
+  <div class="app-header">
+    <div class="app-title">Times Tables <span>Mastery</span></div>
+    <div class="app-sub">15 correct in a row to pass each level 🔥</div>
+  </div>
+
+  <!-- Student name -->
+  <div class="name-card">
+    <div class="name-avatar">🎓</div>
+    <div class="name-right">
+      <div class="name-label">Student Name</div>
+      <input type="text" class="name-input" id="nameInput" placeholder="Enter your name…" maxlength="30"
+        oninput="onNameChange()" autocomplete="off">
+      <div class="name-greeting" id="nameGreeting"></div>
+    </div>
+  </div>
+
+  <div class="progress-summary">
+    <svg class="progress-ring" width="62" height="62" viewBox="0 0 62 62">
+      <circle class="ring-bg" cx="31" cy="31" r="25"/>
+      <circle class="ring-fill" id="ringFill" cx="31" cy="31" r="25" stroke-dasharray="157.1" stroke-dashoffset="157.1"/>
+    </svg>
+    <div class="progress-info">
+      <h3><span class="certs-count" id="certsCount">0</span> / 12 Certificates</h3>
+      <p id="progressMsg">Start with the 2 times table!</p>
+    </div>
+  </div>
+
+  <div class="tables-grid" id="tablesGrid"></div>
+
+  <div class="final-card locked" id="finalCard" onclick="openFinal()">
+    <div style="font-size:2.3rem;margin-bottom:5px">🌟</div>
+    <h3>Ultimate Challenge</h3>
+    <p>Mixed questions from all tables — earn the Grand Certificate!</p>
+  </div>
+</div>
+
+<!-- START SCREEN -->
+<div id="startScreen" class="screen">
+  <div class="start-card">
+    <span class="start-icon" id="startIcon">✖️</span>
+    <div class="start-title" id="startTitle">2 Times Table</div>
+    <div class="start-subtitle" id="startSubtitle">Get ready — 15 correct in a row to pass!</div>
+
+    <div class="start-info-grid">
+      <div class="start-info-box">
+        <div class="sib-val" id="startSpeed">30s</div>
+        <div class="sib-lbl">Per Question</div>
+      </div>
+      <div class="start-info-box">
+        <div class="sib-val">15 🔥</div>
+        <div class="sib-lbl">Streak Needed</div>
+      </div>
+      <div class="start-info-box">
+        <div class="sib-val" id="startQCount">15+</div>
+        <div class="sib-lbl">Min Questions</div>
+      </div>
+      <div class="start-info-box">
+        <div class="sib-val">3s 🏅</div>
+        <div class="sib-lbl">Certificate Speed</div>
+      </div>
+    </div>
+
+    <div class="start-rules">
+      <div class="sr-title">📋 How it works</div>
+      <ul id="startRules">
+        <li>Answer each question before the timer runs out</li>
+        <li>Get 15 correct in a row to pass this level</li>
+        <li>Any wrong answer resets your streak to zero</li>
+        <li>Pass at 3s per question to earn your certificate</li>
+        <li>Tap <b>?</b> to see the full times table (timer pauses)</li>
+      </ul>
+    </div>
+
+    <button class="begin-btn" onclick="beginExercise()">🚀 Start!</button>
+  </div>
+  <button class="action-btn secondary" onclick="goMap()">← Back to Map</button>
+</div>
+
+<!-- EXERCISE -->
+<div id="exerciseScreen" class="screen">
+  <div class="ex-header">
+    <button class="icon-btn" onclick="goBack()">←</button>
+    <div class="ex-title-wrap">
+      <div class="ex-title" id="exTitle">2 Times Table</div>
+      <div class="ex-level" id="exLevelLabel">Round 1 — up to 30s per question</div>
+    </div>
+    <button class="icon-btn help-btn" onclick="showHelp()">?</button>
+  </div>
+
+  <div class="streak-bar-wrap">
+    <div class="streak-info">
+      <div class="streak-label">Correct in a row — need 15 🔥</div>
+      <div class="streak-dots" id="streakDots"></div>
+    </div>
+    <div class="streak-count" id="streakCount">0<span>streak</span></div>
+  </div>
+
+  <div class="speed-row">
+    <div class="speed-row-label">Speed</div>
+    <div class="speed-chips" id="speedChips"></div>
+  </div>
+
+  <div class="timer-wrap">
+    <svg class="timer-svg" width="120" height="120" viewBox="0 0 120 120">
+      <circle class="timer-ring-bg" cx="60" cy="60" r="50"/>
+      <circle class="timer-ring-fill" id="timerRingFill" cx="60" cy="60" r="50" stroke-dasharray="314.2" stroke-dashoffset="0"/>
+    </svg>
+    <div class="timer-center">
+      <div class="timer-num" id="timerNum">30</div>
+      <div class="timer-unit">seconds</div>
+    </div>
+  </div>
+
+  <div class="question-wrap">
+    <div class="reset-notice" id="resetNotice">❌ Streak reset to 0 — keep going!</div>
+    <div class="q-info" id="qInfo">Attempt 1 · All 11 facts not yet seen: 11 remaining</div>
+    <div class="question-text"><span id="q1">6</span> × <span id="q2" class="hl">7</span> = ?</div>
+    <div class="answer-row">
+      <input type="number" class="answer-input" id="answerInput"
+        inputmode="numeric" autocomplete="off" placeholder="?"
+        onkeydown="handleKey(event)">
+    </div>
+    <div class="feedback-msg" id="feedbackMsg"></div>
+  </div>
+
+  <button class="numpad-toggle" id="numpadToggle" onclick="toggleNumpad()">
+    <span id="numpadToggleIcon">🔢</span> <span id="numpadToggleText">Show Number Pad</span>
+  </button>
+  <div class="numpad hidden" id="numpadDiv">
+    <button class="nk" onclick="nkPress(7)">7</button>
+    <button class="nk" onclick="nkPress(8)">8</button>
+    <button class="nk" onclick="nkPress(9)">9</button>
+    <button class="nk" onclick="nkPress(4)">4</button>
+    <button class="nk" onclick="nkPress(5)">5</button>
+    <button class="nk" onclick="nkPress(6)">6</button>
+    <button class="nk" onclick="nkPress(1)">1</button>
+    <button class="nk" onclick="nkPress(2)">2</button>
+    <button class="nk" onclick="nkPress(3)">3</button>
+    <button class="nk del" onclick="nkDel()">⌫</button>
+    <button class="nk" onclick="nkPress(0)">0</button>
+    <button class="nk ok" onclick="submitAnswer()">OK</button>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div id="resultScreen" class="screen">
+  <div class="result-card pop-in">
+    <span class="result-emoji" id="resultEmoji">🎉</span>
+    <div class="result-title" id="resultTitle">Passed!</div>
+    <div class="result-sub" id="resultSub">15 correct in a row</div>
+    <div class="info-banner" id="infoBanner">
+      <span class="ib-icon">⚡</span>
+      <div class="ib-body"><div class="ib-title" id="ibTitle">Next target!</div><div id="ibDesc"></div></div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-box"><div class="sv" id="rsAttempts">18</div><div class="sl">Attempts</div></div>
+      <div class="stat-box"><div class="sv" id="rsResets">3</div><div class="sl">Resets</div></div>
+      <div class="stat-box"><div class="sv" id="rsAvg">8s</div><div class="sl">Avg Speed</div></div>
+      <div class="stat-box"><div class="sv" id="rsNext">10s</div><div class="sl">Next</div></div>
+    </div>
+    <div class="review-list" id="reviewList"></div>
+  </div>
+  <button class="action-btn primary" id="nextActionBtn" onclick="nextAction()">Continue →</button>
+  <button class="action-btn secondary" onclick="goMap()">Back to Map</button>
+</div>
+
+<!-- CERTIFICATE -->
+<div id="certScreen" class="screen">
+  <div class="cert-wrap">
+    <div class="cert-top">
+      <div class="cert-stars">⭐⭐⭐</div>
+      <h2 id="certHeadline">Certificate of Achievement</h2>
+      <p>Times Tables Mastery</p>
+    </div>
+    <div class="cert-body">
+      <div class="cert-student" id="certStudent">Well done!</div>
+      <div class="cert-ach">
+        <div class="ca-title" id="certAchTitle">🏆 2 Times Table Master!</div>
+        <div class="ca-desc" id="certAchDesc">15 correct in a row at 3 seconds per question</div>
+      </div>
+      <span class="cert-seal" id="certSeal">🥇</span>
+      <div class="cert-date" id="certDate"></div>
+    </div>
+  </div>
+  <button class="action-btn primary" onclick="goMap()">🗺 Back to Map</button>
+</div>
+
+<!-- HELP MODAL -->
+<div class="modal-overlay" id="helpModal" onclick="closeHelpOutside(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">📖 2 Times Table</div>
+      <button class="modal-close" onclick="closeHelp()">✕</button>
+    </div>
+    <div class="tt-grid" id="ttGrid"></div>
+    <div class="modal-note">Highlighted = your current question.<br><b>Timer paused</b> while you look!</div>
+  </div>
+</div>
+
+<div class="confetti-container" id="confetti"></div>
+
+<!-- TEACHER SETTINGS -->
+<button class="settings-toggle" onclick="toggleSettings()" title="Teacher settings">⚙️</button>
+<div class="settings-panel" id="settingsPanel">
+  <div class="settings-title">⚙️ Teacher Settings</div>
+  <div class="settings-label">Ultimate Challenge — Questions</div>
+  <div class="q-count-options">
+    <button class="qco" onclick="setQCount(20)" id="qco20">20</button>
+    <button class="qco active" onclick="setQCount(44)" id="qco44">44</button>
+    <button class="qco" onclick="setQCount(66)" id="qco66">66</button>
+    <button class="qco" onclick="setQCount(121)" id="qco121">121</button>
+  </div>
+  <div class="custom-q-row">
+    <input type="number" class="custom-q-input" id="customQInput" placeholder="Own" min="10" max="200" oninput="setCustomQ(this.value)">
+    <span style="font-size:.78rem;font-weight:700;color:var(--muted)">custom</span>
+  </div>
+  <div class="settings-note">
+    Questions are weighted — harder facts (6×7, 7×8, 8×9 etc.) appear more often.
+  </div>
+  <div style="margin-top:10px">
+    <div class="settings-label">Difficulty key</div>
+    <div class="diff-row"><div class="diff-dot" style="background:#e03131"></div> Hard: 6×7, 6×8, 6×9, 7×8, 7×9, 8×9</div>
+    <div class="diff-row"><div class="diff-dot" style="background:#f59f00"></div> Medium: 3s, 4s, 11s, 12s combos</div>
+    <div class="diff-row"><div class="diff-dot" style="background:#2f9e44"></div> Easy: 2s, 5s, 10s, squares</div>
+  </div>
+</div>
+
+
+<script>
+// =====================
+// CONFIG
+// =====================
+const STREAK_NEEDED = 15;
+const MIN_SPEED = 3;
+const START_SPEED = 30;
+const SPEED_STEPS = [30,25,20,15,10,8,6,5,4,3];
+const TABLES = [2,3,4,5,6,7,8,9,10,11,12];
+const MULTIPLIERS = [2,3,4,5,6,7,8,9,10,11,12];
+const COLORS = {2:'#e64980',3:'#e8590c',4:'#f59f00',5:'#2f9e44',6:'#0ca678',7:'#1971c2',8:'#7048e8',9:'#c2255c',10:'#5c7cfa',11:'#1098ad',12:'#862e9c'};
+
+// Teacher-configurable ultimate challenge question count
+let ULTIMATE_Q_COUNT = 44;
+
+// Difficulty weights for every [a,b] pair (a<=b, both 2-12)
+// Weight 5 = hardest, 2 = medium, 1 = easy
+function factWeight(a, b) {
+  const lo = Math.min(a,b), hi = Math.max(a,b);
+  if (lo===2||lo===5||hi===10) return 1;        // 2×, 5×, ×10
+  if (lo===hi) return 1;                         // squares
+  if ((lo===6&&hi===7)||(lo===6&&hi===8)||(lo===6&&hi===9)||
+      (lo===7&&hi===8)||(lo===7&&hi===9)||(lo===8&&hi===9)) return 5; // hardest 6
+  if (hi===11||hi===12) return 2;                // 11s, 12s (pattern-based)
+  if (lo===3||lo===4) return 2;                  // 3s, 4s
+  return 3;                                      // medium-hard (e.g. 6×6, 9×9 etc)
+}
+
+// Build weighted pool: each fact appears weight times so weighted random = simple random from pool
+function buildWeightedPool() {
+  const pool = [];
+  for (const t of TABLES) {
+    for (const m of MULTIPLIERS) {
+      const w = factWeight(t, m);
+      for (let i=0; i<w; i++) pool.push([t, m]);
+    }
+  }
+  return pool;
+}
+
+// Settings panel
+function toggleSettings() {
+  document.getElementById('settingsPanel').classList.toggle('open');
+}
+function setQCount(n) {
+  ULTIMATE_Q_COUNT = n;
+  document.querySelectorAll('.qco').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('qco'+n);
+  if (btn) btn.classList.add('active');
+  document.getElementById('customQInput').value = '';
+}
+function setCustomQ(val) {
+  const n = parseInt(val);
+  if (n >= 10 && n <= 200) {
+    ULTIMATE_Q_COUNT = n;
+    document.querySelectorAll('.qco').forEach(b => b.classList.remove('active'));
+  }
+}
+// Close settings when clicking outside
+document.addEventListener('click', e => {
+  const panel = document.getElementById('settingsPanel');
+  if (!panel.contains(e.target) && !e.target.closest('.settings-toggle')) {
+    panel.classList.remove('open');
+  }
+});
+
+function nextSpeed(avgSecs) {
+  for (let s of SPEED_STEPS) { if (s < avgSecs) return Math.max(s, MIN_SPEED); }
+  return MIN_SPEED;
+}
+
+// =====================
+// STUDENT NAME
+// =====================
+function getStudentName() {
+  return localStorage.getItem('ttStudentName') || '';
+}
+function onNameChange() {
+  const val = document.getElementById('nameInput').value.trim();
+  localStorage.setItem('ttStudentName', val);
+  const greet = document.getElementById('nameGreeting');
+  if (val) {
+    const hour = new Date().getHours();
+    const tod = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+    greet.textContent = `${tod}, ${val}! 👋`;
+  } else {
+    greet.textContent = '';
+  }
+}
+
+// =====================
+// STORAGE
+// =====================
+function loadP() { try { return JSON.parse(localStorage.getItem('ttM4')||'{}'); } catch(e) { return {}; } }
+function saveP(p) { localStorage.setItem('ttM4', JSON.stringify(p)); }
+function getTP(p,t) { return p[t] || { speed:START_SPEED, certified:false, history:[] }; }
+
+// =====================
+// QUESTION GENERATION
+// Guaranteed coverage: shuffle all 11 multipliers first,
+// then append 4 random extras. Total = 15 minimum before streak check.
+// After that, questions keep coming (random) until streak of 15 reached.
+// =====================
+function makeQuestionQueue(tableNum) {
+  if (tableNum === 'final') {
+    const totalQ = ULTIMATE_Q_COUNT;
+    // Phase 1: all 121 unique facts shuffled, sorted hard-first, take up to totalQ
+    const uniqueFacts = [];
+    for (const t of TABLES) for (const m of MULTIPLIERS) uniqueFacts.push([t, m]);
+    // Sort by difficulty descending so hardest facts are tested first
+    uniqueFacts.sort((x, y) => factWeight(y[0],y[1]) - factWeight(x[0],x[1]));
+    // Shuffle within each difficulty tier to avoid predictable order
+    const phase1 = [];
+    let i = 0;
+    while (i < uniqueFacts.length) {
+      let j = i;
+      const w = factWeight(uniqueFacts[i][0], uniqueFacts[i][1]);
+      while (j < uniqueFacts.length && factWeight(uniqueFacts[j][0], uniqueFacts[j][1]) === w) j++;
+      const tier = shuffle(uniqueFacts.slice(i, j));
+      phase1.push(...tier);
+      i = j;
+    }
+    // If totalQ > 121, fill remaining with weighted random (hard facts more likely)
+    const result = phase1.slice(0, totalQ);
+    if (totalQ > 121) {
+      const weighted = buildWeightedPool();
+      const extra = shuffle(weighted).slice(0, totalQ - 121);
+      result.push(...extra);
+    }
+    return result;
+  } else {
+    // Individual table: shuffle the 11 distinct multipliers (guaranteed all-fact coverage)
+    const shuffledMults = shuffle([...MULTIPLIERS]);
+    const guaranteed = shuffledMults.map(m => [tableNum, m]);
+    // 4 random extras for extra practice
+    const extras = Array.from({length:4}, () => [tableNum, MULTIPLIERS[Math.floor(Math.random()*MULTIPLIERS.length)]]);
+    return [...guaranteed, ...extras];
+  }
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function randomQuestion(tableNum) {
+  // Used once the initial guaranteed queue is exhausted
+  if (tableNum === 'final') {
+    const t = TABLES[Math.floor(Math.random()*TABLES.length)];
+    const m = MULTIPLIERS[Math.floor(Math.random()*MULTIPLIERS.length)];
+    return [t, m];
+  } else {
+    return [tableNum, MULTIPLIERS[Math.floor(Math.random()*MULTIPLIERS.length)]];
+  }
+}
+
+function maybeFlip([a,b], tableNum) {
+  // For individual tables: always show table number FIRST (e.g. 2 × 7, never 7 × 2)
+  // For the final challenge: mix freely to build generalised fluency
+  if (tableNum === 'final') return Math.random() > .5 ? [a,b] : [b,a];
+  // Ensure the table number comes first
+  if (a === tableNum) return [a,b];
+  if (b === tableNum) return [b,a];
+  return [a,b]; // fallback (shouldn't happen)
+}
+
+// =====================
+// MAP
+// =====================
+function buildMap() {
+  // Restore name
+  const savedName = getStudentName();
+  const nameInput = document.getElementById('nameInput');
+  if (savedName && nameInput.value === '') {
+    nameInput.value = savedName;
+    onNameChange();
+  }
+
+  const p = loadP();
+  const grid = document.getElementById('tablesGrid');
+  grid.innerHTML = '';
+  let certs = TABLES.filter(t=>getTP(p,t).certified).length + (p.final&&p.final.certified?1:0);
+  const circ = 157.1;
+  document.getElementById('ringFill').style.strokeDashoffset = circ - circ*certs/12;
+  document.getElementById('certsCount').textContent = certs;
+  const msgs = ['Start with the 2 times table!','Great start!','Building momentum! 💪','Nearly halfway!','Halfway — amazing!','More than halfway!','Almost there!','So close!','Just a few more!','One more before the final!','Ready for the Ultimate Challenge!','🏆 All done!'];
+  document.getElementById('progressMsg').textContent = msgs[Math.min(certs,11)];
+
+  TABLES.forEach((t,i) => {
+    const tp = getTP(p,t);
+    const locked = false; // All tables accessible from the start
+    const card = document.createElement('div');
+    card.className = 'table-card'+(tp.certified?' completed':tp.history.length>0?' in-progress':'');
+
+    const badge = document.createElement('div');
+    badge.className='table-badge'; badge.style.background=COLORS[t]; badge.textContent=t;
+
+    const info = document.createElement('div'); info.className='table-info';
+    const st = tp.certified?'✅ Certified!'
+      :tp.history.length>0?`Current target: ${tp.speed}s per question`
+      :`Tap to start — first round: ${START_SPEED}s`;
+    info.innerHTML=`<div class="table-name">${t} Times Table</div><div class="table-status">${st}</div>`;
+
+    const right = document.createElement('div'); right.className='table-right';
+    if (tp.certified) right.innerHTML='<span style="font-size:1.3rem">🏅</span>';
+    else right.innerHTML=`<div class="speed-badge">${tp.speed}s</div>`;
+
+    card.appendChild(badge); card.appendChild(info); card.appendChild(right);
+    card.onclick = () => openExercise(t);
+    grid.appendChild(card);
+  });
+
+  const fc = document.getElementById('finalCard');
+  const fp = getTP(p,'final');
+  fc.classList.remove('locked');
+  const allDone = TABLES.every(t=>getTP(p,t).certified);
+  if (fp.certified) {
+    fc.innerHTML = `<div style="font-size:2.3rem;margin-bottom:5px">🌟</div><h3>Ultimate Challenge</h3><p>✅ Grand Certificate Earned! 👑</p>`;
+  } else {
+    const qLabel = `${ULTIMATE_Q_COUNT} questions`;
+    const hint = allDone ? `All tables mastered — go for it! 🏆` : `Open to all — try it any time!`;
+    fc.innerHTML = `<div style="font-size:2.3rem;margin-bottom:5px">🌟</div><h3>Ultimate Challenge</h3><p>${hint}<br><span style="font-size:.78rem;opacity:.85">${qLabel} · harder facts prioritised · ${fp.speed||START_SPEED}s target</span></p>`;
+  }
+}
+
+function openFinal() {
+  openExercise('final');
+}
+
+// =====================
+// EXERCISE STATE
+// =====================
+let S = {};
+
+function openExercise(tableNum) {
+  const p = loadP();
+  const tp = getTP(p, tableNum);
+  const spd = tp.speed || START_SPEED;
+  const isFinal = tableNum === 'final';
+
+  // Show START SCREEN — don't begin yet
+  showScreen('startScreen');
+
+  const title = isFinal ? 'Ultimate Challenge' : `${tableNum} Times Table`;
+  const emoji = isFinal ? '🌟' : ['','','🥇','🥈','🏅','⭐','🌟','💫','🔥','⚡','🎯','🏆','👑'][tableNum] || '✖️';
+  document.getElementById('startIcon').textContent = emoji;
+  document.getElementById('startTitle').textContent = title;
+
+  const isFirstRound = spd === START_SPEED && (!tp.history || tp.history.length === 0);
+  document.getElementById('startSubtitle').textContent = isFinal
+    ? `Mixed questions from all tables — ${ULTIMATE_Q_COUNT} questions, harder facts first!`
+    : isFirstRound ? `First attempt — take up to ${START_SPEED}s per question`
+    : `Current target: ${spd}s per question`;
+
+  document.getElementById('startSpeed').textContent = spd + 's';
+  document.getElementById('startQCount').textContent = isFinal ? ULTIMATE_Q_COUNT : '15+';
+
+  // Update rules for final challenge
+  const rulesList = document.getElementById('startRules');
+  if (isFinal) {
+    rulesList.innerHTML = `
+      <li>Questions from ALL times tables, mixed randomly</li>
+      <li>Harder facts (6×7, 7×8, 8×9…) appear more often</li>
+      <li>Get 15 correct in a row to pass this level</li>
+      <li>Any wrong answer resets your streak to zero</li>
+      <li>Pass at 3s per question to earn the Grand Certificate 👑</li>`;
+  } else {
+    rulesList.innerHTML = `
+      <li>All 11 facts for the ${tableNum} times table will appear</li>
+      <li>Get 15 correct in a row to pass this level</li>
+      <li>Any wrong answer resets your streak to zero</li>
+      <li>Pass at 3s per question to earn your certificate 🏅</li>
+      <li>Tap <b>?</b> to see the full times table (timer pauses)</li>`;
+  }
+
+  // Store pending table so beginExercise knows what to start
+  S = { pendingTable: tableNum };
+}
+
+function beginExercise() {
+  const tableNum = S.pendingTable;
+  const p = loadP();
+  const tp = getTP(p, tableNum);
+
+  S = {
+    table: tableNum,
+    speed: tp.speed || START_SPEED,
+    streak: 0,
+    resets: 0,
+    totalAttempts: 0,
+    correctTimes: [],
+    log: [],
+    questionQueue: makeQuestionQueue(tableNum),
+    queueIndex: 0,
+    seenMultipliers: new Set(),
+    timerInterval: null,
+    timeLeft: tp.speed || START_SPEED,
+    answered: false,
+    helpOpen: false,
+    pausedAt: null,
+    currentQ: null,
+    showCert: false,
+    newSpeed: null,
+    avgTime: null,
+  };
+
+  showScreen('exerciseScreen');
+  const title = tableNum==='final' ? 'Ultimate Challenge' : `${tableNum} Times Table`;
+  document.getElementById('exTitle').textContent = title;
+  document.getElementById('exLevelLabel').textContent =
+    S.speed===START_SPEED ? `Round 1 — up to ${START_SPEED}s per question` : `Target: ${S.speed}s per question`;
+
+  const chips = document.getElementById('speedChips');
+  chips.innerHTML = '';
+  (tp.history||[]).forEach(h => {
+    const c=document.createElement('div'); c.className='chip done'; c.textContent=h+'s ✓'; chips.appendChild(c);
+  });
+  const cur=document.createElement('div'); cur.className='chip active'; cur.textContent=S.speed+'s'; chips.appendChild(cur);
+  const goal=document.createElement('div'); goal.className='chip goal'; goal.textContent='🏅 '+MIN_SPEED+'s'; chips.appendChild(goal);
+
+  buildStreakDots();
+  nextQuestion();
+}
+
+function buildStreakDots() {
+  const el = document.getElementById('streakDots');
+  el.innerHTML = '';
+  for (let i=0;i<STREAK_NEEDED;i++) {
+    const d=document.createElement('div');
+    d.className='sd'+(i<S.streak?' done':i===S.streak?' current':'');
+    d.id='sd'+i; el.appendChild(d);
+  }
+  document.getElementById('streakCount').innerHTML=`${S.streak}<span>streak</span>`;
+}
+
+function updateStreakDots() {
+  for (let i=0;i<STREAK_NEEDED;i++) {
+    const d=document.getElementById('sd'+i); if(!d) continue;
+    d.className='sd'+(i<S.streak?' done':i===S.streak?' current':'');
+  }
+  const sc=document.getElementById('streakCount');
+  sc.innerHTML=`${S.streak}<span>streak</span>`;
+  sc.classList.remove('streak-pop'); void sc.offsetWidth;
+  if(S.streak>0) sc.classList.add('streak-pop');
+}
+
+function getNextQuestion() {
+  // Use guaranteed queue for first 15, then random
+  let pair;
+  if (S.queueIndex < S.questionQueue.length) {
+    pair = S.questionQueue[S.queueIndex++];
+  } else {
+    pair = randomQuestion(S.table);
+  }
+  return maybeFlip(pair, S.table);
+}
+
+function nextQuestion() {
+  S.answered = false;
+  S.timeLeft = S.speed;
+  S.totalAttempts++;
+
+  const [a,b] = getNextQuestion();
+  S.currentQ = [a,b];
+  S.qStartTime = Date.now();
+
+  // Track seen multipliers (for non-final) — order is always [table, multiplier]
+  if (S.table !== 'final') {
+    S.seenMultipliers.add(b);
+  }
+
+  document.getElementById('q1').textContent = a;
+  document.getElementById('q2').textContent = b;
+
+  // Info line
+  let infoExtra = '';
+  if (S.table === 'final') {
+    const w = factWeight(a, b);
+    const diff = w===5 ? '🔴 Hard' : w>=3 ? '🟡 Medium' : '🟢 Easy';
+    infoExtra = ` · ${diff}`;
+  } else {
+    infoExtra = ` · Unseen facts: ${11-S.seenMultipliers.size} left`;
+  }
+  document.getElementById('qInfo').textContent = `Attempt ${S.totalAttempts}${infoExtra}`;
+
+  const inp = document.getElementById('answerInput');
+  inp.value=''; inp.className='answer-input'; inp.removeAttribute('disabled');
+  const fb = document.getElementById('feedbackMsg');
+  fb.className='feedback-msg'; fb.textContent='';
+  document.getElementById('resetNotice').classList.remove('show');
+
+  if (!S.helpOpen) startTimer();
+  inp.focus();
+}
+
+// =====================
+// TIMER
+// =====================
+const CIRC = 314.2;
+function startTimer() {
+  clearInterval(S.timerInterval); updateTimerUI();
+  S.timerInterval = setInterval(()=>{
+    S.timeLeft -= 0.1;
+    if (S.timeLeft<=0) { S.timeLeft=0; updateTimerUI(); clearInterval(S.timerInterval); if(!S.answered) timeOut(); }
+    else updateTimerUI();
+  },100);
+}
+function pauseTimer() { clearInterval(S.timerInterval); S.pausedAt=S.timeLeft; }
+function resumeTimer() { if(S.answered) return; S.timeLeft=S.pausedAt; startTimer(); document.getElementById('answerInput').focus(); }
+function updateTimerUI() {
+  document.getElementById('timerNum').textContent = Math.ceil(S.timeLeft);
+  const frac = S.timeLeft/S.speed;
+  document.getElementById('timerRingFill').style.strokeDashoffset = CIRC*(1-frac);
+  document.getElementById('timerRingFill').style.stroke = frac>.5?'#2f9e44':frac>.25?'#f59f00':'#e03131';
+}
+
+function timeOut() {
+  if (S.answered) return;
+  S.answered=true;
+  const elapsed=(Date.now()-S.qStartTime)/1000;
+  const [a,b]=S.currentQ;
+  S.log.push({q:`${a}×${b}`,ans:a*b,given:'(time)',correct:false,timeTaken:elapsed});
+  if(S.streak>0) S.resets++;
+  S.streak=0; updateStreakDots();
+  const inp=document.getElementById('answerInput');
+  inp.style.borderColor='var(--red)'; inp.style.background='var(--red-light)';
+  inp.setAttribute('disabled',true);
+  document.getElementById('feedbackMsg').className='feedback-msg wrong show';
+  document.getElementById('feedbackMsg').textContent=`⏰ Time's up! Answer: ${a*b}`;
+  document.getElementById('resetNotice').classList.add('show');
+  setTimeout(()=>nextQuestion(),1600);
+}
+
+// =====================
+// ANSWER
+// =====================
+function submitAnswer() {
+  if(S.answered) return;
+  const inp=document.getElementById('answerInput');
+  const val=parseInt(inp.value);
+  if(isNaN(val)||inp.value==='') return;
+
+  clearInterval(S.timerInterval);
+  S.answered=true;
+  const elapsed=Math.min((Date.now()-S.qStartTime)/1000, S.speed);
+  const [a,b]=S.currentQ;
+  const correct=a*b;
+  const right=val===correct;
+
+  S.log.push({q:`${a}×${b}`,ans:correct,given:val,correct:right,timeTaken:elapsed});
+
+  if(right) {
+    S.streak++; S.correctTimes.push(elapsed);
+    inp.className='answer-input correct';
+    document.getElementById('feedbackMsg').className='feedback-msg correct show';
+    document.getElementById('feedbackMsg').textContent =
+      S.streak>=STREAK_NEEDED ? `🏆 ${STREAK_NEEDED} in a row!`
+      : S.streak>1 ? `✓ Correct! ${S.streak} in a row 🔥` : '✓ Correct!';
+    updateStreakDots();
+    if(S.streak>=STREAK_NEEDED) { inp.setAttribute('disabled',true); setTimeout(()=>finishRound(),900); return; }
+  } else {
+    if(S.streak>0) S.resets++;
+    S.streak=0;
+    inp.className='answer-input wrong'; inp.classList.add('shake');
+    document.getElementById('feedbackMsg').className='feedback-msg wrong show';
+    document.getElementById('feedbackMsg').textContent=`✗ Answer is ${correct} — streak reset!`;
+    document.getElementById('resetNotice').classList.add('show');
+    updateStreakDots();
+  }
+  inp.setAttribute('disabled',true);
+  setTimeout(()=>nextQuestion(), right?700:1500);
+}
+
+function handleKey(e) { if(e.key==='Enter') submitAnswer(); }
+function nkPress(n) { const i=document.getElementById('answerInput'); if(!i.hasAttribute('disabled')&&i.value.length<3) i.value+=n; }
+function nkDel() { const i=document.getElementById('answerInput'); if(!i.hasAttribute('disabled')) i.value=i.value.slice(0,-1); }
+
+// =====================
+// FINISH ROUND
+// =====================
+function finishRound() {
+  clearInterval(S.timerInterval);
+  const avgTime = S.correctTimes.length
+    ? S.correctTimes.reduce((a,b)=>a+b,0)/S.correctTimes.length
+    : S.speed;
+
+  const p=loadP();
+  const tp=getTP(p,S.table);
+  let certEarned=false;
+  let newSpeed=tp.speed;
+
+  // Certificate conditions:
+  // 1. Already at MIN_SPEED
+  // 2. First round AND avg ≤ MIN_SPEED (skip straight to cert)
+  if(tp.speed<=MIN_SPEED || (tp.speed===START_SPEED && avgTime<=MIN_SPEED)) {
+    certEarned=true;
+    tp.certified=true; tp.speed=MIN_SPEED;
+  } else {
+    newSpeed=nextSpeed(avgTime);
+    if(!tp.history.includes(tp.speed)) tp.history.push(tp.speed);
+    tp.speed=newSpeed;
+  }
+  p[S.table]=tp; saveP(p);
+
+  S.certEarned=certEarned; S.newSpeed=newSpeed; S.avgTime=avgTime;
+  showResult(certEarned, avgTime, newSpeed, tp.speed);
+}
+
+// =====================
+// RESULT
+// =====================
+function showResult(certEarned, avgTime, newSpeed, prevSpeed) {
+  showScreen('resultScreen');
+  const name = getStudentName();
+  document.getElementById('resultEmoji').textContent = certEarned?'🏆':'🎉';
+  document.getElementById('resultTitle').textContent = certEarned?`🏅 Certificate Earned!`:`15 in a Row!`;
+  document.getElementById('resultSub').textContent = name
+    ? `Well done, ${name}! ${S.totalAttempts} attempts, ${S.resets} reset${S.resets!==1?'s':''}.`
+    : `${S.totalAttempts} attempts, ${S.resets} reset${S.resets!==1?'s':''}.`;
+
+  document.getElementById('rsAttempts').textContent=S.totalAttempts;
+  document.getElementById('rsResets').textContent=S.resets;
+  document.getElementById('rsAvg').textContent=avgTime.toFixed(1)+'s';
+  document.getElementById('rsNext').textContent=certEarned?'🏅':newSpeed+'s';
+
+  const banner=document.getElementById('infoBanner');
+  if(certEarned) {
+    banner.className='info-banner cert';
+    document.getElementById('ibTitle').textContent='🏅 Mastered!';
+    document.getElementById('ibDesc').textContent=`You hit 15 in a row at ${MIN_SPEED}s — this table is conquered!`;
+  } else {
+    const skipped = newSpeed < prevSpeed-4;
+    banner.className='info-banner advance';
+    document.getElementById('ibTitle').textContent=`⚡ Next target: ${newSpeed}s per question`;
+    document.getElementById('ibDesc').textContent=
+      `Your average was ${avgTime.toFixed(1)}s.${skipped?` Impressive — jumping straight to ${newSpeed}s!`:` Keep pushing!`}`;
+  }
+
+  const rev=document.getElementById('reviewList');
+  rev.innerHTML='';
+  const show=S.log.slice(-20);
+  if(S.log.length>20) {
+    const note=document.createElement('div');
+    note.style.cssText='font-size:.72rem;color:var(--muted);font-weight:700;padding:3px 0 5px';
+    note.textContent=`Showing last 20 of ${S.log.length} attempts`; rev.appendChild(note);
+  }
+  show.forEach(item=>{
+    const d=document.createElement('div'); d.className='review-item';
+    d.innerHTML=`<span class="rq">${item.q} = ${item.ans}</span>
+      <span class="ra ${item.correct?'right':'wrong'}">${item.correct?`✓ ${item.timeTaken.toFixed(1)}s`:`✗ ${item.given}`}</span>`;
+    rev.appendChild(d);
+  });
+
+  S.showCert=certEarned;
+  const btn=document.getElementById('nextActionBtn');
+  btn.textContent=certEarned?'🎓 View Certificate':`▶ Next Round (${newSpeed}s)`;
+  fireConfetti();
+}
+
+function nextAction() {
+  if (S.showCert) showCertScreen();
+  else { S.pendingTable = S.table; beginExercise(); }
+}
+
+// =====================
+// HELP MODAL
+// =====================
+function showHelp() {
+  if(S.answered||!S.currentQ) return;
+  S.helpOpen=true; pauseTimer();
+  const t=S.table;
+  const [qa,qb]=S.currentQ;
+  // For individual tables: qa=table, qb=multiplier (always in this order now)
+  // For final: qa=table, qb=multiplier
+  const displayTable = qa;
+  const currentMult = qb;
+  document.getElementById('modalTitle').textContent=`📖 ${displayTable} Times Table`;
+  const grid=document.getElementById('ttGrid');
+  grid.innerHTML='';
+  for(let m=1;m<=12;m++){
+    const isHL=m===currentMult;
+    const c1=document.createElement('div'); c1.className='tt-cell'+(isHL?' hl-row':''); c1.textContent=`${displayTable} × ${m}`;
+    const c2=document.createElement('div'); c2.className='tt-cell'+(isHL?' hl-row':''); c2.textContent=`= ${displayTable*m}`;
+    grid.appendChild(c1); grid.appendChild(c2);
+  }
+  document.getElementById('helpModal').classList.add('show');
+}
+function closeHelp() { document.getElementById('helpModal').classList.remove('show'); S.helpOpen=false; resumeTimer(); }
+function closeHelpOutside(e) { if(e.target===document.getElementById('helpModal')) closeHelp(); }
+
+// =====================
+// CERTIFICATE
+// =====================
+function showCertScreen() {
+  showScreen('certScreen');
+  const name = getStudentName() || 'Student';
+  const t=S.table; const isFinal=t==='final';
+  document.getElementById('certHeadline').textContent=isFinal?'Grand Certificate':'Certificate of Achievement';
+  document.getElementById('certStudent').textContent=name;
+  document.getElementById('certAchTitle').textContent=isFinal?'🌟 Ultimate Champion!':`🏆 ${t} Times Table Master!`;
+  document.getElementById('certAchDesc').textContent=`15 correct answers in a row at ${MIN_SPEED} seconds per question`;
+  document.getElementById('certSeal').textContent=isFinal?'👑':'🥇';
+  document.getElementById('certDate').textContent='Achieved on '+new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  fireConfetti();
+}
+
+// =====================
+// CONFETTI
+// =====================
+function fireConfetti() {
+  const c=document.getElementById('confetti'); c.innerHTML='';
+  const cols=['#f7c948','#e64980','#3b5bdb','#2f9e44','#e8590c','#7048e8','#1098ad','#ff6b6b'];
+  for(let i=0;i<80;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.left=Math.random()*100+'vw';
+    p.style.background=cols[Math.floor(Math.random()*cols.length)];
+    p.style.width=(6+Math.random()*8)+'px'; p.style.height=(6+Math.random()*8)+'px';
+    p.style.animationDuration=(1.5+Math.random()*2)+'s';
+    p.style.animationDelay=Math.random()*.8+'s';
+    p.style.borderRadius=Math.random()>.5?'50%':'2px';
+    c.appendChild(p);
+  }
+  setTimeout(()=>c.innerHTML='',4000);
+}
+
+// =====================
+// NUMPAD TOGGLE
+// =====================
+let numpadVisible = false;
+function toggleNumpad() {
+  numpadVisible = !numpadVisible;
+  const pad = document.getElementById('numpadDiv');
+  const btn = document.getElementById('numpadToggle');
+  const icon = document.getElementById('numpadToggleIcon');
+  const txt = document.getElementById('numpadToggleText');
+  pad.classList.toggle('hidden', !numpadVisible);
+  btn.classList.toggle('pad-on', numpadVisible);
+  icon.textContent = numpadVisible ? '🔢' : '🔢';
+  txt.textContent = numpadVisible ? 'Hide Number Pad' : 'Show Number Pad';
+}
+
+// =====================
+// NAV
+// =====================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function goBack() { clearInterval(S.timerInterval); goMap(); }
+function goMap() { clearInterval(S.timerInterval); buildMap(); showScreen('mapScreen'); }
+
+buildMap();
+</script>
+</body>
+</html>
