@@ -705,17 +705,6 @@ function shuffle(arr) {
   return a;
 }
 
-function randomQuestion(tableNum) {
-  // Used once the initial guaranteed queue is exhausted
-  if (tableNum === 'final') {
-    const t = TABLES[Math.floor(Math.random()*TABLES.length)];
-    const m = MULTIPLIERS[Math.floor(Math.random()*MULTIPLIERS.length)];
-    return [t, m];
-  } else {
-    return [tableNum, MULTIPLIERS[Math.floor(Math.random()*MULTIPLIERS.length)]];
-  }
-}
-
 function maybeFlip([a,b], tableNum) {
   // For individual tables: always show table number FIRST (e.g. 2 × 7, never 7 × 2)
   // For the final challenge: mix freely to build generalised fluency
@@ -907,13 +896,19 @@ function updateStreakDots() {
 }
 
 function getNextQuestion() {
-  // Use guaranteed queue for first 15, then random
-  let pair;
-  if (S.queueIndex < S.questionQueue.length) {
-    pair = S.questionQueue[S.queueIndex++];
-  } else {
-    pair = randomQuestion(S.table);
+  // Cycling deck: work through queue in order — no repeats within a pass.
+  // When exhausted, reshuffle the full fact pool and start a fresh pass.
+  if (S.queueIndex >= S.questionQueue.length) {
+    if (S.table === 'final') {
+      const allFacts = [];
+      for (const t of TABLES) for (const m of MULTIPLIERS) allFacts.push([t, m]);
+      S.questionQueue = shuffle(allFacts);
+    } else {
+      S.questionQueue = shuffle(MULTIPLIERS.map(m => [S.table, m]));
+    }
+    S.queueIndex = 0;
   }
+  const pair = S.questionQueue[S.queueIndex++];
   return maybeFlip(pair, S.table);
 }
 
@@ -1056,7 +1051,7 @@ function finishRound() {
   // 2. First round AND avg ≤ MIN_SPEED (skip straight to cert)
   if(tp.speed<=MIN_SPEED || (tp.speed===START_SPEED && avgTime<=MIN_SPEED)) {
     certEarned=true;
-    tp.certified=true; tp.speed=MIN_SPEED;
+    tp.certified=true; tp.speed=START_SPEED; // reset to START_SPEED so next attempt begins at 30s
   } else {
     newSpeed=nextSpeed(avgTime);
     if(!tp.history.includes(tp.speed)) tp.history.push(tp.speed);
