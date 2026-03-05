@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Addition Mastery</title>
+<link href="https://fonts.googleapis.com/css2?family=Righteous&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#fff8f0; --white:#fff; --navy:#2d2a3e;
+  --coral:#ff6b6b; --orange:#ff9f43; --yellow:#ffd32a; --yellow-light:#fff9db;
+  --green:#1dd1a1; --green-dark:#10ac84; --green-light:#d5f5ec;
+  --red:#ee5a24; --red-light:#ffeaa7;
+  --blue:#54a0ff; --purple:#a29bfe; --teal:#00b894;
+  --muted:#a0a0b0; --border:#ede8e0;
+  --shadow:0 4px 20px rgba(45,42,62,.09); --shadow-lg:0 8px 36px rgba(45,42,62,.15);
+  --radius:22px; --radius-sm:13px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--navy);min-height:100vh;padding-bottom:50px;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse at 10% 10%,rgba(255,159,67,.13) 0%,transparent 55%),
+  radial-gradient(ellipse at 90% 85%,rgba(84,160,255,.10) 0%,transparent 50%),
+  radial-gradient(ellipse at 55% 40%,rgba(253,121,168,.07) 0%,transparent 45%)}
+.screen{display:none;position:relative;z-index:1}
+.screen.active{display:block}
+
+/* ===== HOME ===== */
+#homeScreen{padding:22px 16px;max-width:480px;margin:0 auto}
+.app-header{text-align:center;margin-bottom:20px}
+.app-logo{font-size:2.6rem;margin-bottom:3px}
+.app-title{font-family:'Righteous',cursive;font-size:2.2rem;color:var(--navy);line-height:1}
+.app-title span{color:var(--coral)}
+.app-sub{font-size:.84rem;color:var(--muted);margin-top:4px;font-weight:700}
+
+.name-card{background:var(--white);border-radius:var(--radius);padding:13px 16px;margin-bottom:13px;box-shadow:var(--shadow);display:flex;align-items:center;gap:11px;border:2px solid var(--border)}
+.name-avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--coral),var(--orange));display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.name-right{flex:1}
+.name-label{font-size:.67rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.name-input{width:100%;border:2px solid var(--border);border-radius:var(--radius-sm);padding:7px 11px;font-family:'Nunito',sans-serif;font-size:.93rem;font-weight:700;color:var(--navy);background:var(--bg);outline:none;transition:border-color .2s}
+.name-input:focus{border-color:var(--coral);background:var(--white)}
+.name-greeting{font-size:.8rem;font-weight:700;color:var(--coral);margin-top:4px;min-height:17px}
+
+.progress-card{background:var(--white);border-radius:var(--radius);padding:12px 16px;margin-bottom:14px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;border:2px solid var(--border)}
+.prog-ring{transform:rotate(-90deg)}
+.prog-ring-bg{fill:none;stroke:var(--border);stroke-width:6}
+.prog-ring-fill{fill:none;stroke:var(--coral);stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .6s ease}
+.prog-info h3{font-size:.9rem;font-weight:800}
+.prog-info p{font-size:.76rem;color:var(--muted);font-weight:600;margin-top:2px}
+.cert-count{font-family:'Righteous',cursive;font-size:1.4rem;color:var(--yellow)}
+
+/* Level cards */
+.levels-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.level-card{background:var(--white);border-radius:var(--radius);padding:13px 16px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;cursor:pointer;transition:transform .18s,box-shadow .18s;border:2.5px solid transparent}
+.level-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.level-card:active{transform:scale(.98)}
+.level-card.completed{border-color:var(--green-dark)}
+.level-card.in-progress{border-color:var(--blue)}
+.lv-num{width:48px;height:48px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Righteous',cursive;font-size:1.3rem;color:#fff}
+.lv-info{flex:1}
+.lv-name{font-weight:800;font-size:.93rem}
+.lv-tag{font-size:.69rem;font-weight:800;margin-top:1px}
+.lv-status{font-size:.71rem;color:var(--muted);font-weight:600;margin-top:2px}
+.lv-right{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.lv-badge{font-size:.66rem;font-weight:800;padding:3px 8px;border-radius:50px;background:var(--yellow-light);color:var(--orange)}
+
+/* ===== START SCREEN ===== */
+#startScreen{padding:20px 16px;max-width:480px;margin:0 auto}
+.start-card{background:var(--white);border-radius:var(--radius);padding:24px 20px;box-shadow:var(--shadow-lg);text-align:center;margin-bottom:12px;border:2px solid var(--border)}
+.start-icon{font-size:3.2rem;margin-bottom:6px;display:block}
+.start-title{font-family:'Righteous',cursive;font-size:1.75rem;color:var(--navy);margin-bottom:4px}
+.start-subtitle{color:var(--muted);font-size:.83rem;font-weight:600;margin-bottom:15px}
+.start-info-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:15px}
+.sib{background:var(--bg);border-radius:var(--radius-sm);padding:9px 4px;text-align:center;border:2px solid var(--border)}
+.sib-val{font-family:'Righteous',cursive;font-size:1.15rem;color:var(--navy);line-height:1}
+.sib-lbl{font-size:.57rem;color:var(--muted);font-weight:700;text-transform:uppercase;margin-top:3px}
+.start-rules{background:var(--yellow-light);border-radius:var(--radius-sm);padding:11px 13px;text-align:left;margin-bottom:17px;border:2px solid rgba(255,211,42,.3)}
+.start-rules .sr-title{font-family:'Righteous',cursive;font-size:.9rem;color:var(--orange);margin-bottom:6px}
+.start-rules ul{list-style:none;padding:0}
+.start-rules li{font-size:.78rem;font-weight:700;color:var(--navy);padding:3px 0}
+.start-rules li::before{content:'→ ';color:var(--coral)}
+.begin-btn{width:100%;padding:16px;border-radius:var(--radius);border:none;background:linear-gradient(135deg,var(--coral),var(--orange));color:#fff;font-family:'Righteous',cursive;font-size:1.3rem;cursor:pointer;transition:all .18s;box-shadow:0 6px 22px rgba(255,107,107,.33)}
+.begin-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(255,107,107,.43)}
+.begin-btn:active{transform:scale(.98)}
+
+/* ===== EXERCISE ===== */
+#exerciseScreen{padding:13px 15px;max-width:480px;margin:0 auto}
+.ex-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.icon-btn{width:40px;height:40px;border-radius:50%;border:2px solid var(--border);background:var(--white);font-size:1rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.icon-btn:hover{border-color:var(--coral);color:var(--coral)}
+.ex-title-wrap{flex:1}
+.ex-title{font-family:'Righteous',cursive;font-size:1.25rem}
+.ex-level{font-size:.71rem;color:var(--muted);font-weight:700}
+
+.streak-bar{background:var(--white);border-radius:var(--radius);padding:10px 13px;margin-bottom:9px;box-shadow:var(--shadow);display:flex;align-items:center;gap:10px;border:2px solid var(--border)}
+.streak-info{flex:1}
+.streak-label{font-size:.64rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.streak-dots{display:flex;gap:3px;flex-wrap:wrap}
+.sd{width:11px;height:11px;border-radius:50%;background:var(--border);transition:background .2s,transform .2s}
+.sd.done{background:var(--green);transform:scale(1.1)}
+.sd.current{background:var(--coral);box-shadow:0 0 0 3px rgba(255,107,107,.2)}
+.streak-num{font-family:'Righteous',cursive;font-size:1.6rem;color:var(--navy);line-height:1;text-align:right;min-width:36px}
+.streak-num span{font-size:.62rem;color:var(--muted);font-weight:700;display:block;text-align:center}
+
+.speed-row{background:var(--white);border-radius:var(--radius);padding:8px 13px;margin-bottom:9px;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:space-between;border:2px solid var(--border)}
+.speed-row-lbl{font-size:.64rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.chips{display:flex;gap:4px;flex-wrap:wrap}
+.chip{font-size:.64rem;font-weight:800;padding:3px 7px;border-radius:50px;background:var(--bg);color:var(--muted);border:1.5px solid var(--border)}
+.chip.done{background:var(--green-light);color:var(--green-dark);border-color:var(--green)}
+.chip.active{background:var(--coral);color:#fff;border-color:var(--coral)}
+.chip.goal{background:var(--yellow-light);color:var(--orange);border-color:var(--yellow)}
+
+.timer-wrap{display:flex;justify-content:center;margin-bottom:9px;position:relative}
+.timer-svg{transform:rotate(-90deg)}
+.t-bg{fill:none;stroke:var(--border);stroke-width:8}
+.t-fill{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset .1s linear,stroke .3s}
+.timer-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.timer-num{font-family:'Righteous',cursive;font-size:2.3rem;color:var(--navy);line-height:1}
+.timer-unit{font-size:.57rem;color:var(--muted);font-weight:700;text-transform:uppercase}
+
+.question-wrap{background:var(--white);border-radius:var(--radius);padding:13px 15px;text-align:center;margin-bottom:9px;box-shadow:var(--shadow);border:2px solid var(--border)}
+.reset-notice{background:var(--red-light);color:var(--red);font-size:.72rem;font-weight:800;border-radius:8px;padding:5px 10px;margin-bottom:6px;display:none;border:1.5px solid rgba(238,90,36,.18)}
+.reset-notice.show{display:block}
+.q-info{font-size:.69rem;color:var(--muted);font-weight:700;margin-bottom:5px}
+.question-text{font-family:'Righteous',cursive;font-size:2.8rem;color:var(--navy);margin-bottom:10px;line-height:1}
+.question-text .plus{color:var(--coral)}
+/* Level 3: highlight the units digit */
+.question-text .units{color:var(--teal);border-bottom:3px solid var(--teal)}
+.carrying-hint{font-size:.75rem;font-weight:800;color:var(--teal);margin-bottom:8px;opacity:.8}
+
+.answer-row{display:flex;justify-content:center}
+.answer-input{width:120px;padding:10px;border-radius:var(--radius-sm);border:2.5px solid var(--border);font-family:'Righteous',cursive;font-size:1.9rem;text-align:center;color:var(--navy);background:var(--bg);outline:none;transition:border-color .2s,background .2s;-moz-appearance:textfield}
+.answer-input::-webkit-inner-spin-button,.answer-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.answer-input:focus{border-color:var(--coral);background:var(--white)}
+.answer-input.correct{border-color:var(--green);background:var(--green-light);color:var(--green-dark)}
+.answer-input.wrong{border-color:var(--red);background:var(--red-light);color:var(--red)}
+.feedback-msg{min-height:20px;text-align:center;font-size:.81rem;font-weight:800;margin-top:6px;opacity:0;transition:opacity .2s}
+.feedback-msg.show{opacity:1}
+.feedback-msg.correct{color:var(--green-dark)}
+.feedback-msg.wrong{color:var(--red)}
+.numpad-toggle{display:inline-flex;align-items:center;gap:5px;margin-top:8px;padding:5px 12px;border-radius:50px;border:2px solid var(--border);background:var(--bg);font-family:'Nunito',sans-serif;font-weight:800;font-size:.73rem;color:var(--muted);cursor:pointer;transition:all .15s}
+.numpad-toggle:hover{border-color:var(--coral);color:var(--coral);background:var(--white)}
+.numpad-toggle.pad-on{border-color:var(--green-dark);color:var(--green-dark);background:var(--green-light)}
+
+.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:9px}
+.numpad.hidden{display:none}
+.nk{padding:12px 7px;border-radius:var(--radius-sm);border:2px solid var(--border);background:var(--white);font-family:'Righteous',cursive;font-size:1.22rem;color:var(--navy);cursor:pointer;transition:all .12s;text-align:center;box-shadow:0 2px 5px rgba(45,42,62,.06)}
+.nk:hover{background:var(--bg);border-color:var(--coral);transform:scale(1.04)}
+.nk:active{transform:scale(.96)}
+.nk.del{color:var(--red);font-size:.9rem}
+.nk.ok{background:var(--coral);border-color:var(--coral);color:#fff}
+.nk.ok:hover{background:#ff5252}
+
+/* ===== RESULT ===== */
+#resultScreen{padding:16px 15px;max-width:480px;margin:0 auto;text-align:center}
+.result-card{background:var(--white);border-radius:var(--radius);padding:22px 18px;box-shadow:var(--shadow-lg);margin-bottom:12px;border:2px solid var(--border)}
+.result-emoji{font-size:3.3rem;margin-bottom:6px;display:block}
+.result-title{font-family:'Righteous',cursive;font-size:1.7rem;margin-bottom:3px}
+.result-sub{color:var(--muted);font-size:.81rem;font-weight:600;margin-bottom:11px}
+.info-banner{border-radius:var(--radius-sm);padding:11px 13px;margin-bottom:11px;font-weight:700;font-size:.8rem;text-align:left;display:flex;align-items:flex-start;gap:9px}
+.info-banner.advance{background:var(--green-light);color:var(--green-dark);border-left:4px solid var(--green)}
+.info-banner.cert{background:var(--yellow-light);color:var(--orange);border-left:4px solid var(--yellow)}
+.ib-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px}
+.ib-body .ib-title{font-weight:900;font-size:.86rem;margin-bottom:2px}
+.stats-row{display:flex;justify-content:center;gap:7px;margin-bottom:11px;flex-wrap:wrap}
+.stat-box{background:var(--bg);border-radius:var(--radius-sm);padding:9px 10px;min-width:64px;border:2px solid var(--border)}
+.stat-box .sv{font-family:'Righteous',cursive;font-size:1.45rem;line-height:1}
+.stat-box .sl{font-size:.61rem;color:var(--muted);font-weight:700;text-transform:uppercase;margin-top:2px}
+.review-list{text-align:left;margin-top:6px;max-height:210px;overflow-y:auto}
+.review-item{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border);font-size:.79rem}
+.review-item:last-child{border-bottom:none}
+.rq{color:var(--muted);font-weight:700}
+.ra{font-weight:800}
+.ra.right{color:var(--green-dark)}
+.ra.wrong{color:var(--red)}
+
+.action-btn{width:100%;padding:13px;border-radius:var(--radius);border:none;font-family:'Righteous',cursive;font-size:1.12rem;cursor:pointer;transition:all .15s;margin-bottom:8px}
+.action-btn.primary{background:var(--coral);color:#fff;box-shadow:0 6px 20px rgba(255,107,107,.25)}
+.action-btn.primary:hover{background:#ff5252;transform:translateY(-2px)}
+.action-btn.secondary{background:var(--white);color:var(--navy);border:2px solid var(--border)}
+.action-btn.secondary:hover{border-color:var(--coral)}
+
+/* ===== CERT ===== */
+#certScreen{padding:17px 15px;max-width:480px;margin:0 auto}
+.cert-wrap{background:var(--white);border-radius:var(--radius);overflow:hidden;margin-bottom:13px;box-shadow:var(--shadow-lg);border:2px solid var(--border)}
+.cert-top{padding:22px 20px 16px;text-align:center;color:#fff}
+.cert-top h2{font-family:'Righteous',cursive;font-size:1.45rem;margin-bottom:3px}
+.cert-top p{opacity:.9;font-size:.8rem;font-weight:600}
+.cert-stars{font-size:1.7rem;margin-bottom:5px}
+.cert-body{padding:18px 17px;text-align:center}
+.cert-student{font-family:'Righteous',cursive;font-size:1.4rem;color:var(--coral);margin-bottom:11px}
+.cert-ach{background:var(--yellow-light);border-radius:var(--radius-sm);padding:11px;margin-bottom:11px;border:2px solid rgba(255,211,42,.3)}
+.cert-ach .ca-title{font-family:'Righteous',cursive;font-size:1.05rem;color:var(--orange)}
+.cert-ach .ca-desc{font-size:.78rem;color:var(--muted);font-weight:600;margin-top:3px}
+.cert-seal{font-size:2.8rem;margin:4px 0;display:block}
+.cert-date{font-size:.7rem;color:var(--muted);font-weight:600;margin-top:4px}
+
+/* Confetti */
+.confetti-container{position:fixed;inset:0;pointer-events:none;z-index:999;overflow:hidden}
+.confetti-piece{position:absolute;top:-20px;animation:fall linear forwards;border-radius:2px}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+@keyframes popIn{0%{transform:scale(.8);opacity:0}70%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
+.pop-in{animation:popIn .4s ease forwards}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.shake{animation:shake .35s ease}
+@keyframes streakPop{0%{transform:scale(1)}50%{transform:scale(1.4)}100%{transform:scale(1)}}
+.streak-pop{animation:streakPop .3s ease}
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div id="homeScreen" class="screen active">
+  <div class="app-header">
+    <div class="app-logo">➕</div>
+    <div class="app-title">Addition <span>Mastery</span></div>
+    <div class="app-sub">25 correct in a row · adaptive speed · 3 levels to master</div>
+  </div>
+
+  <div class="name-card">
+    <div class="name-avatar">🎓</div>
+    <div class="name-right">
+      <div class="name-label">Student Name</div>
+      <input type="text" class="name-input" id="nameInput" placeholder="Enter your name…"
+        maxlength="30" oninput="onNameChange()" autocomplete="off">
+      <div class="name-greeting" id="nameGreeting"></div>
+    </div>
+  </div>
+
+  <div class="progress-card">
+    <svg class="prog-ring" width="58" height="58" viewBox="0 0 58 58">
+      <circle class="prog-ring-bg" cx="29" cy="29" r="23"/>
+      <circle class="prog-ring-fill" id="ringFill" cx="29" cy="29" r="23"
+        stroke-dasharray="144.5" stroke-dashoffset="144.5"/>
+    </svg>
+    <div class="prog-info">
+      <h3><span class="cert-count" id="certCount">0</span> / 3 Certificates</h3>
+      <p id="progressMsg">Start with Level 1!</p>
+    </div>
+  </div>
+
+  <div class="levels-grid" id="levelsGrid"></div>
+</div>
+
+<!-- START SCREEN -->
+<div id="startScreen" class="screen">
+  <div class="start-card">
+    <span class="start-icon" id="startIcon">➕</span>
+    <div class="start-title" id="startTitle">Level 1</div>
+    <div class="start-subtitle" id="startSubtitle">Get ready!</div>
+    <div class="start-info-grid">
+      <div class="sib"><div class="sib-val" id="startSpeed">30s</div><div class="sib-lbl">Per Q</div></div>
+      <div class="sib"><div class="sib-val">25🔥</div><div class="sib-lbl">Streak</div></div>
+      <div class="sib"><div class="sib-val" id="startFacts">81</div><div class="sib-lbl">Facts</div></div>
+      <div class="sib"><div class="sib-val">3s🏅</div><div class="sib-lbl">Cert</div></div>
+    </div>
+    <div class="start-rules">
+      <div class="sr-title">📋 How it works</div>
+      <ul id="startRulesList"></ul>
+    </div>
+    <button class="begin-btn" onclick="beginExercise()">🚀 Start!</button>
+  </div>
+  <button class="action-btn secondary"
+    style="max-width:480px;margin:0 auto;display:block;position:relative;z-index:1"
+    onclick="goHome()">← Back</button>
+</div>
+
+<!-- EXERCISE -->
+<div id="exerciseScreen" class="screen">
+  <div class="ex-header">
+    <button class="icon-btn" onclick="goHome()">←</button>
+    <div class="ex-title-wrap">
+      <div class="ex-title" id="exTitle">Level 1</div>
+      <div class="ex-level" id="exLevel">Round 1 — up to 30s per question</div>
+    </div>
+  </div>
+
+  <div class="streak-bar">
+    <div class="streak-info">
+      <div class="streak-label">Correct in a row — need 25 🔥</div>
+      <div class="streak-dots" id="streakDots"></div>
+    </div>
+    <div class="streak-num" id="streakNum">0<span>streak</span></div>
+  </div>
+
+  <div class="speed-row">
+    <div class="speed-row-lbl">Speed</div>
+    <div class="chips" id="speedChips"></div>
+  </div>
+
+  <div class="timer-wrap">
+    <svg class="timer-svg" width="114" height="114" viewBox="0 0 114 114">
+      <circle class="t-bg" cx="57" cy="57" r="47"/>
+      <circle class="t-fill" id="timerFill" cx="57" cy="57" r="47"
+        stroke-dasharray="295.3" stroke-dashoffset="0"/>
+    </svg>
+    <div class="timer-center">
+      <div class="timer-num" id="timerNum">30</div>
+      <div class="timer-unit">seconds</div>
+    </div>
+  </div>
+
+  <div class="question-wrap">
+    <div class="reset-notice" id="resetNotice">❌ Streak reset to 0 — keep going!</div>
+    <div class="q-info" id="qInfo">Attempt 1</div>
+    <div class="question-text" id="questionText">
+      <span id="q1">7</span> <span class="plus">+</span> <span id="q2">8</span> = ?
+    </div>
+    <div class="carrying-hint" id="carryingHint" style="display:none"></div>
+    <div class="answer-row">
+      <input type="number" class="answer-input" id="answerInput"
+        inputmode="numeric" autocomplete="off" placeholder="?"
+        onkeydown="handleKey(event)">
+    </div>
+    <div class="feedback-msg" id="feedbackMsg"></div>
+    <button class="numpad-toggle" id="numpadToggle" onclick="toggleNumpad()">
+      🔢 <span id="npText">Show Number Pad</span>
+    </button>
+  </div>
+
+  <div class="numpad hidden" id="numpadDiv">
+    <button class="nk" onclick="nkPress(7)">7</button>
+    <button class="nk" onclick="nkPress(8)">8</button>
+    <button class="nk" onclick="nkPress(9)">9</button>
+    <button class="nk" onclick="nkPress(4)">4</button>
+    <button class="nk" onclick="nkPress(5)">5</button>
+    <button class="nk" onclick="nkPress(6)">6</button>
+    <button class="nk" onclick="nkPress(1)">1</button>
+    <button class="nk" onclick="nkPress(2)">2</button>
+    <button class="nk" onclick="nkPress(3)">3</button>
+    <button class="nk del" onclick="nkDel()">⌫</button>
+    <button class="nk" onclick="nkPress(0)">0</button>
+    <button class="nk ok" onclick="submitAnswer()">OK</button>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div id="resultScreen" class="screen">
+  <div class="result-card pop-in">
+    <span class="result-emoji" id="resultEmoji">🎉</span>
+    <div class="result-title" id="resultTitle">Passed!</div>
+    <div class="result-sub" id="resultSub">25 correct in a row</div>
+    <div class="info-banner" id="infoBanner">
+      <span class="ib-icon">⚡</span>
+      <div class="ib-body">
+        <div class="ib-title" id="ibTitle">Next target!</div>
+        <div id="ibDesc"></div>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-box"><div class="sv" id="rsAttempts">28</div><div class="sl">Attempts</div></div>
+      <div class="stat-box"><div class="sv" id="rsResets">3</div><div class="sl">Resets</div></div>
+      <div class="stat-box"><div class="sv" id="rsAvg">8s</div><div class="sl">Avg Speed</div></div>
+      <div class="stat-box"><div class="sv" id="rsNext">10s</div><div class="sl">Next</div></div>
+    </div>
+    <div class="review-list" id="reviewList"></div>
+  </div>
+  <button class="action-btn primary" id="nextBtn" onclick="nextAction()">Continue →</button>
+  <button class="action-btn secondary" onclick="goHome()">Back to Home</button>
+</div>
+
+<!-- CERTIFICATE -->
+<div id="certScreen" class="screen">
+  <div class="cert-wrap">
+    <div class="cert-top" id="certTop">
+      <div class="cert-stars">⭐⭐⭐</div>
+      <h2 id="certHeadline">Certificate of Achievement</h2>
+      <p>Addition Mastery</p>
+    </div>
+    <div class="cert-body">
+      <div class="cert-student" id="certStudent">Well done!</div>
+      <div class="cert-ach">
+        <div class="ca-title" id="certAchTitle">🏆 Level 1 Master!</div>
+        <div class="ca-desc" id="certAchDesc">25 correct in a row at 3 seconds per question</div>
+      </div>
+      <span class="cert-seal" id="certSeal">🥇</span>
+      <div class="cert-date" id="certDate"></div>
+    </div>
+  </div>
+  <button class="action-btn primary" onclick="goHome()">🏠 Back to Home</button>
+</div>
+
+<div class="confetti-container" id="confetti"></div>
+
+<script>
+// =====================
+// LEVEL DEFINITIONS
+// =====================
+const STREAK_NEEDED = 25;
+const MIN_SPEED = 3;
+const START_SPEED = 30;
+const SPEED_STEPS = [30,25,20,15,10,8,6,5,4,3];
+
+// 25 unique crossing-10 pairs (a <= b, a+b >= 10, both 1-9)
+const CROSSING_PAIRS = (() => {
+  const f=[];
+  for(let a=1;a<=9;a++) for(let b=a;b<=9;b++) if(a+b>=10) f.push([a,b]);
+  return f; // exactly 25
+})();
+
+const LEVELS = {
+  l1: {
+    key:'l1', num:1,
+    name:'Level 1 — Single Digit',
+    shortName:'Level 1',
+    icon:'1️⃣',
+    color:'linear-gradient(135deg,#ff6b6b,#ff9f43)',
+    tag:'1+1 to 9+9 · all 81 facts',
+    tagColor:'var(--orange)',
+    facts: (() => { const f=[]; for(let a=1;a<=9;a++) for(let b=1;b<=9;b++) f.push([a,b]); return f; })(),
+    isDouble: false,
+    certTitle:'🥇 Level 1 Master!',
+    certDesc:'All 81 single-digit addition facts',
+    certGrad:'linear-gradient(135deg,#ff6b6b,#ff9f43)',
+    seal:'🥇'
+  },
+  l2: {
+    key:'l2', num:2,
+    name:'Level 2 — Crossing Ten',
+    shortName:'Level 2',
+    icon:'2️⃣',
+    color:'linear-gradient(135deg,#54a0ff,#a29bfe)',
+    tag:'25 crossing-10 facts · sums ≥ 10',
+    tagColor:'var(--blue)',
+    facts: CROSSING_PAIRS,
+    isDouble: false,
+    certTitle:'🥈 Level 2 Master!',
+    certDesc:'All 25 crossing-ten facts — the hardest single-digit additions',
+    certGrad:'linear-gradient(135deg,#54a0ff,#a29bfe)',
+    seal:'🥈'
+  },
+  l3: {
+    key:'l3', num:3,
+    name:'Level 3 — Carrying',
+    shortName:'Level 3',
+    icon:'3️⃣',
+    color:'linear-gradient(135deg,#00b894,#1dd1a1)',
+    tag:'Double digit + single digit · carrying required',
+    tagColor:'var(--teal)',
+    facts: CROSSING_PAIRS, // same 25 core pairs, dressed as double+single
+    isDouble: true,
+    certTitle:'🏆 Level 3 Master!',
+    certDesc:'Double-digit + single-digit with carrying — brilliant!',
+    certGrad:'linear-gradient(135deg,#00b894,#1dd1a1)',
+    seal:'🏆'
+  }
+};
+
+const LEVEL_KEYS = ['l1','l2','l3'];
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+function nextSpeed(avg){
+  for(const s of SPEED_STEPS){if(s<avg)return Math.max(s,MIN_SPEED);}
+  return MIN_SPEED;
+}
+
+// For Level 3: take a crossing pair [a,b] and dress it as a double-digit question
+// e.g. [7,8] → pick random tens digit t (1-9), return [t*10+7, 8]
+// Always put the units-crossing number first
+function makeDoubleQ([a,b]){
+  // a+b >= 10, both 1-9. Pick which one becomes the units of the double digit
+  // Randomise which is units digit for variety
+  const [units, single] = Math.random()>.5 ? [a,b] : [b,a];
+  const tens = 1 + Math.floor(Math.random()*9); // 1-9
+  return [tens*10 + units, single];
+}
+
+// =====================
+// STORAGE
+// =====================
+function loadP(){try{return JSON.parse(localStorage.getItem('addM4')||'{}');}catch{return{};}}
+function saveP(p){localStorage.setItem('addM4',JSON.stringify(p));}
+function getLP(p,k){return p[k]||{speed:START_SPEED,certified:false,history:[]};}
+
+// =====================
+// NAME
+// =====================
+function getStudentName(){return localStorage.getItem('addName4')||'';}
+function onNameChange(){
+  const val=document.getElementById('nameInput').value.trim();
+  localStorage.setItem('addName4',val);
+  const g=document.getElementById('nameGreeting');
+  if(val){
+    const h=new Date().getHours();
+    g.textContent=`${h<12?'Good morning':h<17?'Good afternoon':'Good evening'}, ${val}! 👋`;
+  } else g.textContent='';
+}
+
+// =====================
+// HOME
+// =====================
+function buildHome(){
+  const saved=getStudentName();
+  const ni=document.getElementById('nameInput');
+  if(saved&&!ni.value){ni.value=saved;onNameChange();}
+
+  const p=loadP();
+  const certs=LEVEL_KEYS.filter(k=>getLP(p,k).certified).length;
+  const circ=144.5;
+  document.getElementById('ringFill').style.strokeDashoffset=circ-circ*certs/3;
+  document.getElementById('certCount').textContent=certs;
+  document.getElementById('progressMsg').textContent=[
+    'Start with Level 1 — single digit addition!',
+    'Level 1 done! Try Level 2 — crossing ten.',
+    'Two down! Level 3 — carrying awaits! 🔥',
+    '🏆 All three certificates — incredible!'
+  ][certs];
+
+  const grid=document.getElementById('levelsGrid');
+  grid.innerHTML='';
+
+  LEVEL_KEYS.forEach(k=>{
+    const lv=LEVELS[k];
+    const lp=getLP(p,k);
+    const card=document.createElement('div');
+    card.className='level-card'+(lp.certified?' completed':lp.history.length?' in-progress':'');
+    const st=lp.certified?'✅ Certified!'
+      :lp.history.length?`Current target: ${lp.speed}s per question`
+      :`Tap to start — first round: ${START_SPEED}s`;
+    card.innerHTML=`
+      <div class="lv-num" style="background:${lv.color}">${lv.num}</div>
+      <div class="lv-info">
+        <div class="lv-name">${lv.name}</div>
+        <div class="lv-tag" style="color:${lv.tagColor}">${lv.tag}</div>
+        <div class="lv-status">${st}</div>
+      </div>
+      <div class="lv-right">${lp.certified
+        ?`<span style="font-size:1.3rem">${lv.seal}</span>`
+        :`<div class="lv-badge">${lp.speed}s</div>`
+      }</div>`;
+    card.onclick=()=>openExercise(k);
+    grid.appendChild(card);
+  });
+}
+
+// =====================
+// OPEN → Start screen
+// =====================
+function openExercise(lvKey){
+  const lv=LEVELS[lvKey];
+  const p=loadP();
+  const lp=getLP(p,lvKey);
+  const spd=lp.speed||START_SPEED;
+
+  showScreen('startScreen');
+  document.getElementById('startIcon').textContent=lv.icon;
+  document.getElementById('startTitle').textContent=lv.name;
+  document.getElementById('startSubtitle').textContent=
+    spd===START_SPEED?`First round — up to ${START_SPEED}s per question`:`Current target: ${spd}s per question`;
+  document.getElementById('startSpeed').textContent=spd+'s';
+  document.getElementById('startFacts').textContent=lv.facts.length;
+
+  const rules=document.getElementById('startRulesList');
+  if(lvKey==='l1'){
+    rules.innerHTML=`
+      <li>All <b>81 facts</b> (1+1 to 9+9) — every one guaranteed to appear!</li>
+      <li>Get <b>25 correct in a row</b> — any wrong answer resets to zero</li>
+      <li>Pass at 3s per question to earn your certificate 🥇</li>
+      <li>Speed adapts automatically to your actual average response time</li>`;
+  } else if(lvKey==='l2'){
+    rules.innerHTML=`
+      <li>Only the <b>25 crossing-ten facts</b> where the sum ≥ 10</li>
+      <li>e.g. 6+7=13, 8+9=17, 7+5=12 — all require crossing ten</li>
+      <li>Get all <b>25 correct in a row</b> — one wrong and streak resets!</li>
+      <li>Pass at 3s per question to earn your certificate 🥈</li>`;
+  } else {
+    rules.innerHTML=`
+      <li>Same <b>25 crossing-ten pairs</b> but as <b>double + single digit</b></li>
+      <li>e.g. 47+8=55, 63+9=72, 85+6=91 — you must carry!</li>
+      <li>The tens digit changes every time — focus on the units!</li>
+      <li>Get <b>25 correct in a row</b> to earn the top certificate 🏆</li>
+      <li>Type the full answer (e.g. 55, not just 5)</li>`;
+  }
+
+  S={pendingLv:lvKey};
+}
+
+// =====================
+// BEGIN
+// =====================
+function beginExercise(){
+  const lvKey=S.pendingLv;
+  const lv=LEVELS[lvKey];
+  const p=loadP();
+  const lp=getLP(p,lvKey);
+
+  // Build queue: shuffle all core facts, pad to at least 50
+  const shuffled=shuffle(lv.facts);
+  const extras=shuffle([...lv.facts,...lv.facts]).slice(0,Math.max(0,50-shuffled.length));
+  const queue=[...shuffled,...extras];
+
+  S={
+    lv:lvKey, lvDef:lv,
+    speed:lp.speed||START_SPEED,
+    streak:0, resets:0, totalAttempts:0,
+    correctTimes:[], log:[],
+    queue, queueIndex:0,
+    seenFacts:new Set(),
+    timerInterval:null, timeLeft:lp.speed||START_SPEED,
+    answered:false, pausedAt:null, currentQ:null,
+    showCert:false, newSpeed:null, avgTime:null,
+  };
+
+  showScreen('exerciseScreen');
+  document.getElementById('exTitle').textContent=lv.shortName+' — '+lv.name.split('—')[1].trim();
+  document.getElementById('exLevel').textContent=
+    S.speed===START_SPEED?`Round 1 — up to ${START_SPEED}s per question`:`Target: ${S.speed}s per question`;
+
+  const chips=document.getElementById('speedChips');
+  chips.innerHTML='';
+  (lp.history||[]).forEach(h=>{
+    chips.appendChild(Object.assign(document.createElement('div'),{className:'chip done',textContent:h+'s ✓'}));
+  });
+  chips.appendChild(Object.assign(document.createElement('div'),{className:'chip active',textContent:S.speed+'s'}));
+  chips.appendChild(Object.assign(document.createElement('div'),{className:'chip goal',textContent:'🏅 '+MIN_SPEED+'s'}));
+
+  // Show/hide carrying hint
+  document.getElementById('carryingHint').style.display=lv.isDouble?'block':'none';
+
+  buildStreakDots();
+  nextQuestion();
+}
+
+// =====================
+// STREAK DOTS
+// =====================
+function buildStreakDots(){
+  const el=document.getElementById('streakDots');el.innerHTML='';
+  for(let i=0;i<STREAK_NEEDED;i++){
+    const d=document.createElement('div');
+    d.className='sd'+(i<S.streak?' done':i===S.streak?' current':'');
+    d.id='sd'+i;el.appendChild(d);
+  }
+  document.getElementById('streakNum').innerHTML=`${S.streak}<span>streak</span>`;
+}
+function updateStreakDots(){
+  for(let i=0;i<STREAK_NEEDED;i++){
+    const d=document.getElementById('sd'+i);if(!d)continue;
+    d.className='sd'+(i<S.streak?' done':i===S.streak?' current':'');
+  }
+  const sn=document.getElementById('streakNum');
+  sn.innerHTML=`${S.streak}<span>streak</span>`;
+  sn.classList.remove('streak-pop');void sn.offsetWidth;
+  if(S.streak>0)sn.classList.add('streak-pop');
+}
+
+// =====================
+// QUESTION
+// =====================
+function getNextQ(){
+  const pair=S.queue[S.queueIndex%S.queue.length];
+  S.queueIndex++;
+  if(S.lvDef.isDouble){
+    // Level 3: dress as double-digit, random tens, random which is units
+    return makeDoubleQ(pair);
+  }
+  // Levels 1 & 2: show both orders freely (addition is commutative)
+  return Math.random()>.5?[pair[0],pair[1]]:[pair[1],pair[0]];
+}
+
+function nextQuestion(){
+  S.answered=false;
+  S.timeLeft=S.speed;
+  S.totalAttempts++;
+
+  const[a,b]=getNextQ();
+  S.currentQ=[a,b];
+  S.qStartTime=Date.now();
+
+  // Track seen core facts
+  if(S.lvDef.isDouble){
+    // For level 3, core fact is units digit + single digit
+    const units=a%10;
+    S.seenFacts.add(`${Math.min(units,b)}+${Math.max(units,b)}`);
+  } else {
+    S.seenFacts.add(`${Math.min(a,b)}+${Math.max(a,b)}`);
+  }
+
+  // Render question
+  if(S.lvDef.isDouble){
+    // Highlight units digit to reinforce the carrying concept
+    const tens=Math.floor(a/10);
+    const units=a%10;
+    document.getElementById('questionText').innerHTML=
+      `<span>${tens}</span><span class="units">${units}</span> <span class="plus">+</span> <span id="q2">${b}</span> = ?`;
+    document.getElementById('carryingHint').textContent=`Units: ${units}+${b}=${units+b} → write ${(units+b)%10}, carry 1`;
+  } else {
+    document.getElementById('questionText').innerHTML=
+      `<span id="q1">${a}</span> <span class="plus">+</span> <span id="q2">${b}</span> = ?`;
+  }
+
+  const totalFacts=S.lvDef.facts.length;
+  const unseen=totalFacts-S.seenFacts.size;
+  document.getElementById('qInfo').textContent=
+    `Attempt ${S.totalAttempts}${unseen>0?` · Unseen: ${unseen} left`:' · All facts seen! 🎯'}`;
+
+  const inp=document.getElementById('answerInput');
+  inp.value='';inp.className='answer-input';inp.removeAttribute('disabled');
+  document.getElementById('feedbackMsg').className='feedback-msg';
+  document.getElementById('resetNotice').classList.remove('show');
+
+  startTimer();
+  inp.focus();
+}
+
+// =====================
+// TIMER
+// =====================
+const CIRC=295.3;
+function startTimer(){
+  clearInterval(S.timerInterval);updateTimerUI();
+  S.timerInterval=setInterval(()=>{
+    S.timeLeft-=0.1;
+    if(S.timeLeft<=0){S.timeLeft=0;updateTimerUI();clearInterval(S.timerInterval);if(!S.answered)timeOut();}
+    else updateTimerUI();
+  },100);
+}
+function updateTimerUI(){
+  document.getElementById('timerNum').textContent=Math.ceil(S.timeLeft);
+  const frac=S.timeLeft/S.speed;
+  document.getElementById('timerFill').style.strokeDashoffset=CIRC*(1-frac);
+  document.getElementById('timerFill').style.stroke=frac>.5?'#1dd1a1':frac>.25?'#ff9f43':'#ee5a24';
+}
+function timeOut(){
+  if(S.answered)return;
+  S.answered=true;
+  const[a,b]=S.currentQ;
+  S.log.push({q:`${a}+${b}`,ans:a+b,given:'(time)',correct:false,timeTaken:S.speed});
+  if(S.streak>0)S.resets++;
+  S.streak=0;updateStreakDots();
+  const inp=document.getElementById('answerInput');
+  inp.style.cssText='border-color:var(--red);background:var(--red-light)';
+  inp.setAttribute('disabled',true);
+  document.getElementById('feedbackMsg').className='feedback-msg wrong show';
+  document.getElementById('feedbackMsg').textContent=`⏰ Time's up! Answer: ${a+b}`;
+  document.getElementById('resetNotice').classList.add('show');
+  setTimeout(()=>nextQuestion(),1600);
+}
+
+// =====================
+// ANSWER
+// =====================
+function submitAnswer(){
+  if(S.answered)return;
+  const inp=document.getElementById('answerInput');
+  const val=parseInt(inp.value);
+  if(isNaN(val)||!inp.value)return;
+  clearInterval(S.timerInterval);
+  S.answered=true;
+  const elapsed=Math.min((Date.now()-S.qStartTime)/1000,S.speed);
+  const[a,b]=S.currentQ;
+  const correct=a+b;
+  const right=val===correct;
+  S.log.push({q:`${a}+${b}`,ans:correct,given:val,correct:right,timeTaken:elapsed});
+
+  if(right){
+    S.streak++;S.correctTimes.push(elapsed);
+    inp.className='answer-input correct';
+    document.getElementById('feedbackMsg').className='feedback-msg correct show';
+    document.getElementById('feedbackMsg').textContent=
+      S.streak>=STREAK_NEEDED?`🏆 ${STREAK_NEEDED} in a row — PERFECT!`
+      :S.streak>1?`✓ Correct! ${S.streak} in a row 🔥`:'✓ Correct!';
+    updateStreakDots();
+    if(S.streak>=STREAK_NEEDED){inp.setAttribute('disabled',true);setTimeout(finishRound,900);return;}
+  } else {
+    if(S.streak>0)S.resets++;
+    S.streak=0;
+    inp.className='answer-input wrong';inp.classList.add('shake');
+    document.getElementById('feedbackMsg').className='feedback-msg wrong show';
+    document.getElementById('feedbackMsg').textContent=`✗ Answer is ${correct} — streak reset!`;
+    document.getElementById('resetNotice').classList.add('show');
+    updateStreakDots();
+  }
+  inp.setAttribute('disabled',true);
+  setTimeout(()=>nextQuestion(),right?700:1500);
+}
+
+function handleKey(e){if(e.key==='Enter')submitAnswer();}
+// Level 3 answers can be 3 digits; others max 2
+function nkPress(n){
+  const i=document.getElementById('answerInput');
+  const max=S.lvDef&&S.lvDef.isDouble?3:2;
+  if(!i.hasAttribute('disabled')&&i.value.length<max)i.value+=n;
+}
+function nkDel(){const i=document.getElementById('answerInput');if(!i.hasAttribute('disabled'))i.value=i.value.slice(0,-1);}
+
+let numpadVisible=false;
+function toggleNumpad(){
+  numpadVisible=!numpadVisible;
+  document.getElementById('numpadDiv').classList.toggle('hidden',!numpadVisible);
+  document.getElementById('numpadToggle').classList.toggle('pad-on',numpadVisible);
+  document.getElementById('npText').textContent=numpadVisible?'Hide Number Pad':'Show Number Pad';
+}
+
+// =====================
+// FINISH ROUND
+// =====================
+function finishRound(){
+  clearInterval(S.timerInterval);
+  const avgTime=S.correctTimes.length
+    ?S.correctTimes.reduce((a,b)=>a+b,0)/S.correctTimes.length
+    :S.speed;
+
+  const p=loadP();
+  const lp=getLP(p,S.lv);
+  let certEarned=false, newSpeed=lp.speed;
+
+  if(lp.speed<=MIN_SPEED||(lp.speed===START_SPEED&&avgTime<=MIN_SPEED)){
+    certEarned=true;lp.certified=true;lp.speed=MIN_SPEED;
+  } else {
+    newSpeed=nextSpeed(avgTime);
+    if(!lp.history.includes(lp.speed))lp.history.push(lp.speed);
+    lp.speed=newSpeed;
+  }
+  p[S.lv]=lp;saveP(p);
+  S.certEarned=certEarned;S.newSpeed=newSpeed;S.avgTime=avgTime;
+  showResult(certEarned,avgTime,newSpeed);
+}
+
+// =====================
+// RESULT
+// =====================
+function showResult(certEarned,avgTime,newSpeed){
+  showScreen('resultScreen');
+  const name=getStudentName();
+  document.getElementById('resultEmoji').textContent=certEarned?'🏆':'🎉';
+  document.getElementById('resultTitle').textContent=certEarned?'Certificate Earned!':'25 in a Row!';
+  document.getElementById('resultSub').textContent=(name?`Well done, ${name}! `:'')
+    +`${S.totalAttempts} attempts, ${S.resets} reset${S.resets!==1?'s':''}.`;
+  document.getElementById('rsAttempts').textContent=S.totalAttempts;
+  document.getElementById('rsResets').textContent=S.resets;
+  document.getElementById('rsAvg').textContent=avgTime.toFixed(1)+'s';
+  document.getElementById('rsNext').textContent=certEarned?S.lvDef.seal:newSpeed+'s';
+
+  const banner=document.getElementById('infoBanner');
+  if(certEarned){
+    banner.className='info-banner cert';
+    document.getElementById('ibTitle').textContent='🎓 Certificate Earned!';
+    document.getElementById('ibDesc').textContent=`25 in a row at ${MIN_SPEED}s — ${S.lvDef.shortName} mastered!`;
+  } else {
+    banner.className='info-banner advance';
+    document.getElementById('ibTitle').textContent=`⚡ Next target: ${newSpeed}s per question`;
+    document.getElementById('ibDesc').textContent=
+      `Your average was ${avgTime.toFixed(1)}s.${newSpeed<(S.speed-4)?' Great — jumping ahead!':' Keep going!'}`;
+  }
+
+  const rev=document.getElementById('reviewList');rev.innerHTML='';
+  const show=S.log.slice(-25);
+  if(S.log.length>25){
+    const n=document.createElement('div');
+    n.style.cssText='font-size:.68rem;color:var(--muted);font-weight:700;padding:3px 0 4px';
+    n.textContent=`Showing last 25 of ${S.log.length} attempts`;rev.appendChild(n);
+  }
+  show.forEach(item=>{
+    const d=document.createElement('div');d.className='review-item';
+    d.innerHTML=`<span class="rq">${item.q} = ${item.ans}</span>
+      <span class="ra ${item.correct?'right':'wrong'}">${item.correct?`✓ ${item.timeTaken.toFixed(1)}s`:`✗ ${item.given}`}</span>`;
+    rev.appendChild(d);
+  });
+
+  S.showCert=certEarned;
+  document.getElementById('nextBtn').textContent=certEarned?'🎓 View Certificate':`▶ Next Round (${newSpeed}s)`;
+  fireConfetti();
+}
+
+function nextAction(){
+  if(S.showCert)showCertScreen();
+  else{S.pendingLv=S.lv;beginExercise();}
+}
+
+// =====================
+// CERTIFICATE
+// =====================
+function showCertScreen(){
+  showScreen('certScreen');
+  const lv=S.lvDef;
+  const name=getStudentName()||'Student';
+  document.getElementById('certHeadline').textContent=
+    S.lv==='l3'?'Grand Certificate':'Certificate of Achievement';
+  document.getElementById('certTop').style.background=lv.certGrad;
+  document.getElementById('certStudent').textContent=name;
+  document.getElementById('certAchTitle').textContent=lv.certTitle;
+  document.getElementById('certAchDesc').textContent=lv.certDesc+` — 25 in a row at ${MIN_SPEED}s per question`;
+  document.getElementById('certSeal').textContent=lv.seal;
+  document.getElementById('certDate').textContent='Achieved on '
+    +new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  fireConfetti();
+}
+
+// =====================
+// CONFETTI
+// =====================
+function fireConfetti(){
+  const c=document.getElementById('confetti');c.innerHTML='';
+  const cols=['#ff6b6b','#ff9f43','#ffd32a','#1dd1a1','#54a0ff','#a29bfe','#fd79a8'];
+  for(let i=0;i<80;i++){
+    const p=document.createElement('div');p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}vw;background:${cols[i%cols.length]};
+      width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;
+      animation-duration:${1.5+Math.random()*2}s;animation-delay:${Math.random()*.8}s;
+      border-radius:${Math.random()>.5?'50%':'2px'}`;
+    c.appendChild(p);
+  }
+  setTimeout(()=>c.innerHTML='',4000);
+}
+
+// =====================
+// NAV
+// =====================
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function goHome(){
+  if(S&&S.timerInterval)clearInterval(S.timerInterval);
+  buildHome();showScreen('homeScreen');
+}
+
+let S={};
+buildHome();
+</script>
+</body>
+</html>
